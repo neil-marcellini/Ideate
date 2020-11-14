@@ -8,11 +8,12 @@ app.use(morgan('combined'))
 const port = 5000;
 
 function createConnection() {
+    const db_config = require("./db_config.json")
     const connection = mysql.createConnection({
-        host: "ec2-54-197-115-206.compute-1.amazonaws.com",
-        user: "root",
-        password: "comp420",
-        database: 'ideate'
+        host: db_config.host,
+        user: db_config.user,
+        password: db_config.password,
+        database: db_config.database
     })
     return connection
 }
