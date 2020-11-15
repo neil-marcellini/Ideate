@@ -1,32 +1,39 @@
 import React, { Component } from 'react'
+import {Box, Button, TextField, Card, CardContent, CardActions, CardHeader } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+const useStyles = makeStyles({
+    box: {
+        padding: "5rem 0"
+    },
+    card: {
+        margin: "auto",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "30%",
+    }
+  });
 
-export default class SignUp extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {value: ''};
-    
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-      }
-    
-      handleChange(event) {
-        this.setState({value: event.target.value});
-      }
-    
-      handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
-        event.preventDefault();
-      }
-    
-      render() {
-        return (
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              Name:
-              <input type="text" value={this.state.value} onChange={this.handleChange} />
-            </label>
-            <input type="submit" value="Submit" />
-          </form>
-        );
-      }
+export default function SignUp() {
+    const classes = useStyles()
+    return (
+        <form >
+            <Box className={classes.box}>
+                <Card className={classes.card}>
+                    <CardHeader title="Sign Up"/>
+                    <CardContent>
+                        <TextField id="filled-basic" label="Email" variant="filled" />
+                        <br />
+                        <br />
+                        <TextField id="filled-basic" label="Password" variant="filled" />
+                    </CardContent>
+                    <CardActions>
+                        <Button type="submit" variant="contained" color="primary">Submit</Button>
+                    </CardActions>
+                </Card>                
+            </Box>
+            
+        </form>
+    );
 }
