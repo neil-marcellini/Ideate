@@ -12,10 +12,12 @@
   "author": "Neil Marcellini",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "concurrently": "^5.3.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
