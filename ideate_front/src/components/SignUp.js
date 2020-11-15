@@ -24,7 +24,7 @@ export default function SignUp() {
 
 
     const signUp = () => {
-        axios.post("/signup", {
+        axios.post("/api/signup", {
             email: email,
             password: password
         }).then((response) => {

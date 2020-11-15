@@ -9,7 +9,6 @@ const { restart } = require('nodemon');
 require('dotenv').config();
 const jwt_secret_key = process.env.JWT_SECRET_KEY
 
-
 const app = express()
 app.use(express.json())
 
