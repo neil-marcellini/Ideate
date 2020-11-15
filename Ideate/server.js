@@ -6,6 +6,9 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const { v4: uuidv4 } = require('uuid');
 const { restart } = require('nodemon');
+require('dotenv').config();
+const jwt_secret_key = process.env.JWT_SECRET_KEY
+
 
 const app = express()
 app.use(express.json())
@@ -60,7 +63,7 @@ app.post("/api/login", (req, res) => {
                     if (auth_res) {
                         // user verified
                         const user_id = user_data.user_id
-                        const token = jwt.sign({user_id}, "secret_key", {
+                        const token = jwt.sign({user_id}, jwt_secret_key, {
                             expiresIn: "5 days",
                         })
                         res.json({
