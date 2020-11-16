@@ -1,7 +1,9 @@
 import React, { useState} from 'react';
 import {Box, Button, TextField, Card, CardContent, CardActions, CardHeader } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+import {signUp} from '../actions/authActions'
 
 const useStyles = makeStyles({
     box: {
@@ -17,23 +19,13 @@ const useStyles = makeStyles({
     },
 });
 
-export default function SignUp() {
+function SignUp(props) {
     const classes = useStyles()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-
-    const signUp = () => {
-        axios.post("/api/signup", {
-            email: email,
-            password: password
-        }).then((response) => {
-            console.log(response)
-        })
-    }
-
     return (
-        <form >
+        <form onSubmit={props.signUp({email, password})}>
             <Box className={classes.box}>
                 <Card className={classes.card}>
                     <CardHeader title="Sign Up"/>
@@ -46,7 +38,7 @@ export default function SignUp() {
                             setPassword(e.target.value)}} />
                     </CardContent>
                     <CardActions>
-                        <Button onClick={signUp} variant="contained" color="primary">Submit</Button>
+                        <Button type="Submit" variant="contained" color="primary">Submit</Button>
                     </CardActions>
                     <br />
                 </Card>                
@@ -54,4 +46,21 @@ export default function SignUp() {
             
         </form>
     );
+
 }
+
+SignUp.propTypes = {
+    isAuthenticated: PropTypes.bool,
+    error: PropTypes.object.isRequired,
+    signUp: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    error: state.error
+})
+
+export default connect(
+    mapStateToProps,
+    {signUp}
+)(SignUp)

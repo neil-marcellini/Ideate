@@ -27,9 +27,33 @@ export const loadUser = () => (dispatch, getState) => {
     }))
     .catch(err => {
         dispatch(returnErrors(err.response.data, err.response.status))
-
         dispatch({
             type: AUTH_ERROR
+        })
+    })
+}
+
+// sign up user
+export const signUp = ({email, password}) => dispatch => {
+    console.log("sign up called")
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }
+
+    const body = JSON.stringify({email, password})
+    axios.post('/api/signup', body, config)
+    .then(res => dispatch({
+        type: SIGNUP_SUCCESS,
+        payload: res.data
+    }))
+    .catch(err => {
+        dispatch(
+            returnErrors(err.response.data, err.response.status, 'SIGNUP_FAIL')
+        )
+        dispatch({
+            type: SIGNUP_FAIL
         })
     })
 }
