@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router()
 const db = require('../../server')
 const auth = require('../../middleware/auth')
+const jwt = require('jsonwebtoken')
+const jwt_secret_key = process.env.JWT_SECRET_KEY
+const bcrypt = require('bcrypt');
 
 
 // @route POST api/auth
@@ -13,7 +16,7 @@ router.post('/', (req, res) => {
 
     // check for existing user
     db.query("SELECT * FROM User WHERE user_email=?;", email, (err, result) => {
-        if (!result) {
+        if (result.length == 0) {
             return res.status(400).json({msg: "Incorrect user email"})
         } else {
             // validate password

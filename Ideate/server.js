@@ -1,10 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
 const mysql = require('mysql')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const { v4: uuidv4 } = require('uuid');
 const { restart } = require('nodemon');
 require('dotenv').config();
 
@@ -29,7 +25,7 @@ app.use(express.json())
 
 // user routes
 app.use('/api/users', require('./routes/api/users'))
-app.use('api/auth', require('./routes/api/auth'))
+app.use('/api/auth', require('./routes/api/auth'))
 
 app.use(morgan('combined'))
 

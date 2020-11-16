@@ -1,0 +1,7 @@
+
+SET SQL_SAFE_UPDATES = 0;
+
+# your code SQL here
+DELETE FROM User;
+
+SET SQL_SAFE_UPDATES = 1;
