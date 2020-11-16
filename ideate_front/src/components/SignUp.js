@@ -1,8 +1,7 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import {Box, Button, TextField, Card, CardContent, CardActions, CardHeader } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
+import { useDispatch, useSelector } from "react-redux";
 import {signUp} from '../actions/authActions'
 
 const useStyles = makeStyles({
@@ -19,26 +18,41 @@ const useStyles = makeStyles({
     },
 });
 
-function SignUp(props) {
+export default function SignUp() {
     const classes = useStyles()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [msg, setMsg] = useState(null);
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated) 
+    const error = useSelector(state => state.error) 
+
+    const dispatch = useDispatch();
+
+    useEffect(()=> {
+        // Check for register error
+        if (error.id === 'SIGNUP_FAIL') {
+            setMsg(error.msg.msg);
+        } else {
+            setMsg(null);
+        }
+    },[error])
 
     return (
-        <form onSubmit={props.signUp({email, password})}>
+        <form>
             <Box className={classes.box}>
                 <Card className={classes.card}>
                     <CardHeader title="Sign Up"/>
                     <CardContent>
-                        <TextField id="filled-basic" label="Email" variant="filled" onChange={(e) => {
-                            setEmail(e.target.value)}} />
+                        <TextField error={msg != null} label="Email" variant="filled" onChange={(e) => {
+                            setEmail(e.target.value)}} helperText={msg} />
                         <br />
                         <br />
-                        <TextField id="filled-basic" label="Password" type="password" variant="filled" onChange={(e) => {
-                            setPassword(e.target.value)}} />
+                        <TextField error={msg != null} label="Password" type="password" variant="filled" onChange={(e) => {
+                            setPassword(e.target.value)}} helperText={msg}/>
                     </CardContent>
                     <CardActions>
-                        <Button type="Submit" variant="contained" color="primary">Submit</Button>
+                        <Button onClick={() => dispatch(signUp({email, password}))} variant="contained" color="primary">Submit</Button>
                     </CardActions>
                     <br />
                 </Card>                
@@ -49,18 +63,3 @@ function SignUp(props) {
 
 }
 
-SignUp.propTypes = {
-    isAuthenticated: PropTypes.bool,
-    error: PropTypes.object.isRequired,
-    signUp: PropTypes.func.isRequired
-}
-
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated,
-    error: state.error
-})
-
-export default connect(
-    mapStateToProps,
-    {signUp}
-)(SignUp)

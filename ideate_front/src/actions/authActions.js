@@ -34,6 +34,7 @@ export const loadUser = () => (dispatch, getState) => {
 }
 
 // sign up user
+
 export const signUp = ({email, password}) => dispatch => {
     console.log("sign up called")
     const config = {
@@ -43,7 +44,7 @@ export const signUp = ({email, password}) => dispatch => {
     }
 
     const body = JSON.stringify({email, password})
-    axios.post('/api/signup', body, config)
+    axios.post('/api/users', body, config)
     .then(res => dispatch({
         type: SIGNUP_SUCCESS,
         payload: res.data
