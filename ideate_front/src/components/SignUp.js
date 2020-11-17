@@ -58,7 +58,9 @@ export default function SignUp() {
                             setPassword(e.target.value)}} helperText={msg}/>
                     </CardContent>
                     <CardActions>
-                        <Button onClick={() => dispatch(signUp({email, password}))} variant="contained" color="primary">Submit</Button>
+                        <Button onClick={() => dispatch(signUp({email, password})).then(res => {
+                            console.log(res)
+                        })} variant="contained" color="primary">Submit</Button>
                     </CardActions>
                     <br />
                     <p> Already have an account?</p>

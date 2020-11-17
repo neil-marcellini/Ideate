@@ -1,9 +1,11 @@
 import React, { useState} from 'react';
 import {Box, Button, TextField, Card, CardContent, CardActions, CardHeader } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
-import SignUp from './SignUp';
 import {Link} from 'react-router-dom';
+import {logIn} from '../actions/authActions'
+import { useDispatch, useSelector } from "react-redux";
+
+
 
 
 const useStyles = makeStyles({
@@ -29,16 +31,7 @@ export default function LogIn() {
     const classes = useStyles()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
-
-    const logIn = () => {
-        axios.post("/api/login", {
-            email: email,
-            password: password
-        }).then((response) => {
-            console.log(response)
-        })
-    }
+    const dispatch = useDispatch()
 
     return (
         <form >
@@ -54,7 +47,7 @@ export default function LogIn() {
                             setPassword(e.target.value)}} />
                     </CardContent>
                     <CardActions>
-                        <Button onClick={logIn} variant="contained" color="primary">Log In</Button>
+                        <Button onClick={() => dispatch(logIn({email, password}))} variant="contained" color="primary">Log In</Button>
                     </CardActions>
                     <br />
                     <p> Don't have an account?</p>

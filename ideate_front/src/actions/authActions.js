@@ -7,7 +7,7 @@ import {
     AUTH_ERROR,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    LOGOUT_SUCCES,
+    LOGOUT_SUCCESS,
     SIGNUP_SUCCESS,
     SIGNUP_FAIL
 } from './types'
@@ -56,6 +56,37 @@ export const signUp = ({email, password}) => dispatch => {
         dispatch({
             type: SIGNUP_FAIL
         })
+    })
+}
+
+// login user
+export const logIn = ({email, password}) => dispatch => {
+    console.log("log in called")
+    const config = {
+        headers: {
+            'Content-type': 'application/json'
+        }
+    }
+
+    const body = JSON.stringify({email, password})
+    axios.post('/api/auth', body, config)
+    .then(res => dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data
+    }))
+    .catch(err => {
+        dispatch(
+            returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL')
+        )
+        dispatch({
+            type: LOGIN_FAIL
+        })
+    })
+}
+
+export const logOut = (dispatch) => {
+    dispatch({
+        type: LOGOUT_SUCCESS
     })
 }
 
