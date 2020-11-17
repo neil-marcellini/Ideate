@@ -18,14 +18,19 @@ function App() {
   }, [])
 
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated) 
+  const userLoading = useSelector(state => state.auth.isLoading)
 
   return (
     <div className="App">
       <Navbar />
       <Switch>
-        {isAuthenticated
-          ? <Route exact path="/" component={Home} />
-          : <Route exact path="/" component={LogIn} />
+        {!userLoading &&
+          <div>
+            {isAuthenticated
+              ? <Route exact path="/" component={Home} />
+              : <Route exact path="/" component={LogIn} />
+            }
+          </div>
         }
         <Route path="/signup" component={SignUp} />
       </Switch>
