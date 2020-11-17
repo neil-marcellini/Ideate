@@ -7,8 +7,6 @@ export default class Navbar extends Component {
         return (
             <header className="Nav-header">
                 <h1 className="Nav-name">Ideate</h1>
-                <Link className="nav-items" to="/signup">Sign Up</Link>
-                <Link className="nav-items" to="/login">Log In</Link>
                 <Link className="nav-items" to="/idea">Idea</Link>
                 <Link className="nav-items" to="/topics">Topics</Link>
             </header>

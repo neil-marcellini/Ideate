@@ -2,6 +2,9 @@ import React, { useState} from 'react';
 import {Box, Button, TextField, Card, CardContent, CardActions, CardHeader } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import SignUp from './SignUp';
+import {Link} from 'react-router-dom';
+
 
 const useStyles = makeStyles({
     box: {
@@ -15,6 +18,11 @@ const useStyles = makeStyles({
         alignItems: "center",
         width: "30%",
     },
+    link: {
+        color: "blue",
+        textDecoration: "underline",
+        paddingBottom: "1rem"
+    }
 });
 
 export default function LogIn() {
@@ -49,6 +57,8 @@ export default function LogIn() {
                         <Button onClick={logIn} variant="contained" color="primary">Log In</Button>
                     </CardActions>
                     <br />
+                    <p> Don't have an account?</p>
+                    <Link className={classes.link} to="/signup"><p>Sign Up</p></Link>
                 </Card>                
             </Box>
         </form>

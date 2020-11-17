@@ -1,13 +1,14 @@
 import './App.css';
 import 'fontsource-roboto';
 import Navbar from './components/Navbar';
-import {BrowserRouter as Router, Route } from 'react-router-dom';
-import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import React, {useEffect} from 'react'
-import { Provider } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux";
+import { Route, Switch} from 'react-router-dom'
 import store from './store'
-import { loadUser } from './actions/authActions'
+import { loadUser, signUp } from './actions/authActions'
+import SignUp from './components/SignUp';
+
 
 
 function App() {
@@ -15,18 +16,26 @@ function App() {
     store.dispatch(loadUser())
   }, [])
 
-  return (
-    <Provider store={store}>
-      <Router>
-        <div className="App">
-          <Navbar />
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated) 
+  if (isAuthenticated) {
+    return (
+      <div className="App">
+        <Navbar />
+      </div>  
+    );
+  }
+  else {
+    return (
+      <div className="App">
+        <Navbar />
+        <Switch>
+          <Route exact path="/" component={LogIn} />
           <Route path="/signup" component={SignUp} />
-          <Route path="/login" component={LogIn} />
-        </div>
-      </Router>
-    </Provider>
-    
-  );
+        </Switch>
+      </div>  
+    );
+  }
+
 }
 
 export default App;
