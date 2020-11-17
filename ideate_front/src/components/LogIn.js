@@ -44,7 +44,7 @@ export default function LogIn() {
         <form >
             <Box className={classes.box}>
                 <Card className={classes.card}>
-                    <CardHeader title="Log In"/>
+                    <CardHeader title="Welcome Back!"/>
                     <CardContent>
                         <TextField id="filled-basic" label="Email" variant="filled" onChange={(e) => {
                             setEmail(e.target.value)}} />

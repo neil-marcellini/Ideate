@@ -3,6 +3,7 @@ import {Box, Button, TextField, Card, CardContent, CardActions, CardHeader } fro
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from "react-redux";
 import {signUp} from '../actions/authActions'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles({
     box: {
@@ -16,6 +17,11 @@ const useStyles = makeStyles({
         alignItems: "center",
         width: "30%",
     },
+    link: {
+        color: "blue",
+        textDecoration: "underline",
+        paddingBottom: "1rem"
+    }
 });
 
 export default function SignUp() {
@@ -55,6 +61,8 @@ export default function SignUp() {
                         <Button onClick={() => dispatch(signUp({email, password}))} variant="contained" color="primary">Submit</Button>
                     </CardActions>
                     <br />
+                    <p> Already have an account?</p>
+                    <Link className={classes.link} to="/"><p>Log In</p></Link>
                 </Card>                
             </Box>
             
