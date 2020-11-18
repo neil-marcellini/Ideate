@@ -14,16 +14,22 @@ const useStyles = makeStyles({
     },
     card: {
         margin: "auto",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        padding: "2rem",
         width: "30%",
+    },
+    cardHeader: {
+        textAlign: "center"
     },
     link: {
         color: "blue",
         textDecoration: "underline",
         paddingBottom: "1rem"
+    },
+    padded: {
+        paddingLeft: "16px"
+    },
+    paddedButton: {
+        paddingLeft: "8px"
     }
 });
 
@@ -96,18 +102,22 @@ export default function LogIn() {
                     <CardHeader title="Welcome Back!"/>
                     <CardContent>
                         <TextField id="filled-basic" error={emailError} label="Email" variant="filled" onChange={(e) => {
-                            setEmail(e.target.value)}} helperText={emailMsg} />
+                            setEmail(e.target.value)}} helperText={emailMsg} fullWidth />
                         <br />
                         <br />
                         <TextField id="filled-basic" error={passwordError} label="Password" type="password" variant="filled" onChange={(e) => {
-                            setPassword(e.target.value)}} helperText={passwordMsg} />
+                            setPassword(e.target.value)}} helperText={passwordMsg} fullWidth />
                     </CardContent>
                     <CardActions>
-                        <Button onClick={checkFields} variant="contained" color="primary">Log In</Button>
+                        <div className={classes.paddedButton}>
+                            <Button onClick={checkFields} variant="contained" color="primary">Log In</Button>
+                        </div>
                     </CardActions>
                     <br />
-                    <p> Don't have an account?</p>
-                    <Link className={classes.link} to="/signup"><p>Sign Up</p></Link>
+                    <div className={classes.padded}>
+                        <p> Don't have an account? <Link className={classes.link} to="/signup">Sign Up</Link></p>
+                    </div>
+                    
                 </Card>                
             </Box>
         </form>
