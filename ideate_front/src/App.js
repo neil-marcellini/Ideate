@@ -4,9 +4,9 @@ import Navbar from './components/Navbar';
 import LogIn from './components/LogIn';
 import React, {useEffect} from 'react'
 import { Route, Switch} from 'react-router-dom'
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import store from './store'
-import { loadUser, signUp } from './actions/authActions'
+import { loadUser } from './actions/authActions'
 import SignUp from './components/SignUp';
 import Home from './components/Home'
 
@@ -24,15 +24,15 @@ function App() {
     <div className="App">
       <Navbar />
       <Switch>
+        <Route path="/signup" component={SignUp} />
         {!userLoading &&
-          <div>
+          <React.Fragment>
             {isAuthenticated
               ? <Route exact path="/" component={Home} />
               : <Route exact path="/" component={LogIn} />
             }
-          </div>
+          </React.Fragment>
         }
-        <Route path="/signup" component={SignUp} />
       </Switch>
     </div>  
   );

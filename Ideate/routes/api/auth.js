@@ -17,7 +17,7 @@ router.post('/', (req, res) => {
     // check for existing user
     db.query("SELECT * FROM User WHERE user_email=?;", email, (err, result) => {
         if (result.length == 0) {
-            return res.status(400).json({msg: "Incorrect user email"})
+            return res.status(400).json({field: "email", msg: "Incorrect user email"})
         } else {
             // validate password
             user_data = result[0]
@@ -39,7 +39,7 @@ router.post('/', (req, res) => {
                     })
                     
                 } else {
-                    res.status(400).json({msg: "Invalid credentials."})
+                    res.status(400).json({field: "password", msg: "Invalid credentials."})
                 }
             });
         }

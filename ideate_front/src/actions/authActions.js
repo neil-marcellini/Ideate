@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { returnErrors } from './errorActions'
+import { returnErrors, clearErrors } from './errorActions'
 
 import {
     USER_LOADED,
@@ -85,6 +85,9 @@ export const logIn = ({email, password}) => dispatch => {
 }
 
 export const logOut = (dispatch) => {
+    dispatch(
+        clearErrors()
+    )
     dispatch({
         type: LOGOUT_SUCCESS
     })

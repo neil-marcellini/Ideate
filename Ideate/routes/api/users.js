@@ -15,13 +15,13 @@ router.post('/', (req, res) => {
     const { email, password } = req.body
 
     if (!email || !password) {
-        return res.status(400).json({msg: "Please enter all fields"})
+        return res.status(400).json({field: "both", msg: "Please enter all fields"})
     }
 
     // check for existing user
     db.query("SELECT * FROM User WHERE user_email=?;", email, (err, result) => {
         if (result.length > 0) {
-            return res.status(400).json({msg: "User already exists"})
+            return res.status(400).json({field: "email", msg: "Sorry, a user already exists with this email."})
         } else {
             // add user
             bcrypt.hash(password, saltRounds, function(err, hash) {
