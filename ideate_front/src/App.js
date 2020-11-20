@@ -20,16 +20,22 @@ function App() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated) 
   const userLoading = useSelector(state => state.auth.isLoading)
 
+  const authPages = (
+    <>
+      <Route path="/signup" component={SignUp} />
+      <Route exact path="/" component={LogIn} />
+    </>
+  );
+
   return (
     <div className="App">
       <Navbar />
       <Switch>
-        <Route path="/signup" component={SignUp} />
         {!userLoading &&
           <React.Fragment>
             {isAuthenticated
               ? <Route exact path="/" component={Home} />
-              : <Route exact path="/" component={LogIn} />
+              : authPages
             }
           </React.Fragment>
         }
