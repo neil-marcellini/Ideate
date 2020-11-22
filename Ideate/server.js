@@ -23,7 +23,7 @@ const jwt_secret_key = process.env.JWT_SECRET_KEY
 
 const app = express()
 app.use(express.json())
-app.use(formidable());
+// app.use(formidable());
 
 // user routes
 app.use('/api/users', require('./routes/api/users'))

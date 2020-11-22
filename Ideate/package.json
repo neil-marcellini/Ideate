@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server.js",
-    "client": "cd ../ideate_front && npm start",
+    "client": "npm start --prefix ../ideate_front",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Neil Marcellini",

@@ -12,10 +12,15 @@ const bcrypt = require('bcrypt');
 // @access Public
 
 router.post('/', (req, res) => {
+    console.log("received auth request")
     const { email, password } = req.body
 
     // check for existing user
     db.query("SELECT * FROM User WHERE user_email=?;", email, (err, result) => {
+        if(err) {
+            console.log(err)
+        }
+        console.log(result)
         if (result.length == 0) {
             return res.status(400).json({field: "email", msg: "Incorrect user email"})
         } else {
