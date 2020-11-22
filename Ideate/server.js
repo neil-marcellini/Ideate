@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const mysql = require('mysql')
+const formidable = require('express-formidable');
 const { restart } = require('nodemon');
 require('dotenv').config();
 
@@ -22,10 +23,12 @@ const jwt_secret_key = process.env.JWT_SECRET_KEY
 
 const app = express()
 app.use(express.json())
+app.use(formidable());
 
 // user routes
 app.use('/api/users', require('./routes/api/users'))
 app.use('/api/auth', require('./routes/api/auth'))
+app.use('/api/profile', require('./routes/api/profile'))
 
 app.use(morgan('combined'))
 
