@@ -37,11 +37,24 @@ export default function CreateProfile() {
     const classes = useStyles()
     const [profileName, setProfileName] = useState(null)
     const [profileBio, setProfileBio] = useState(null)
+    const [avatarSrc, setAvatarSrc] = useState(null)
     const dispatch = useDispatch()
     const [profileImage, setProfileImage] = useState(null);
     const user_id = useSelector(state => state.auth.user.user_id) 
 
+    
+    const onFileChange = (e) => {
+        if(!e.target.files.length) {
+            setAvatarSrc(null)
+            setProfileImage(null)
+        } else {
+            const file = e.target.files[0]
+            setProfileImage(file)
+            setAvatarSrc(URL.createObjectURL(file))
+        }
+    }
 
+    
     const upload = () => {
         // Create an object of formData 
         const formData = new FormData();
@@ -65,8 +78,9 @@ export default function CreateProfile() {
                             setProfileName(e.target.value)}} />
                 <Typography variant="h5">Photo</Typography>
                 <div className={classes.namePhoto}>
-                    <input type="file" name="profile" accept="image/*" onChange={(e) => setProfileImage(e.target.files[0])} />
-                    <Avatar className={classes.photoDisplay} variant="rounded" src={profileImage}/>
+                    <input type="file" name="profile" accept="image/*" onChange={onFileChange} />
+                    
+                    <Avatar className={classes.photoDisplay} variant="rounded" src={avatarSrc}/>
                     
                 </div>
                 <br />
