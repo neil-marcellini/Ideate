@@ -30,7 +30,7 @@ app.use('/api/profile', require('./routes/api/profile'))
 
 app.use(morgan('combined'))
 
-const port = 4000;
+const port = 5000;
 
 
 
