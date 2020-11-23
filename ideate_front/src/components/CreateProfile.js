@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Paper, TextareaAutosize, TextField, Typography, Avatar, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createProfile } from "../actions/profileActions"
 
 
@@ -39,12 +39,14 @@ export default function CreateProfile() {
     const [profileBio, setProfileBio] = useState(null)
     const dispatch = useDispatch()
     const [profileImage, setProfileImage] = useState(null);
+    const user_id = useSelector(state => state.auth.user.user_id) 
 
 
     const upload = () => {
         // Create an object of formData 
         const formData = new FormData();
         formData.append("profileName", profileName)
+        formData.append("userId", user_id)
         formData.append("profileImage", profileImage)
         formData.append("profileBio", profileBio)
             
