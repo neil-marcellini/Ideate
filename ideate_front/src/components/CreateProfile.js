@@ -30,7 +30,8 @@ const useStyles = makeStyles({
     },
     uploadButton: {
         gridColumn: "2 / 2",
-        width: "8rem"
+        width: "6.5rem",
+        height: "2rem"
     },
     photoDisplay: {
         width: "5em",
@@ -91,16 +92,17 @@ export default function CreateProfile() {
                                 setProfileName(e.target.value)}} />
                     <input className={classes.imageUpload} ref={inputElement} type="file" name="profile" accept="image/*" onChange={onFileChange} />
                     <Avatar className={classes.photoDisplay} variant="rounded" src={avatarSrc}/>
+                    <div>
+                        <Typography variant="h5">Bio</Typography>
+                        <Typography>Let us know who you are!</Typography>
+                    </div>
                     <Button className={classes.uploadButton} variant="contained" color="default" 
                     startIcon={<CloudUploadIcon/>} onClick={onUploadPhoto}>
                         Upload
-                    </Button>  
+                    </Button>
                 </div>
                 <br />
-                <Typography variant="h5">Bio</Typography>
-                <Typography>Let us know who you are!</Typography>
-                <br />
-                <TextareaAutosize style={{width: "20rem"}} 
+                <TextareaAutosize style={{width: "26.5rem"}} 
                     aria-label="Bio" rowsMin={15} onChange={(e) => {
                     setProfileBio(e.target.value)}} />
                 <br />
