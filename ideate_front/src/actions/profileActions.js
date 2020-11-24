@@ -14,7 +14,8 @@ export const createProfile = (formData) => dispatch => {
     }))
     .catch(err => {
         dispatch({
-            type: PROFILE_FAIL
+            type: PROFILE_FAIL,
+            payload: err.response.data
         })
     })
 }

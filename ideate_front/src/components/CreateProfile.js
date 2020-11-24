@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Paper, TextareaAutosize, TextField, Typography, Avatar, Button} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import { createProfile } from "../actions/profileActions"
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
@@ -55,8 +55,17 @@ export default function CreateProfile() {
     const inputElement = useRef(null);
     const [photoSizeError, setPhotoSizeError] = useState(null)
     const MAX_FILE_SIZE = 16000000
-
+    const profile = useSelector(state => state.profile)
+    const [nameErrorMsg, setNameErrorMsg] = useState(null)
+    const [nameError, setNameError] = useState(false)
     
+
+    useEffect(() => {
+        setNameErrorMsg(profile.msg)
+        setNameError(profile.msg !== null)
+    }, [profile])
+
+
     const onFileChange = (e) => {
         if(!e.target.files.length) {
             setAvatarSrc(null)
@@ -92,6 +101,12 @@ export default function CreateProfile() {
         dispatch(createProfile(formData))
     }
 
+    const updateName = (e) => {
+        setProfileName(e.target.value)
+        setNameError(false)
+        setNameErrorMsg(null)
+    }
+
     return (
         <form className={classes.formContainer}>
             <Paper className={classes.paper}>
@@ -100,8 +115,7 @@ export default function CreateProfile() {
                 <div className={classes.namePhoto}>
                     <Typography variant="h5">Profile Name</Typography>
                     <Typography variant="h5">Photo</Typography>
-                    <TextField variant="filled" onChange={(e) => {
-                                setProfileName(e.target.value)}} />
+                    <TextField variant="filled" onChange={updateName} error={nameError} helperText={nameErrorMsg}/>
                     <input className={classes.imageUpload} ref={inputElement} type="file" name="profile" accept="image/*" onChange={onFileChange} />
                     <Avatar className={classes.photoDisplay} variant="rounded" src={avatarSrc}/>
                     <Typography variant="h5">Bio</Typography>

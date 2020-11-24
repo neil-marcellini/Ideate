@@ -1,21 +1,22 @@
 import {PROFILE_CREATED, PROFILE_FAIL} from '../actions/types'
 
 const initalState = {
-    field: "",
-    msg: {}
+    profile_name: null,
+    msg: null
 }
 
 export default function(state = initalState, action) {
+    console.log(action)
     switch(action.type) {
         case PROFILE_CREATED:
             return {
-                field: action.payload.field,
-                msg: action.payload.msg,
+                profile_name: action.payload.profile_name,
+                msg: null,
             }
         case PROFILE_FAIL:
             return {
-                field: "",
-                msg: {}
+                profile_name: null,
+                msg: action.payload.msg,
             }
         default:
             return state
