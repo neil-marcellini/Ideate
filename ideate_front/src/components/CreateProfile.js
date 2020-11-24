@@ -36,6 +36,10 @@ const useStyles = makeStyles({
     photoDisplay: {
         width: "5em",
         height: "5em"
+    },
+    photoError: {
+        color: "red",
+        fontSize: "8pt"
     }
 })
 
@@ -49,16 +53,24 @@ export default function CreateProfile() {
     const [profileImage, setProfileImage] = useState(null);
     const user_id = useSelector(state => state.auth.user.user_id) 
     const inputElement = useRef(null);
+    const [photoSizeError, setPhotoSizeError] = useState(null)
+    const MAX_FILE_SIZE = 16000000
 
     
     const onFileChange = (e) => {
         if(!e.target.files.length) {
             setAvatarSrc(null)
             setProfileImage(null)
+            setPhotoSizeError(null)
         } else {
             const file = e.target.files[0]
             setProfileImage(file)
             setAvatarSrc(URL.createObjectURL(file))
+            if (file.size > MAX_FILE_SIZE) {
+                setPhotoSizeError("Error: max size 16mb.")
+            } else {
+                setPhotoSizeError(null)
+            }
         }
     }
 
@@ -92,14 +104,13 @@ export default function CreateProfile() {
                                 setProfileName(e.target.value)}} />
                     <input className={classes.imageUpload} ref={inputElement} type="file" name="profile" accept="image/*" onChange={onFileChange} />
                     <Avatar className={classes.photoDisplay} variant="rounded" src={avatarSrc}/>
-                    <div>
-                        <Typography variant="h5">Bio</Typography>
-                        <Typography>Let us know who you are!</Typography>
-                    </div>
+                    <Typography variant="h5">Bio</Typography>
                     <Button className={classes.uploadButton} variant="contained" color="default" 
                     startIcon={<CloudUploadIcon/>} onClick={onUploadPhoto}>
                         Upload
                     </Button>
+                    <Typography>Let us know who you are!</Typography>
+                    <p className={classes.photoError}>{photoSizeError}</p>
                 </div>
                 <br />
                 <TextareaAutosize style={{width: "26.5rem"}} 
@@ -107,7 +118,7 @@ export default function CreateProfile() {
                     setProfileBio(e.target.value)}} />
                 <br />
                 <br />
-                <Button variant="contained" color="primary" onClick={upload}>Save</Button>
+                <Button variant="contained" color="primary" onClick={upload} disabled={photoSizeError !== null}>Save</Button>
             </Paper>
         </form>
     )
