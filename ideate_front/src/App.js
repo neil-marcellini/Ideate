@@ -10,6 +10,7 @@ import { loadUser } from './actions/authActions'
 import SignUp from './components/SignUp';
 import Home from './components/Home'
 import CreateProfile from './components/CreateProfile'
+import NewIdea from './components/NewIdea'
 
 
 
@@ -34,6 +35,7 @@ function App() {
       <Route exact path="/" component={Home} />
       <Redirect from="/signup" to="/createprofile" />
       <Route exact path="/createprofile" component={CreateProfile} />
+      <Route path="/idea" component={NewIdea} />
     </>
   )
 
