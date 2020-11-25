@@ -3,12 +3,13 @@ import 'fontsource-roboto';
 import Navbar from './components/Navbar';
 import LogIn from './components/LogIn';
 import React, {useEffect} from 'react'
-import { Route, Switch} from 'react-router-dom'
+import { Route, Switch, Redirect} from 'react-router-dom'
 import { useSelector } from "react-redux";
 import store from './store'
 import { loadUser } from './actions/authActions'
 import SignUp from './components/SignUp';
 import Home from './components/Home'
+import CreateProfile from './components/CreateProfile'
 
 
 
@@ -27,6 +28,14 @@ function App() {
     </>
   );
 
+  const protectedPages = (
+    <>
+      <Route exact path="/" component={Home} />
+      <Redirect from="/signup" to="/createprofile" />
+      <Route exact path="/createprofile" component={CreateProfile} />
+    </>
+  )
+
   return (
     <div className="App">
       <Navbar />
@@ -34,7 +43,7 @@ function App() {
         {!userLoading &&
           <React.Fragment>
             {isAuthenticated
-              ? <Route exact path="/" component={Home} />
+              ? protectedPages
               : authPages
             }
           </React.Fragment>

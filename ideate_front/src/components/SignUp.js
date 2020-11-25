@@ -39,7 +39,7 @@ export default function SignUp() {
     const [emailError, setEmailError] = useState(false)
     const [passwordMsg, setPasswordMsg] = useState(null);
     const [passwordError, setPasswordError] = useState(false)
-    const error = useSelector(state => state.error) 
+    const error = useSelector(state => state.error)
 
     const dispatch = useDispatch();
 
@@ -69,7 +69,6 @@ export default function SignUp() {
             setPasswordError(false)
         }
     },[error])
-
 
     return (
         <form>

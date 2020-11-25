@@ -7,6 +7,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const useStyles = makeStyles({
     formContainer: {
+        paddingTop: "1rem",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -127,10 +128,9 @@ export default function CreateProfile() {
                     <p className={classes.photoError}>{photoSizeError}</p>
                 </div>
                 <br />
-                <TextareaAutosize style={{width: "26.5rem"}} 
-                    aria-label="Bio" rowsMin={15} onChange={(e) => {
+                <TextareaAutosize style={{width: "100%"}} 
+                    aria-label="Bio" rowsMin={10} onChange={(e) => {
                     setProfileBio(e.target.value)}} />
-                <br />
                 <br />
                 <Button variant="contained" color="primary" onClick={upload} disabled={photoSizeError !== null}>Save</Button>
             </Paper>
