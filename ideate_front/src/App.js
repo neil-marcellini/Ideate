@@ -20,6 +20,7 @@ function App() {
 
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated) 
   const userLoading = useSelector(state => state.auth.isLoading)
+  const profileName = useSelector(state => state.profile.profile_name)
 
   const authPages = (
     <>
@@ -45,6 +46,9 @@ function App() {
             {isAuthenticated
               ? protectedPages
               : authPages
+            }
+            {profileName &&
+              <Redirect from="/createprofile" to="/"/>
             }
           </React.Fragment>
         }
