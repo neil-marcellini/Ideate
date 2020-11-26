@@ -17,10 +17,14 @@ const useStyles = makeStyles({
         width: "40%",
         padding: "1em",
     },
-    namePhoto: {
+    idea: {
         display: "grid",
         gridTemplateColumns: "auto auto",
-        gridTemplateRows: "auto auto auto",
+        justifyContent: "start"
+    },
+    grid: {
+        display: "grid",
+        gridTemplateColumns: "auto auto",
         gridColumnGap: "3rem",
         gridRowGap: "1rem",
         gridColumnAlign: "center",
@@ -111,16 +115,20 @@ export default function CreateProfile() {
     return (
         <form className={classes.formContainer}>
             <Paper className={classes.paper}>
-                <Typography variant="h3" style={{textDecoration: "underline"}}>New Idea</Typography>
-                <br />
-                <Potential />
-                <div className={classes.namePhoto}>
-                    <Typography variant="h5">Title</Typography>
-                    <Typography variant="h5">Potential</Typography>
-                    <input className={classes.imageUpload} ref={inputElement} type="file" name="profile" accept="image/*" onChange={onFileChange} />
-                    <Typography variant="h5">Description</Typography>
-                    <p className={classes.photoError}>{photoSizeError}</p>
+                <div className={classes.idea}>
+                    <Typography variant="h3" >💡</Typography>
+                    <Typography variant="h3" style={{textDecoration: "underline"}}>New Idea</Typography>
                 </div>
+                <br />
+                <div className={classes.grid}>
+                    <div>
+                        <Typography variant="h5">Title</Typography>
+                        <br />
+                        <TextField variant="filled" />
+                    </div>
+                    <Potential />
+                </div>
+                <Typography variant="h5">Description</Typography>
                 <br />
                 <TextareaAutosize style={{width: "100%"}} 
                     aria-label="Bio" rowsMin={10} onChange={(e) => {
