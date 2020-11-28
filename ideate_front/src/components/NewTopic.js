@@ -1,14 +1,16 @@
 import React, {useState, useRef} from 'react'
 import { TextareaAutosize, Typography, Avatar} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
+import { AddAPhoto } from '@material-ui/icons';
+
 
 const useStyles = makeStyles({
     imageUpload: {
         display: "none"
     },
     photoDisplay: {
-        width: "5em",
-        height: "5em"
+        width: "100%",
+        height: "8em"
     },
 
 })
@@ -46,7 +48,9 @@ export default function NewTopic() {
         <>
             <Typography variant="h5">Photo</Typography>
             <input className={classes.imageUpload} ref={inputElement} type="file" name="topic" accept="image/*" onChange={onFileChange} />
-            <Avatar className={classes.photoDisplay} variant="rounded" src={avatarSrc}/>
+            <Avatar className={classes.photoDisplay} variant="rounded" src={avatarSrc}>
+                <AddAPhoto />
+            </Avatar>
             <Typography variant="h5">Description</Typography>
             <TextareaAutosize style={{width: "100%"}} 
                     aria-label="Description" rowsMin={10} onChange={(e) => {
