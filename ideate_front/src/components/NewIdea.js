@@ -4,6 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector} from "react-redux";
 import { createProfile } from "../actions/profileActions"
 import Potential from './Potential'
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import NewTopic from './NewTopic';
+
 
 const useStyles = makeStyles({
     formContainer: {
@@ -54,6 +57,7 @@ export default function CreateProfile() {
     const [profileName, setProfileName] = useState(null)
     const [profileBio, setProfileBio] = useState(null)
     const [avatarSrc, setAvatarSrc] = useState(null)
+    const [topicName, setTopicName] = useState(null)
     const dispatch = useDispatch()
     const [profileImage, setProfileImage] = useState(null);
     const user_id = useSelector(state => state.auth.user.user_id) 
@@ -63,6 +67,7 @@ export default function CreateProfile() {
     const profile = useSelector(state => state.profile)
     const [nameErrorMsg, setNameErrorMsg] = useState(null)
     const [nameError, setNameError] = useState(false)
+    const filter = createFilterOptions();
     
 
     useEffect(() => {
@@ -111,6 +116,37 @@ export default function CreateProfile() {
         setNameError(false)
         setNameErrorMsg(null)
     }
+    
+
+    const [value, setValue] = React.useState(null);
+    const [open, toggleOpen] = React.useState(false);
+
+    const handleClose = () => {
+        toggleOpen(false);
+    };
+
+
+    const handleSubmit = (event) => {
+        handleClose();
+    };
+
+    const autocompleteChange = (event, newValue) => {
+        if (typeof newValue === 'string') {
+            // timeout to avoid instant validation of the dialog's form.
+            setTimeout(() => {
+            toggleOpen(true);
+            setTopicName(newValue)
+            });
+        } else if (newValue && newValue.inputValue) {
+            toggleOpen(true);
+            setTopicName(newValue.inputValue)
+        } else {
+            setValue(newValue);
+        }
+    }
+
+    const topics = []
+
 
     return (
         <form className={classes.formContainer}>
@@ -124,7 +160,7 @@ export default function CreateProfile() {
                     <div>
                         <Typography variant="h5">Title</Typography>
                         <br />
-                        <TextField variant="filled" />
+                        <TextField variant="outlined" />
                     </div>
                     <Potential />
                 </div>
@@ -134,6 +170,48 @@ export default function CreateProfile() {
                     aria-label="Bio" rowsMin={10} onChange={(e) => {
                     setProfileBio(e.target.value)}} />
                 <br />
+                <Typography variant="h5">Topic</Typography>
+                <Autocomplete
+                    value={value}
+                    onChange={autocompleteChange}
+                    filterOptions={(options, params) => {
+                    const filtered = filter(options, params);
+
+                    if (params.inputValue !== '') {
+                        filtered.push({
+                        inputValue: params.inputValue,
+                        title: `Add "${params.inputValue}"`,
+                        });
+                    }
+
+                    return filtered;
+                    }}
+                    id="free-solo-dialog-demo"
+                    options={topics}
+                    getOptionLabel={(option) => {
+                    // e.g value selected with enter, right from the input
+                    if (typeof option === 'string') {
+                        return option;
+                    }
+                    if (option.inputValue) {
+                        return option.inputValue;
+                    }
+                    return option.title;
+                    }}
+                    selectOnFocus
+                    clearOnBlur
+                    handleHomeEndKeys
+                    renderOption={(option) => option.title}
+                    style={{ width: 300 }}
+                    freeSolo
+                    renderInput={(params) => (
+                    <TextField {...params} label="Select, search, or create." variant="outlined" />
+                    )}
+                />
+                {open &&
+                    <NewTopic />
+                }
+
                 <Button variant="contained" color="primary" onClick={upload} disabled={photoSizeError !== null}>Save</Button>
             </Paper>
         </form>
