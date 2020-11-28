@@ -131,13 +131,16 @@ export default function CreateProfile() {
     };
 
     const autocompleteChange = (event, newValue) => {
+        toggleOpen(false)
         if (typeof newValue === 'string') {
             // timeout to avoid instant validation of the dialog's form.
             setTimeout(() => {
+            setValue(newValue)
             toggleOpen(true);
             setTopicName(newValue)
             });
         } else if (newValue && newValue.inputValue) {
+            setValue(newValue)
             toggleOpen(true);
             setTopicName(newValue.inputValue)
         } else {

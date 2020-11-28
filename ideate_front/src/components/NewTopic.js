@@ -9,8 +9,8 @@ const useStyles = makeStyles({
         display: "none"
     },
     photoDisplay: {
-        width: "100%",
-        height: "8em"
+        width: "20rem",
+        height: "15rem"
     },
 
 })
@@ -48,7 +48,7 @@ export default function NewTopic() {
         <>
             <Typography variant="h5">Photo</Typography>
             <input className={classes.imageUpload} ref={inputElement} type="file" name="topic" accept="image/*" onChange={onFileChange} />
-            <Avatar className={classes.photoDisplay} variant="rounded" src={avatarSrc}>
+            <Avatar className={classes.photoDisplay} variant="rounded" src={avatarSrc} onClick={() => inputElement.current.click()}>
                 <AddAPhoto />
             </Avatar>
             <Typography variant="h5">Description</Typography>
