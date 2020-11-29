@@ -70,8 +70,8 @@ export default function NewIdea() {
         const formData = new FormData();
         formData.append("ideaTitle", ideaTitle)
         formData.append("ideaDescription", ideaDescription)
-        formData.append("potentialX", potential.x)
-        formData.append("potentialY", potential.y)
+        formData.append("potentialDifficulty", potential.x)
+        formData.append("potentialBrightness", potential.y)
         formData.append("topicName", topicName)
         formData.append("topicImage", topic.topicImage)
         formData.append("topicDescription", topic.topicDescription)
