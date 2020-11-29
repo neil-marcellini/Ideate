@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Redirect } from 'react-router-dom'
 import { Paper, TextareaAutosize, TextField, Typography, Button} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector} from "react-redux";
@@ -57,6 +58,7 @@ export default function NewIdea() {
     const [ideaTitle, setIdeaTitle] = useState(null)
     const [ideaDescription, setIdeaDescription] = useState(null)
     const [topicName, setTopicName] = useState(null)
+    const [ideaCreated, setIdeaCreated] = useState(false)
     const dispatch = useDispatch()
     const filter = createFilterOptions();
     const potential = useSelector(state => state.potential)
@@ -77,6 +79,7 @@ export default function NewIdea() {
         formData.append("topicDescription", topic.topicDescription)
         formData.append("profileName", profileName)
         dispatch(createIdea(formData))
+        setIdeaCreated(true)
     }
 
     const updateTitle = (e) => {
@@ -108,6 +111,9 @@ export default function NewIdea() {
 
     const topics = []
 
+    if (ideaCreated) {
+        return <Redirect to="/" />
+    }
 
     return (
         <form className={classes.formContainer}>
