@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import { Typography, Slider } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { useDispatch} from "react-redux";
+import { updatePotential } from '../actions/potentialActions'
 
 
 const useStyles = makeStyles({
@@ -68,8 +70,20 @@ export default function Potential() {
     const [y, setY] = useState(50)
     const props = {x: `${x-offset}%`, y: `${y}%`}
     const classes = useStyles(props)
-
+    const dispatch = useDispatch()
     
+    const onAnyChange = () => {
+        dispatch(updatePotential({x, y}))
+    }
+
+    const updateX = (e, newValue) => {
+        setX(newValue)
+        onAnyChange()
+    }
+    const updateY = (e, newValue) => {
+        setY(newValue)
+        onAnyChange()
+    }
     
 
     return (
@@ -77,7 +91,7 @@ export default function Potential() {
             <Typography className={classes.yLabel} variant="subtitle2">Brightness</Typography>
             <Typography variant="h5">Potential</Typography>
             <Slider className={classes.ySlider} orientation="vertical" value={y} 
-            onChange={(e, newValue) => setY(newValue)} 
+            onChange={updateY} 
             aria-labelledby="continuous-slider" valueLabelDisplay="auto"
             defaultValue={50} />
             <table className={classes.box}>
@@ -89,7 +103,7 @@ export default function Potential() {
                 </tr>
             </table>
             <Slider className={classes.xSlider} value={x} 
-            onChange={(e, newValue) => setX(newValue)} 
+            onChange={updateX} 
             aria-labelledby="continuous-slider" valueLabelDisplay="auto"
             defaultValue={50} />
             <Typography className={classes.xLabel} variant="subtitle2">Difficulty</Typography>
