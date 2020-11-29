@@ -26,6 +26,7 @@ const useStyles = makeStyles({
         padding: "0.5rem"
     },
     iteration: {
+        marginLeft: "3rem",
         width: "fit-content",
         display: "grid",
         gridTemplateRows: "auto auto",
@@ -60,10 +61,10 @@ export default function Idea() {
                 <div className={classes.HStack}>
                     <Typography variant="h3">Idea Title</Typography>
                     <div className={classes.iteration}>
-                        <Typography variant="title">Iteration</Typography>
+                        <Typography variant="subtitle1">Iteration</Typography>
                         <div>
                             <IconButton><IndeterminateCheckBox /></IconButton>
-                            <Typography variant="body">0</Typography>
+                            <span>0</span>
                             <IconButton><AddBox /></IconButton>
                         </div>
                     </div>
