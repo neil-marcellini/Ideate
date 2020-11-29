@@ -61,6 +61,7 @@ export default function NewIdea() {
     const filter = createFilterOptions();
     const potential = useSelector(state => state.potential)
     const topic = useSelector(state => state.topic)
+    const profileName = useSelector(state => state.profile.profile_name)
     
 
     
@@ -74,7 +75,7 @@ export default function NewIdea() {
         formData.append("topicName", topicName)
         formData.append("topicImage", topic.topicImage)
         formData.append("topicDescription", topic.topicDescription)
-        console.log(formData)
+        formData.append("profileName", profileName)
         dispatch(createIdea(formData))
     }
 

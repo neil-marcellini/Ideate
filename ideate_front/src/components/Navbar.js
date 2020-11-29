@@ -55,7 +55,7 @@ export default function Navbar() {
                 <ul className={classes.navLinks}>
                     <li><Link to="/idea" style={{fontSize: "2em", textDecoration: "none", color: "white"}}>Idea</Link></li>
                     <li><Link to="/topics" style={{fontSize: "2em", textDecoration: "none", color: "white"}}>Topics</Link></li>
-                    <li><h4 onClick={() => dispatch(logOut)}>Log Out</h4></li>
+                    <li><Link onClick={() => dispatch(logOut)} to="/" style={{fontSize: "2em", textDecoration: "none", color: "white"}}>Log Out</Link></li>
                 </ul>    
             }
         </nav>
