@@ -60,6 +60,7 @@ export default function NewIdea() {
     const dispatch = useDispatch()
     const filter = createFilterOptions();
     const potential = useSelector(state => state.potential)
+    const topic = useSelector(state => state.topic)
     
 
     
@@ -68,11 +69,13 @@ export default function NewIdea() {
         const formData = new FormData();
         formData.append("ideaTitle", ideaTitle)
         formData.append("ideaDescription", ideaDescription)
-        formData.append("potential", potential)
-        formData.append("topicName", topicName),
-        // formData.append("topicDescription", topic)
-        // Details of the uploaded file 
-        dispatch(createProfile(formData))
+        formData.append("potentialX", potential.x)
+        formData.append("potentialY", potential.y)
+        formData.append("topicName", topicName)
+        formData.append("topicImage", topic.topicImage)
+        formData.append("topicDescription", topic.topicDescription)
+        console.log(formData)
+        // dispatch(createProfile(formData))
     }
 
     const updateName = (e) => {
@@ -125,7 +128,7 @@ export default function NewIdea() {
                     <div>
                         <Typography variant="h5">Title</Typography>
                         <br />
-                        <TextField variant="outlined" onChange={(e) => setIdeaTitle(e.taget.value)} />
+                        <TextField variant="outlined" onChange={(e) => setIdeaTitle(e.target.value)} />
                     </div>
                     <Potential />
                 </div>
@@ -136,6 +139,7 @@ export default function NewIdea() {
                     setIdeaDescription(e.target.value)}} />
                 <br />
                 <Typography variant="h5">Topic</Typography>
+                <br />
                 <Autocomplete
                     value={value}
                     onChange={autocompleteChange}
@@ -173,10 +177,10 @@ export default function NewIdea() {
                     <TextField {...params} label="Select, search, or create." variant="outlined" />
                     )}
                 />
+                <br />
                 {open &&
                     <NewTopic />
                 }
-                <br />
                 <Button variant="contained" color="primary" onClick={save} >Save</Button>
             </Paper>
         </form>

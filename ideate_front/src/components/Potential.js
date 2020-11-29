@@ -95,12 +95,14 @@ export default function Potential() {
             aria-labelledby="continuous-slider" valueLabelDisplay="auto"
             defaultValue={50} />
             <table className={classes.box}>
-                <tr>
-                    <td /><td />
-                </tr>
-                <tr>
-                    <td> <div className={classes.symbol}>💡</div></td> <td />
-                </tr>
+                <tbody>
+                    <tr>
+                        <td /><td />
+                    </tr>
+                    <tr>
+                        <td> <div className={classes.symbol}>💡</div></td><td />
+                    </tr>
+                </tbody>
             </table>
             <Slider className={classes.xSlider} value={x} 
             onChange={updateX} 

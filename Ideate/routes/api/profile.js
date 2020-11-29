@@ -46,7 +46,10 @@ router.post('/', upload.single('profileImage'), async (req, res) => {
     const fields = req.body
     db.query("SELECT profile_name FROM Profile WHERE profile_name=?;", fields.profileName, (err, result) => {
         if (result.length > 0) {
-            return res.status(400).json({msg: "Sorry, this profile name is taken."})
+            return res.status(400).json({
+                profile_name: fields.profile_name,
+                msg: "Sorry, this profile name is taken."
+            })
         } else {
             console.log(fields)
             const image = getImageBuffer(req.file)
