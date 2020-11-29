@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { Paper, TextareaAutosize, TextField, Typography, Avatar, Button} from '@material-ui/core'
+import React, { useState, useEffect } from 'react'
+import { Paper, TextareaAutosize, TextField, Typography, Button} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector} from "react-redux";
-import { createProfile } from "../actions/profileActions"
+import { createIdea } from "../actions/ideaActions"
 import Potential from './Potential'
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import NewTopic from './NewTopic';
@@ -75,10 +75,10 @@ export default function NewIdea() {
         formData.append("topicImage", topic.topicImage)
         formData.append("topicDescription", topic.topicDescription)
         console.log(formData)
-        // dispatch(createProfile(formData))
+        dispatch(createIdea(formData))
     }
 
-    const updateName = (e) => {
+    const updateTitle = (e) => {
         setIdeaTitle(e.target.value)
     }
     
@@ -86,14 +86,6 @@ export default function NewIdea() {
     const [value, setValue] = React.useState(null);
     const [open, toggleOpen] = React.useState(false);
 
-    const handleClose = () => {
-        toggleOpen(false);
-    };
-
-
-    const handleSubmit = (event) => {
-        handleClose();
-    };
 
     const autocompleteChange = (event, newValue) => {
         toggleOpen(false)
@@ -128,7 +120,7 @@ export default function NewIdea() {
                     <div>
                         <Typography variant="h5">Title</Typography>
                         <br />
-                        <TextField variant="outlined" onChange={(e) => setIdeaTitle(e.target.value)} />
+                        <TextField variant="outlined" onChange={updateTitle} />
                     </div>
                     <Potential />
                 </div>
