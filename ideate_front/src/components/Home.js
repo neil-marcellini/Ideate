@@ -1,10 +1,10 @@
 import React from 'react'
-import CreateProfile from './CreateProfile'
+import Idea from './Idea'
 
 export default function Home() {
     return (
-        <div>
-            <h1>Home</h1>
-        </div>
+        <>
+        <Idea />
+        </>
     )
 }
