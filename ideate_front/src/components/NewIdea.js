@@ -52,69 +52,31 @@ const useStyles = makeStyles({
 })
 
 
-export default function CreateProfile() {
+export default function NewIdea() {
     const classes = useStyles()
-    const [profileName, setProfileName] = useState(null)
-    const [profileBio, setProfileBio] = useState(null)
-    const [avatarSrc, setAvatarSrc] = useState(null)
+    const [ideaTitle, setIdeaTitle] = useState(null)
+    const [ideaDescription, setIdeaDescription] = useState(null)
     const [topicName, setTopicName] = useState(null)
     const dispatch = useDispatch()
-    const [profileImage, setProfileImage] = useState(null);
-    const user_id = useSelector(state => state.auth.user.user_id) 
-    const inputElement = useRef(null);
-    const [photoSizeError, setPhotoSizeError] = useState(null)
-    const MAX_FILE_SIZE = 16000000
-    const profile = useSelector(state => state.profile)
-    const [nameErrorMsg, setNameErrorMsg] = useState(null)
-    const [nameError, setNameError] = useState(false)
     const filter = createFilterOptions();
+    const potential = useSelector(state => state.potential)
     
 
-    useEffect(() => {
-        setNameErrorMsg(profile.msg)
-        setNameError(profile.msg !== null)
-    }, [profile])
-
-
-    const onFileChange = (e) => {
-        if(!e.target.files.length) {
-            setAvatarSrc(null)
-            setProfileImage(null)
-            setPhotoSizeError(null)
-        } else {
-            const file = e.target.files[0]
-            setProfileImage(file)
-            setAvatarSrc(URL.createObjectURL(file))
-            if (file.size > MAX_FILE_SIZE) {
-                setPhotoSizeError("Error: max size 16mb.")
-            } else {
-                setPhotoSizeError(null)
-            }
-        }
-    }
-
-    const onUploadPhoto = () => {
-        inputElement.current.click()
-    }
-
     
-    const upload = () => {
+    const save = () => {
         // Create an object of formData 
         const formData = new FormData();
-        formData.append("profileName", profileName)
-        formData.append("userId", user_id)
-        formData.append("profileImage", profileImage)
-        formData.append("profileBio", profileBio)
-            
+        formData.append("ideaTitle", ideaTitle)
+        formData.append("ideaDescription", ideaDescription)
+        formData.append("potential", potential)
+        formData.append("topicName", topicName),
+        // formData.append("topicDescription", topic)
         // Details of the uploaded file 
-        console.log(profileImage)
         dispatch(createProfile(formData))
     }
 
     const updateName = (e) => {
-        setProfileName(e.target.value)
-        setNameError(false)
-        setNameErrorMsg(null)
+        setIdeaTitle(e.target.value)
     }
     
 
@@ -163,15 +125,15 @@ export default function CreateProfile() {
                     <div>
                         <Typography variant="h5">Title</Typography>
                         <br />
-                        <TextField variant="outlined" />
+                        <TextField variant="outlined" onChange={(e) => setIdeaTitle(e.taget.value)} />
                     </div>
                     <Potential />
                 </div>
-                <Typography variant="h5">Description</Typography>
+                <Typography variant="h5">Idea Description</Typography>
                 <br />
                 <TextareaAutosize style={{width: "100%"}} 
                     aria-label="Bio" rowsMin={10} onChange={(e) => {
-                    setProfileBio(e.target.value)}} />
+                    setIdeaDescription(e.target.value)}} />
                 <br />
                 <Typography variant="h5">Topic</Typography>
                 <Autocomplete
@@ -214,8 +176,8 @@ export default function CreateProfile() {
                 {open &&
                     <NewTopic />
                 }
-
-                <Button variant="contained" color="primary" onClick={upload} disabled={photoSizeError !== null}>Save</Button>
+                <br />
+                <Button variant="contained" color="primary" onClick={save} >Save</Button>
             </Paper>
         </form>
     )
