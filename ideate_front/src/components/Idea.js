@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Paper, TextField, Typography, Button, Chip, IconButton, Avatar} from '@material-ui/core'
 import { AddBox, IndeterminateCheckBox } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
@@ -55,6 +55,15 @@ const useStyles = makeStyles({
 export default function Idea(props) {
     const idea = props.idea
     const classes = useStyles()
+    const [profilePhoto, setProfilePhoto] = useState(null)
+
+    useEffect(() => {
+        const arr = new Uint8Array(idea.profile_photo.data)
+        const file = new File([arr], "profile_photo")
+        const image = URL.createObjectURL(file)
+        setProfilePhoto(image)
+    }, [idea.profile_photo.data])
+
     return (
         <Paper className={classes.paper}>
             <div>
@@ -71,7 +80,7 @@ export default function Idea(props) {
                     </div>
                 </div>
                 <div className={classes.profile}>
-                        <Avatar className={classes.profilePic} variant="rounded" />
+                        <Avatar className={classes.profilePic} variant="rounded" src={profilePhoto} />
                         <Typography className={classes.profileName} variant="subtitle2">{idea.profile_name}</Typography>
                 </div>
                 <p>{idea.iteration_description}</p>

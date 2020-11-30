@@ -66,6 +66,7 @@ router.post('/', upload.single('topicImage'), (req, res) => {
 })
 
 
+
 router.get('/', (req, response) => {
     db.query("SELECT * FROM all_ideas_view", (err, results) => afterAllIdeas(response, err, results))
 })
