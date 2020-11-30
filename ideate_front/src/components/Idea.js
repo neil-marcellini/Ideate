@@ -19,8 +19,8 @@ const useStyles = makeStyles({
         alignItems: "baseline"
     },
     profilePic: {
-        width: "2rem",
-        height: "2rem"
+        width: "3rem",
+        height: "3rem"
     },
     profileName: {
         padding: "0.5rem"
