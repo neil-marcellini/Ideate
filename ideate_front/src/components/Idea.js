@@ -3,6 +3,7 @@ import { Paper, TextField, Typography, Button, Chip, IconButton, Avatar} from '@
 import { AddBox, IndeterminateCheckBox } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
 import Potential from './Potential';
+import AveragePotential from './AveragePotential'
 
 const useStyles = makeStyles({
     paper: {
@@ -42,7 +43,8 @@ const useStyles = makeStyles({
         justifyItems: "center"
     },
     rate: {
-        width: "fit-content"
+        width: "fit-content",
+        height: "fit-content"
     },
     commentBox: {
         width: "50%",
@@ -88,7 +90,7 @@ export default function Idea(props) {
                 <textarea className={classes.commentBox} type="text" placeholder="What are your thoughts?" />
             </div>
             <div className={classes.rightColumn}>
-                <Potential />
+                <AveragePotential x={idea.potential_difficulty} y={idea.potential_brightness}/>
                 <Button className={classes.rate} variant="contained" color="primary">Rate</Button>
             </div>
             
