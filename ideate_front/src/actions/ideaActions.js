@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { IDEA_CREATED, IDEA_FAIL } from './types'
+import { IDEA_CREATED, IDEA_FAIL, IDEAS_FETCHED } from './types'
 
 
 export const createIdea = (formData) => dispatch => {
@@ -18,4 +18,12 @@ export const createIdea = (formData) => dispatch => {
             payload: err.response.data
         })
     })
+}
+
+export const getAllIdeas = () => dispatch => {
+    axios.get('/api/idea')
+        .then(res => dispatch({
+            type: IDEAS_FETCHED,
+            payload: res.data
+        }))
 }

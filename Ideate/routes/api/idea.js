@@ -8,6 +8,7 @@ router.use(bodyParser.urlencoded({
     extended: true
 }))
 
+
 // SET STORAGE
 var storage = multer.diskStorage({
     // destination: function (req, file, cb) {
@@ -63,5 +64,49 @@ router.post('/', upload.single('topicImage'), (req, res) => {
         }
     })
 })
+
+
+router.get('/', (req, response) => {
+    db.query("SELECT * FROM all_ideas_view", (err, results) => afterAllIdeas(response, err, results))
+})
+const afterAllIdeas = (response, err, results) => {
+    if (err) {
+        console.log(Object.keys(err))
+        console.log(err.sqlMessage)
+        console.log("there's an error")
+        return response.status(500).json({
+            msg: "Failure"
+        })
+    } else {
+        var ideas = results
+        db.query("SELECT * FROM latest_iterations_view", (err, results) => afterLatestIterations(response, ideas, err, results))
+    }
+}
+
+const afterLatestIterations = (response, ideas, err, results) => {
+    if (err) {
+        console.log(Object.keys(err))
+        console.log(err.sqlMessage)
+        console.log("there's an error")
+        return response.status(500).json({
+            msg: "Failure"
+        })
+    } else {
+        var full_ideas = []
+        var index
+        for (index = 0; index < results.length; index++) {
+            let full_idea = {
+                ...ideas[index],
+                ...results[index],
+            }
+            full_ideas.push(full_idea)
+        }
+        return response.json({
+            msg: "Success",
+            ideas: full_ideas
+        })
+    }
+}
+
 
 module.exports = router
