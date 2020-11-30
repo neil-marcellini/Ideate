@@ -52,14 +52,15 @@ const useStyles = makeStyles({
     }
 })
 
-export default function Idea() {
+export default function Idea(props) {
+    const idea = props.idea
     const classes = useStyles()
     return (
         <Paper className={classes.paper}>
             <div>
-                <Chip label="Topic" />
+                <Chip label={idea.topic_name} />
                 <div className={classes.HStack}>
-                    <Typography variant="h3">Idea Title</Typography>
+                    <Typography variant="h3">{idea.idea_name}</Typography>
                     <div className={classes.iteration}>
                         <Typography variant="subtitle1">Iteration</Typography>
                         <div>
@@ -71,15 +72,9 @@ export default function Idea() {
                 </div>
                 <div className={classes.profile}>
                         <Avatar className={classes.profilePic} variant="rounded" />
-                        <Typography className={classes.profileName} variant="subtitle2">Profile Name</Typography>
+                        <Typography className={classes.profileName} variant="subtitle2">{idea.profile_name}</Typography>
                 </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed 
-                do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
-                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-                culpa qui officia deserunt mollit anim id est laborum.</p>
+                <p>{idea.iteration_description}</p>
                 <br />
                 <textarea className={classes.commentBox} type="text" placeholder="What are your thoughts?" />
             </div>

@@ -14,7 +14,7 @@ export default function Home() {
     return (
         <>
             {ideas.map((idea) => (
-                <Idea data={idea} />
+                <Idea idea={idea} />
             ))}
         </>
     )
