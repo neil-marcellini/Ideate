@@ -62,14 +62,14 @@ const useStyles = makeStyles({
 })
 
 
-export default function Potential() {
+export default function Potential(props) {
 
     const offset = 8
     
-    const [x, setX] = useState(50)
-    const [y, setY] = useState(50)
-    const props = {x: `${x-offset}%`, y: `${y}%`}
-    const classes = useStyles(props)
+    const [x, setX] = useState(props.x)
+    const [y, setY] = useState(props.x)
+    const style_props = {x: `${x-offset}%`, y: `${y}%`}
+    const classes = useStyles(style_props)
     const dispatch = useDispatch()
     
     const onAnyChange = () => {

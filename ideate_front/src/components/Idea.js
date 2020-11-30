@@ -46,11 +46,17 @@ const useStyles = makeStyles({
         width: "fit-content",
         height: "fit-content"
     },
+    save: {
+        color: "green"
+    },
     commentBox: {
         width: "50%",
         height: "2rem",
         font: "14px Arial",
         padding: "0.5rem"
+    },
+    ratingPotential: {
+        marginRight: "3rem"
     }
 })
 
@@ -58,6 +64,7 @@ export default function Idea(props) {
     const idea = props.idea
     const classes = useStyles()
     const [profilePhoto, setProfilePhoto] = useState(null)
+    const [isRating, setIsRating] = useState(false)
 
     useEffect(() => {
         const arr = new Uint8Array(idea.profile_photo.data)
@@ -65,6 +72,14 @@ export default function Idea(props) {
         const image = URL.createObjectURL(file)
         setProfilePhoto(image)
     }, [idea.profile_photo.data])
+
+    const onRate = () => {
+        setIsRating(true)
+    }
+
+    const onSave = () => {
+        setIsRating(false)
+    }
 
     return (
         <Paper className={classes.paper}>
@@ -90,8 +105,21 @@ export default function Idea(props) {
                 <textarea className={classes.commentBox} type="text" placeholder="What are your thoughts?" />
             </div>
             <div className={classes.rightColumn}>
-                <AveragePotential x={idea.potential_difficulty} y={idea.potential_brightness}/>
-                <Button className={classes.rate} variant="contained" color="primary">Rate</Button>
+                { !isRating &&
+                <>
+                    <AveragePotential x={idea.potential_difficulty} y={idea.potential_brightness}/>
+                    <Button className={classes.rate} variant="contained" 
+                    color="primary" onClick={onRate}>Rate</Button>
+                </>
+                }
+                { isRating &&
+                <>
+                    <Potential className={classes.ratingPotential} x={idea.potential_difficulty} y={idea.potential_brightness}/>
+                    <Button className={classes.save} variant="contained" onClick={onSave}>Save</Button>
+                </>
+                }
+
+                
             </div>
             
         </Paper>

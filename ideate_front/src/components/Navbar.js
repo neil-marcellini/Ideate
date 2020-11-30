@@ -34,13 +34,14 @@ const useStyles = makeStyles({
         }
     },
     
+    logoLink: {
+        textDecoration: "none",
+        color: "white"
+    },
     navName: {
         padding: "0.5rem",
-        fontSize: "300%"
+        fontSize: "300%",
     },
-    a: {
-        
-    }
 });
 
 export default function Navbar() {
@@ -50,7 +51,7 @@ export default function Navbar() {
     
     return (
         <nav className={classes.navbar}>
-            <h1 className={classes.navName}>Ideate</h1>
+            <Link className={classes.logoLink} to="/"><h1 className={classes.navName}>Ideate</h1></Link>
             {isAuthenticated &&
                 <ul className={classes.navLinks}>
                     <li><Link to="/idea" style={{fontSize: "2em", textDecoration: "none", color: "white"}}>Idea</Link></li>

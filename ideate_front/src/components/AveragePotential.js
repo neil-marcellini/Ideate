@@ -57,13 +57,13 @@ const useStyles = makeStyles({
 })
 
 
-export default function Potential(props) {
+export default function AveragePotential(props) {
 
     const offset = 8
     const x = props.x
     const y = props.y
     const style_props = {x: `${x-offset}%`, y: `${y}%`}
-    const classes = useStyles(props)
+    const classes = useStyles(style_props)
 
     return (
         <div className={classes.containerGrid}>
