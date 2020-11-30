@@ -47,7 +47,8 @@ const useStyles = makeStyles({
         height: "fit-content"
     },
     save: {
-        color: "green"
+        color: "green",
+        marginLeft: "2rem"
     },
     commentBox: {
         width: "50%",

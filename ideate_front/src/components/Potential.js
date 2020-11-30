@@ -8,6 +8,7 @@ import { updatePotential } from '../actions/potentialActions'
 const useStyles = makeStyles({
     containerGrid: {
         padding: "1rem",
+        marginRight: "2.7rem",
         width: "fit-content",
         display: "grid",
         gridTemplateColumns: "repeat(2, auto)",
