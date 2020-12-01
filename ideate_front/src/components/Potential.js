@@ -45,20 +45,6 @@ const useStyles = makeStyles({
         position: "absolute",
         left: props => props.x,
         bottom: props => props.y
-    },
-    xSlider: {
-        width: "100px",
-        gridColumn: "2 / 2"
-    },
-    xLabel: {
-        gridColumn: "2 / 2",
-        justifySelf: "center"
-    },
-    ySlider: {
-        justifySelf: "end",
-    },
-    yLabel: {
-        alignSelf: "end"
     }
 })
 
@@ -68,38 +54,11 @@ export default function Potential(props) {
     const offset = 8
     const potential_type = props.type
     
-    const [x, setX] = useState(props.x)
-    const [y, setY] = useState(props.x)
-    const style_props = {x: `${x-offset}%`, y: `${y}%`}
+    const style_props = {x: `${props.x-offset}%`, y: `${props.y}%`}
     const classes = useStyles(style_props)
-    const dispatch = useDispatch()
-    
-    const onAnyChange = () => {
-        if (potential_type === "create"){
-            dispatch(updatePotential({x, y}))
-        } else if (potential_type === "rate"){
-            dispatch(ratePotential({x, y}))
-        }
-    }
-
-    const updateX = (e, newValue) => {
-        setX(newValue)
-        onAnyChange()
-    }
-    const updateY = (e, newValue) => {
-        setY(newValue)
-        onAnyChange()
-    }
-    
 
     return (
-        <div className={classes.containerGrid}>
-            <Typography className={classes.yLabel} variant="subtitle2">Brightness</Typography>
-            <Typography variant="h5">Potential</Typography>
-            <Slider className={classes.ySlider} orientation="vertical" value={y} 
-            onChange={updateY} 
-            aria-labelledby="continuous-slider" valueLabelDisplay="auto"
-            defaultValue={50} />
+        <div >
             <table className={classes.box}>
                 <tbody>
                     <tr>
@@ -110,11 +69,7 @@ export default function Potential(props) {
                     </tr>
                 </tbody>
             </table>
-            <Slider className={classes.xSlider} value={x} 
-            onChange={updateX} 
-            aria-labelledby="continuous-slider" valueLabelDisplay="auto"
-            defaultValue={50} />
-            <Typography className={classes.xLabel} variant="subtitle2">Difficulty</Typography>
+            
         </div>
     )
 }

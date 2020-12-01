@@ -125,6 +125,7 @@ export default function Idea(props) {
                     <AveragePotential x={idea.potential_difficulty} y={idea.potential_brightness}/>
                     <Button className={classes.rate} variant="contained" 
                     color="primary" onClick={onRate}>Rate</Button>
+                    <p>Difficulty={idea.potential_difficulty}, Brightness={idea.potential_brightness}</p>
                 </>
                 }
                 { isRating &&

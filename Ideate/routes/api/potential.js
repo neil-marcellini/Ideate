@@ -31,7 +31,8 @@ const newAveragePotential = (res, iteration_id, err, results) => {
         const potential_data = results[0]
         return res.json({
             iteration_id,
-            ...potential_data
+            potential_difficulty: potential_data.potential_difficulty,
+            potential_brightness: potential_data.potential_brightness
         })
     }
 }

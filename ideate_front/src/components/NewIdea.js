@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Paper, TextareaAutosize, TextField, Typography, Button} from '@material-ui/core'
+import { Paper, TextareaAutosize, TextField, Typography, Button, Slider} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector} from "react-redux";
 import { createIdea } from "../actions/ideaActions"
@@ -49,6 +49,30 @@ const useStyles = makeStyles({
     photoError: {
         color: "red",
         fontSize: "8pt"
+    },
+    potential: {
+        padding: "1rem",
+        marginRight: "2.7rem",
+        width: "fit-content",
+        display: "grid",
+        gridTemplateColumns: "repeat(2, auto)",
+        gridTemplateRows: "repeat(4, auto)",
+        gridColumnGap: "0.5rem",
+        gridRowGap: "0.5rem",
+    },
+    xSlider: {
+        width: "100px",
+        gridColumn: "2 / 2"
+    },
+    xLabel: {
+        gridColumn: "2 / 2",
+        justifySelf: "center"
+    },
+    ySlider: {
+        justifySelf: "end",
+    },
+    yLabel: {
+        alignSelf: "end"
     }
 })
 
@@ -59,9 +83,10 @@ export default function NewIdea() {
     const [ideaDescription, setIdeaDescription] = useState(null)
     const [topicName, setTopicName] = useState(null)
     const [ideaCreated, setIdeaCreated] = useState(false)
+    const [potential_difficulty, setPotentialDifficulty] = useState(50)
+    const [potential_brightness, setPotentialBrightness] = useState(50)
     const dispatch = useDispatch()
     const filter = createFilterOptions();
-    const potential = useSelector(state => state.potential)
     const topic = useSelector(state => state.topic)
     const profileName = useSelector(state => state.profile.profile_name)
     
@@ -72,8 +97,8 @@ export default function NewIdea() {
         const formData = new FormData();
         formData.append("ideaTitle", ideaTitle)
         formData.append("ideaDescription", ideaDescription)
-        formData.append("potentialDifficulty", potential.x)
-        formData.append("potentialBrightness", potential.y)
+        formData.append("potentialDifficulty", potential_difficulty)
+        formData.append("potentialBrightness", potential_brightness)
         formData.append("topicName", topicName)
         formData.append("topicImage", topic.topicImage)
         formData.append("topicDescription", topic.topicDescription)
@@ -84,6 +109,13 @@ export default function NewIdea() {
 
     const updateTitle = (e) => {
         setIdeaTitle(e.target.value)
+    }
+
+    const updateX = (e, newValue) => {
+        setPotentialDifficulty(newValue)
+    }
+    const updateY = (e, newValue) => {
+        setPotentialBrightness(newValue)
     }
     
 
@@ -129,7 +161,20 @@ export default function NewIdea() {
                         <br />
                         <TextField variant="outlined" onChange={updateTitle} />
                     </div>
-                    <Potential x="50" y="50" type="create" />
+                    <div className={classes.potential}>
+                        <Typography className={classes.yLabel} variant="subtitle2">Brightness</Typography>
+                        <Typography variant="h5">Potential</Typography>
+                        <Slider className={classes.ySlider} orientation="vertical" value={potential_brightness} 
+                        onChange={updateY} 
+                        aria-labelledby="continuous-slider" valueLabelDisplay="auto"
+                        defaultValue={50} />
+                        <Potential x={potential_difficulty} y={potential_brightness} type="create" />
+                        <Slider className={classes.xSlider} value={potential_difficulty} 
+                        onChange={updateX} 
+                        aria-labelledby="continuous-slider" valueLabelDisplay="auto"
+                        defaultValue={50} />
+                        <Typography className={classes.xLabel} variant="subtitle2">Difficulty</Typography>
+                    </div>
                 </div>
                 <Typography variant="h5">Idea Description</Typography>
                 <br />
