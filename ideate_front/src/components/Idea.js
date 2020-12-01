@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Paper, TextField, Typography, Button, Chip, IconButton, Avatar} from '@material-ui/core'
-import { AddBox, IndeterminateCheckBox } from '@material-ui/icons'
+import { Paper, Slider, Typography, Button, ButtonGroup, Chip, IconButton, Avatar} from '@material-ui/core'
+import { AddBox, IndeterminateCheckBox, Check, Close } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux'
 import Potential from './Potential';
@@ -60,6 +60,30 @@ const useStyles = makeStyles({
     },
     ratingPotential: {
         marginRight: "3rem"
+    },
+    potential: {
+        padding: "1rem",
+        marginRight: "2.7rem",
+        width: "fit-content",
+        display: "grid",
+        gridTemplateColumns: "repeat(2, auto)",
+        gridTemplateRows: "repeat(4, auto)",
+        gridColumnGap: "0.5rem",
+        gridRowGap: "0.5rem",
+    },
+    xSlider: {
+        width: "100px",
+        gridColumn: "2 / 2"
+    },
+    xLabel: {
+        gridColumn: "2 / 2",
+        justifySelf: "center"
+    },
+    ySlider: {
+        justifySelf: "end",
+    },
+    yLabel: {
+        alignSelf: "end"
     }
 })
 
@@ -68,8 +92,9 @@ export default function Idea(props) {
     const classes = useStyles()
     const [profilePhoto, setProfilePhoto] = useState(null)
     const [isRating, setIsRating] = useState(false)
+    const [potential_difficulty, setPotentialDifficulty] = useState(idea.potential_difficulty)
+    const [potential_brightness, setPotentialBrightness] = useState(idea.potential_brightness)
     const dispatch = useDispatch()
-    const latestPotential = useSelector(state => state.potential)
 
     useEffect(() => {
         const arr = new Uint8Array(idea.profile_photo.data)
@@ -84,16 +109,31 @@ export default function Idea(props) {
 
     const onSave = () => {
         setIsRating(false)
-        if (latestPotential.isRating) {
+        const difficulty_unchanged = potential_difficulty === idea.potential_difficulty
+        const brightness_unchanged = potential_brightness === idea.potential_brightness
+        const unchanged = brightness_unchanged && difficulty_unchanged
+        if (!unchanged) {
             var data = {}
             data.iteration_id = idea.iteration_id
-            data.potential_brightness = latestPotential.y
-            data.potential_difficulty = latestPotential.x
+            data.potential_brightness = potential_brightness
+            data.potential_difficulty = potential_difficulty
             data.profile_name = localStorage.getItem('profile_name')
             console.log("dispatching rating")
             console.log(data)
             dispatch(rate(data))
         }
+    }
+    const onCancel = () => {
+        setIsRating(false)
+        setPotentialDifficulty(idea.potential_difficulty)
+        setPotentialBrightness(idea.potential_brightness)
+    }
+
+    const updateX = (e, newValue) => {
+        setPotentialDifficulty(newValue)
+    }
+    const updateY = (e, newValue) => {
+        setPotentialBrightness(newValue)
     }
 
     return (
@@ -130,13 +170,28 @@ export default function Idea(props) {
                 }
                 { isRating &&
                 <>
-                    <Potential className={classes.ratingPotential} x={idea.potential_difficulty} 
-                    y={idea.potential_brightness} type="rate" />
-                    <Button className={classes.save} variant="contained" onClick={onSave}>Save</Button>
+                    <div className={classes.potential}>
+                        <Typography className={classes.yLabel} variant="subtitle2">Brightness</Typography>
+                        <Typography variant="h5">Potential</Typography>
+                        <Slider className={classes.ySlider} orientation="vertical" value={potential_brightness} 
+                        onChange={updateY} 
+                        aria-labelledby="continuous-slider" valueLabelDisplay="auto"
+                        defaultValue={50} />
+                        <Potential x={potential_difficulty} y={potential_brightness} type="create" />
+                        <Slider className={classes.xSlider} value={potential_difficulty} 
+                        onChange={updateX} 
+                        aria-labelledby="continuous-slider" valueLabelDisplay="auto"
+                        defaultValue={50} />
+                        <Typography className={classes.xLabel} variant="subtitle2">Difficulty</Typography>
+                        <p></p>
+                        <ButtonGroup size="small">
+                            <Button color="secondary" variant="contained" onClick={onCancel}><Close /></Button>
+                            <Button color="primary" variant="contained" onClick={onSave}><Check /></Button>
+                        </ButtonGroup>
+                    </div>
+                    
                 </>
-                }
-
-                
+                }  
             </div>
             
         </Paper>

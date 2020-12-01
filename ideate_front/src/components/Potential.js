@@ -1,21 +1,8 @@
-import React, {useState} from 'react'
-import { Typography, Slider } from '@material-ui/core'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { useDispatch} from "react-redux";
-import { ratePotential, updatePotential } from '../actions/potentialActions'
 
 
 const useStyles = makeStyles({
-    containerGrid: {
-        padding: "1rem",
-        marginRight: "2.7rem",
-        width: "fit-content",
-        display: "grid",
-        gridTemplateColumns: "repeat(2, auto)",
-        gridTemplateRows: "repeat(4, auto)",
-        gridColumnGap: "0.5rem",
-        gridRowGap: "0.5rem",
-    },
     box: {
         boxSizing: "border-box",
         margin: "0",
@@ -58,7 +45,7 @@ export default function Potential(props) {
     const classes = useStyles(style_props)
 
     return (
-        <div >
+        <div>
             <table className={classes.box}>
                 <tbody>
                     <tr>

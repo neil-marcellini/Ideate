@@ -16,8 +16,8 @@ export default function(state = initalState, action) {
             }
         case POTENTIAL_RATED:
             return {
-                x: Math.round(action.payload.x),
-                y: Math.round(action.payload.y),
+                x: action.payload.x,
+                y: action.payload.y,
                 isRating: true
             }
         
