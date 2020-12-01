@@ -3,7 +3,6 @@ const router = express.Router()
 const db = require('../../server')
 
 router.post('/', (req, res) => {
-    console.log("potential backend")
     const data = req.body
     const iteration_id = data.iteration_id
     const values = Object.values(data)

@@ -93,12 +93,26 @@ const afterLatestIterations = (response, ideas, err, results) => {
             msg: "Failure"
         })
     } else {
+        const iterations = results
+        db.query("SELECT * FROM latest_comment_view;", (err, results) => 
+            afterLatestComments(response, ideas, iterations, err, results))
+    }
+}
+
+const afterLatestComments = (response, ideas, iterations, err, results) => {
+    if (err) {
+        console.log(err.sqlMessage)
+        return response.status(500).json({
+            msg: "Failure afterLatestComments"
+        })
+    } else {
         var full_ideas = []
         var index
         for (index = 0; index < results.length; index++) {
             let full_idea = {
                 ...ideas[index],
-                ...results[index],
+                ...iterations[index],
+                comments: [results[index]]
             }
             full_ideas.push(full_idea)
         }

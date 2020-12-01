@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux'
 import Potential from './Potential';
 import AveragePotential from './AveragePotential'
-import { rate } from '../actions/ideaActions'
+import { rate, addComment } from '../actions/ideaActions'
 
 const useStyles = makeStyles({
     paper: {
@@ -95,6 +95,7 @@ export default function Idea(props) {
     const [potential_difficulty, setPotentialDifficulty] = useState(idea.potential_difficulty)
     const [potential_brightness, setPotentialBrightness] = useState(idea.potential_brightness)
     const [comment, setComment] = useState("")
+    const commentBox = useRef(null)
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -140,13 +141,14 @@ export default function Idea(props) {
     }
 
     const onComment = () => {
-        setComment(null)
+        setComment("")
+        commentBox.current.value = ""
         const data = {
-            comment,
             iteration_id: idea.iteration_id,
-            profile_name: localStorage.getItem("profile_name")
+            profile_name: localStorage.getItem("profile_name"),
+            comment
         }
-        // dispatch(addComment(data))
+        dispatch(addComment(data))
     }
 
     return (
@@ -170,7 +172,7 @@ export default function Idea(props) {
                 </div>
                 <p>{idea.iteration_description}</p>
                 <br />
-                <textarea className={classes.commentBox} type="text" 
+                <textarea className={classes.commentBox} type="text" ref={commentBox}
                     placeholder="What are your thoughts?" onChange={(e) => setComment(e.target.value)} />
                 <br />
                 <br />

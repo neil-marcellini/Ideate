@@ -29,6 +29,7 @@ app.use('/api/auth', require('./routes/api/auth'))
 app.use('/api/profile', require('./routes/api/profile'))
 app.use('/api/idea', require('./routes/api/idea'))
 app.use('/api/potential', require('./routes/api/potential'))
+app.use('/api/comment', require('./routes/api/comment'))
 
 app.use(morgan('combined'))
 

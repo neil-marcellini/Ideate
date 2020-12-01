@@ -1,4 +1,4 @@
-import {IDEA_CREATED, IDEA_FAIL, IDEAS_FETCHED, IDEA_ITERATION_RATED} from '../actions/types'
+import {IDEA_CREATED, IDEA_FAIL, IDEAS_FETCHED, IDEA_ITERATION_RATED, IDEA_COMMENT_ADDED} from '../actions/types'
 
 const initalState = {
     msg: null,
@@ -39,6 +39,10 @@ export default function(state = initalState, action) {
             return {
                 msg: action.payload.msg,
                 ideas: new_ideas
+            }
+        case IDEA_COMMENT_ADDED:
+            return {
+                ...state
             }
 
         default:
