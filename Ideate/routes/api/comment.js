@@ -14,9 +14,13 @@ router.post('/', (req, res) => {
                 msg: "Failure addComment"
             })
         } else {
+            const comment = results[0][0]
+            // rename profile_name to comment_profile_name
+            comment.comment_profile_name = comment.profile_name;
+            delete comment.profile_name
             return res.json({
                 msg: "Comment successfully added.",
-                ...data
+                comment
             })
         }
     })

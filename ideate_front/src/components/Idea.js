@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import Potential from './Potential';
 import AveragePotential from './AveragePotential'
 import { rate, addComment } from '../actions/ideaActions'
+import Comment from './Comment'
 
 const useStyles = makeStyles({
     paper: {
@@ -84,6 +85,10 @@ const useStyles = makeStyles({
     },
     yLabel: {
         alignSelf: "end"
+    },
+    seeMore: {
+        textDecoration: "underline",
+        color: "blue"
     }
 })
 
@@ -171,6 +176,13 @@ export default function Idea(props) {
                         <Typography className={classes.profileName} variant="subtitle2">{idea.profile_name}</Typography>
                 </div>
                 <p>{idea.iteration_description}</p>
+                <br />
+                <hr />
+                <Typography variant="subtitle2">Comments</Typography>
+                {idea.comments.map((comment) => (
+                <Comment key={comment.comment_id} comment={comment} />
+                ))}
+                <div className={classes.seeMore}>See More</div>
                 <br />
                 <textarea className={classes.commentBox} type="text" ref={commentBox}
                     placeholder="What are your thoughts?" onChange={(e) => setComment(e.target.value)} />
