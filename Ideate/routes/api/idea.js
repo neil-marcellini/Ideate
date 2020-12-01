@@ -48,7 +48,7 @@ router.post('/', upload.single('topicImage'), (req, res) => {
         fields.topicDescription,
         fields.profileName
     ]
-    db.query("CALL sp_create_idea(?, ?, ?, ?, ?, ?, ?, ?)", values, (err, results) => {
+    db.query("CALL sp_create_idea(?, ?, ?, ?, ?, ?, ?, ?);", values, (err, results) => {
         if (err) {
             console.log(Object.keys(err))
             console.log(err.sqlMessage)
@@ -68,7 +68,7 @@ router.post('/', upload.single('topicImage'), (req, res) => {
 
 
 router.get('/', (req, response) => {
-    db.query("SELECT * FROM all_ideas_view", (err, results) => afterAllIdeas(response, err, results))
+    db.query("SELECT * FROM all_ideas_view;", (err, results) => afterAllIdeas(response, err, results))
 })
 const afterAllIdeas = (response, err, results) => {
     if (err) {
@@ -80,7 +80,7 @@ const afterAllIdeas = (response, err, results) => {
         })
     } else {
         var ideas = results
-        db.query("SELECT * FROM latest_iterations_view", (err, results) => afterLatestIterations(response, ideas, err, results))
+        db.query("SELECT * FROM latest_iterations_view;", (err, results) => afterLatestIterations(response, ideas, err, results))
     }
 }
 

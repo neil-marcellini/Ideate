@@ -30,6 +30,11 @@ const useStyles = makeStyles({
             borderCollapse: "collapse"
         }
     },
+    HStack: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center"
+    },
     symbol: {
         boxSizing: "border-box",
         margin: "0",
@@ -53,6 +58,14 @@ const useStyles = makeStyles({
     },
     yLabel: {
         alignSelf: "end"
+    },
+    easyLabel: {
+        paddingRight: "0.5rem",
+        width: "65.03px",
+        textAlign: "right"
+    },
+    difficultLabel: {
+        paddingLeft: "0.5rem"
     }
 })
 
@@ -68,16 +81,22 @@ export default function AveragePotential(props) {
     return (
         <div className={classes.containerGrid}>
             <Typography variant="h5">Average Potential</Typography>
-            <table className={classes.box}>
-                <tbody>
-                    <tr>
-                        <td /><td />
-                    </tr>
-                    <tr>
-                        <td> <div className={classes.symbol}>💡</div></td><td />
-                    </tr>
-                </tbody>
-            </table>
+            <Typography variant="subtitle1">Bright</Typography>
+            <div className={classes.HStack}>
+                <Typography className={classes.easyLabel} variant="subtitle1">Easy</Typography>
+                <table className={classes.box}>
+                    <tbody>
+                        <tr>
+                            <td /><td />
+                        </tr>
+                        <tr>
+                            <td> <div className={classes.symbol}>💡</div></td><td />
+                        </tr>
+                    </tbody>
+                </table>
+                <Typography className={classes.difficultLabel} variant="subtitle1">Difficult</Typography>
+            </div>
+            <Typography variant="subtitle1">Dim</Typography>
         </div>
     )
 }

@@ -129,7 +129,7 @@ export default function NewIdea() {
                         <br />
                         <TextField variant="outlined" onChange={updateTitle} />
                     </div>
-                    <Potential x="50" y="50" />
+                    <Potential x="50" y="50" type="create" />
                 </div>
                 <Typography variant="h5">Idea Description</Typography>
                 <br />

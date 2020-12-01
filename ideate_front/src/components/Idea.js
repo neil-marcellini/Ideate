@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { Paper, TextField, Typography, Button, Chip, IconButton, Avatar} from '@material-ui/core'
 import { AddBox, IndeterminateCheckBox } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux'
 import Potential from './Potential';
 import AveragePotential from './AveragePotential'
+import { rate } from '../actions/ideaActions'
 
 const useStyles = makeStyles({
     paper: {
@@ -66,6 +68,8 @@ export default function Idea(props) {
     const classes = useStyles()
     const [profilePhoto, setProfilePhoto] = useState(null)
     const [isRating, setIsRating] = useState(false)
+    const dispatch = useDispatch()
+    const latestPotential = useSelector(state => state.potential)
 
     useEffect(() => {
         const arr = new Uint8Array(idea.profile_photo.data)
@@ -80,6 +84,16 @@ export default function Idea(props) {
 
     const onSave = () => {
         setIsRating(false)
+        if (latestPotential.isRating) {
+            var data = {}
+            data.iteration_id = idea.iteration_id
+            data.potential_brightness = latestPotential.y
+            data.potential_difficulty = latestPotential.x
+            data.profile_name = localStorage.getItem('profile_name')
+            console.log("dispatching rating")
+            console.log(data)
+            dispatch(rate(data))
+        }
     }
 
     return (
@@ -115,7 +129,8 @@ export default function Idea(props) {
                 }
                 { isRating &&
                 <>
-                    <Potential className={classes.ratingPotential} x={idea.potential_difficulty} y={idea.potential_brightness}/>
+                    <Potential className={classes.ratingPotential} x={idea.potential_difficulty} 
+                    y={idea.potential_brightness} type="rate" />
                     <Button className={classes.save} variant="contained" onClick={onSave}>Save</Button>
                 </>
                 }

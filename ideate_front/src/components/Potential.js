@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { Typography, Slider } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch} from "react-redux";
-import { updatePotential } from '../actions/potentialActions'
+import { ratePotential, updatePotential } from '../actions/potentialActions'
 
 
 const useStyles = makeStyles({
@@ -66,6 +66,7 @@ const useStyles = makeStyles({
 export default function Potential(props) {
 
     const offset = 8
+    const potential_type = props.type
     
     const [x, setX] = useState(props.x)
     const [y, setY] = useState(props.x)
@@ -74,7 +75,11 @@ export default function Potential(props) {
     const dispatch = useDispatch()
     
     const onAnyChange = () => {
-        dispatch(updatePotential({x, y}))
+        if (potential_type === "create"){
+            dispatch(updatePotential({x, y}))
+        } else if (potential_type === "rate"){
+            dispatch(ratePotential({x, y}))
+        }
     }
 
     const updateX = (e, newValue) => {

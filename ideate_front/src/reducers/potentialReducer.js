@@ -1,9 +1,9 @@
-import {POTENTIAL_UPDATED} from '../actions/types'
+import {POTENTIAL_UPDATED, POTENTIAL_RATED} from '../actions/types'
 
 const initalState = {
-    "x": 50,
-    "y": 50
-    
+    x: 50,
+    y: 50,
+    isRating: false   
 }
 
 export default function(state = initalState, action) {
@@ -12,7 +12,15 @@ export default function(state = initalState, action) {
             return {
                 x: action.payload.x,
                 y: action.payload.y,
+                isRating: false
             }
+        case POTENTIAL_RATED:
+            return {
+                x: action.payload.x,
+                y: action.payload.y,
+                isRating: true
+            }
+        
         default:
             return state
     }
