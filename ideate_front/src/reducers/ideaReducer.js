@@ -21,6 +21,7 @@ export default function(state = initalState, action) {
             }
         case IDEA_ITERATION_RATED:
             // find idea with matching iteration_id
+            console.log(action.payload)
             const iteration_id = action.payload.iteration_id
             var i
             for (i = 0; i < state.ideas.length; i++) {
@@ -29,6 +30,7 @@ export default function(state = initalState, action) {
                     break
                 }
             }
+            // replace idea with updated potential data
             var replace_idea = state.ideas[i]
             replace_idea.potential_brightness = action.payload.potential_brightness
             replace_idea.potential_difficulty = action.payload.potential_difficulty

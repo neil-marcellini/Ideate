@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Paper, Slider, Typography, Button, ButtonGroup, Chip, IconButton, Avatar} from '@material-ui/core'
 import { AddBox, IndeterminateCheckBox, Check, Close } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Potential from './Potential';
 import AveragePotential from './AveragePotential'
 import { rate } from '../actions/ideaActions'
@@ -105,6 +105,8 @@ export default function Idea(props) {
 
     const onRate = () => {
         setIsRating(true)
+        setPotentialDifficulty(idea.potential_difficulty)
+        setPotentialBrightness(idea.potential_brightness)
     }
 
     const onSave = () => {
@@ -165,7 +167,6 @@ export default function Idea(props) {
                     <AveragePotential x={idea.potential_difficulty} y={idea.potential_brightness}/>
                     <Button className={classes.rate} variant="contained" 
                     color="primary" onClick={onRate}>Rate</Button>
-                    <p>Difficulty={idea.potential_difficulty}, Brightness={idea.potential_brightness}</p>
                 </>
                 }
                 { isRating &&
@@ -177,7 +178,7 @@ export default function Idea(props) {
                         onChange={updateY} 
                         aria-labelledby="continuous-slider" valueLabelDisplay="auto"
                         defaultValue={50} />
-                        <Potential x={potential_difficulty} y={potential_brightness} type="create" />
+                        <Potential x={idea.potential_difficulty} y={idea.potential_brightness} type="create" />
                         <Slider className={classes.xSlider} value={potential_difficulty} 
                         onChange={updateX} 
                         aria-labelledby="continuous-slider" valueLabelDisplay="auto"

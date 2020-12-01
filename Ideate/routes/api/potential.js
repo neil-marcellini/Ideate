@@ -28,7 +28,8 @@ const newAveragePotential = (res, iteration_id, err, results) => {
             msg: "Failure newAveragePotential"
         })
     } else {
-        const potential_data = results[0]
+        const potential_row = results[0]
+        const potential_data = potential_row[0]
         return res.json({
             iteration_id,
             potential_difficulty: potential_data.potential_difficulty,
