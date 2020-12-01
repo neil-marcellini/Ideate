@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { Paper, Slider, Typography, Button, ButtonGroup, Chip, IconButton, Avatar} from '@material-ui/core'
-import { AddBox, IndeterminateCheckBox, Check, Close } from '@material-ui/icons'
+import React, { useState, useEffect, useRef } from 'react'
+import { Paper, Slider, Typography, IconButton, Button, ButtonGroup, Chip, Avatar} from '@material-ui/core'
+import { AddBox, IndeterminateCheckBox, Check, Close, Send } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux'
 import Potential from './Potential';
@@ -54,7 +54,7 @@ const useStyles = makeStyles({
     },
     commentBox: {
         width: "50%",
-        height: "2rem",
+        height: "3rem",
         font: "14px Arial",
         padding: "0.5rem"
     },
@@ -94,6 +94,7 @@ export default function Idea(props) {
     const [isRating, setIsRating] = useState(false)
     const [potential_difficulty, setPotentialDifficulty] = useState(idea.potential_difficulty)
     const [potential_brightness, setPotentialBrightness] = useState(idea.potential_brightness)
+    const [comment, setComment] = useState("")
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -138,6 +139,16 @@ export default function Idea(props) {
         setPotentialBrightness(newValue)
     }
 
+    const onComment = () => {
+        setComment(null)
+        const data = {
+            comment,
+            iteration_id: idea.iteration_id,
+            profile_name: localStorage.getItem("profile_name")
+        }
+        // dispatch(addComment(data))
+    }
+
     return (
         <Paper className={classes.paper}>
             <div>
@@ -159,7 +170,12 @@ export default function Idea(props) {
                 </div>
                 <p>{idea.iteration_description}</p>
                 <br />
-                <textarea className={classes.commentBox} type="text" placeholder="What are your thoughts?" />
+                <textarea className={classes.commentBox} type="text" 
+                    placeholder="What are your thoughts?" onChange={(e) => setComment(e.target.value)} />
+                <br />
+                <br />
+                <Button variant="contained" color="secondary" 
+                disabled={comment === ""} endIcon={<Send />} onClick={onComment}>Comment</Button>
             </div>
             <div className={classes.rightColumn}>
                 { !isRating &&
