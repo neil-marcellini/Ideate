@@ -8,9 +8,6 @@ const initalState = {
 export default function(state = initalState, action) {
     switch(action.type) {
         case ALL_TOPICS_LOADED:
-            console.log("allTopics reducer")
-            console.log(action.payload)
-
             return {
                 msg: action.payload.msg,
                 topics: action.payload.topics

@@ -11,7 +11,6 @@ router.get('/', (req, res) => {
                 msg: "Failure all topics"
             })
         } else {
-            console.log(results)
             return res.json({
                 msg: "All topics fetched.",
                 topics: results
