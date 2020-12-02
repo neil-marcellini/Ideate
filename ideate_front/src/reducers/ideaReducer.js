@@ -75,10 +75,7 @@ export default function(state = initalState, action) {
             }
         case IDEA_ALL_COMMENTS:
             const iteration_comments = action.payload.comments
-            console.log("idea all comments reducer")
-            console.log(action.payload.iteration_id)
             const iac_iteration_id = parseInt(action.payload.iteration_id)
-            console.log(iac_iteration_id)
             // find idea with matching iteration_id
             const comment_iteration_i = ideaWithIteration(iac_iteration_id, state)
             var more_comments_idea = state.ideas[comment_iteration_i]
