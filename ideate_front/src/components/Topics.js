@@ -12,6 +12,13 @@ const useStyles = makeStyles({
         height: "100vh",
         display: "grid",
         placeItems: "center"
+    },
+    topicsGrid: {
+        padding: "2rem",
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(500px, 1fr))",
+        gridGap: "1rem",
+        justifyItems: "center"
     }
 })
 
@@ -40,9 +47,11 @@ export default function Topics() {
                 <CircularProgress />
             </div>
             }
-            {topics.map((topic) => (
-                <Topic key={topic.topic_id} topic={topic} />
-            ))}
+            <div className={classes.topicsGrid}>
+                {topics.map((topic) => (
+                    <Topic key={topic.topic_id} topic={topic} />
+                ))}
+            </div>
         </>
     )
 }

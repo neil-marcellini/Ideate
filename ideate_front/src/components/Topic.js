@@ -5,12 +5,22 @@ import { Paper, Typography, Chip, Avatar} from '@material-ui/core'
 
 const useStyles = makeStyles({
     container: {
+        padding: "1rem",
         display: "grid",
-        placeItems: "center"
+        gridTemplateRows: "auto auto auto",
+        gridRowGap: "0.5rem",
+        justifyItems: "center",
+        width: "fit-content",
+        height: "fit-content"
     },
     photo: {
-        width: "5rem",
-        height: "5rem"
+        width: "10rem",
+        height: "10rem"
+    },
+    description: {
+        width: "80%",
+        height: "5rem",
+        overflow: "scroll"
     }
 })
 
@@ -30,9 +40,12 @@ export default function Topic(props) {
 
     return (
         <Paper className={classes.container}>
-            <Typography variant="h3">{topic.topic_name}</Typography>
-            <Avatar className={classes.photo} src={topicPhoto}/>
-            <p>{topic.topic_description}</p>
+            <Chip label={topic.topic_name} size="large"/>
+            <Avatar className={classes.photo} src={topicPhoto} variant="rounded"/>
+            <div className={classes.description}>
+                <Typography variant="subtitle2"><b>Description:</b></Typography>
+                <p>{topic.topic_description}</p>
+            </div>
         </Paper>
     )
 }
