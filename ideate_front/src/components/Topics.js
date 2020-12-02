@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     topicsGrid: {
         padding: "2rem",
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(500px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
         gridGap: "1rem",
         justifyItems: "center"
     },

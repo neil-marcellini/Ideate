@@ -72,6 +72,12 @@ const useStyles = makeStyles({
         gridColumnGap: "0.5rem",
         gridRowGap: "0.5rem",
     },
+    ratingContainer: {
+        width: "fit-content",
+        height: "fit-content",
+        display: "grid",
+        placeItems: "center"
+    },
     xSlider: {
         width: "100px",
         gridColumn: "2 / 2"
@@ -206,6 +212,7 @@ export default function Idea(props) {
                 disabled={comment === ""} endIcon={<Send />} onClick={onComment}>Comment</Button>
             </div>
             <div className={classes.rightColumn}>
+                <div className={classes.ratingContainer}>
                 { !isRating &&
                 <>
                     <AveragePotential x={idea.potential_difficulty} y={idea.potential_brightness}/>
@@ -236,7 +243,9 @@ export default function Idea(props) {
                     </div>
                     
                 </>
-                }  
+                }
+                </div>
+
             </div>
             
         </Paper>
