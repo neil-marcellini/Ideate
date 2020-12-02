@@ -5,7 +5,8 @@ import {
     IDEAS_FETCHED,
     IDEA_ITERATION_RATED, 
     IDEA_COMMENT_ADDED,
-    IDEA_ALL_COMMENTS
+    IDEA_ALL_COMMENTS,
+    IDEA_SEE_LESS
 } from './types'
 
 
@@ -57,6 +58,13 @@ export const seeMore = (iteration_id) => dispatch => {
             type: IDEA_ALL_COMMENTS,
             payload: res.data
         }))
+}
+
+export const seeLess = (idea) => dispatch => {
+    dispatch({
+        type: IDEA_SEE_LESS,
+        payload: idea
+    })
 }
 
 

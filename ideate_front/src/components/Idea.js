@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux'
 import Potential from './Potential';
 import AveragePotential from './AveragePotential'
-import { rate, addComment, seeMore } from '../actions/ideaActions'
+import { rate, addComment, seeMore, seeLess } from '../actions/ideaActions'
 import Comment from './Comment'
 
 const useStyles = makeStyles({
@@ -102,6 +102,7 @@ export default function Idea(props) {
     const [comment, setComment] = useState("")
     const commentBox = useRef(null)
     const dispatch = useDispatch()
+    const showSeeLess = idea.comments.length > 1
 
     useEffect(() => {
         const arr = new Uint8Array(idea.profile_photo.data)
@@ -160,6 +161,10 @@ export default function Idea(props) {
         dispatch(seeMore(idea.iteration_id))
     }
 
+    const onSeeLess = () => {
+        dispatch(seeLess(idea))
+    }
+
     return (
         <Paper className={classes.paper}>
             <div>
@@ -186,7 +191,12 @@ export default function Idea(props) {
                 {idea.comments.map((comment) => (
                 <Comment key={comment.comment_id} comment={comment} />
                 ))}
+                {!showSeeLess &&
                 <Button className={classes.seeMore} onClick={onSeeMore}>See More</Button>
+                }
+                {showSeeLess &&
+                <Button className={classes.seeMore} onClick={onSeeLess}>See Less</Button>
+                }
                 <br />
                 <textarea className={classes.commentBox} type="text" ref={commentBox}
                     placeholder="What are your thoughts?" onChange={(e) => setComment(e.target.value)} />

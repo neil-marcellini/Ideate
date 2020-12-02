@@ -4,7 +4,8 @@ import {
     IDEAS_FETCHED, 
     IDEA_ITERATION_RATED, 
     IDEA_COMMENT_ADDED,
-    IDEA_ALL_COMMENTS
+    IDEA_ALL_COMMENTS,
+    IDEA_SEE_LESS
 } from '../actions/types'
 
 const initalState = {
@@ -85,6 +86,17 @@ export default function(state = initalState, action) {
             return {
                 msg: action.payload.msg,
                 ideas: updated_ideas
+            }
+        case IDEA_SEE_LESS:
+            console.log(action.payload)
+            const see_less_i = ideaWithIteration(action.payload.iteration_id, state)
+            var see_less_idea = state.ideas[see_less_i]
+            var old_comments = see_less_idea.comments
+            see_less_idea.comments = [old_comments.pop()]
+            const less_idea_comments = getNewIdeas(see_less_idea, see_less_i, state)
+            return {
+                msg: "see less comments on idea",
+                ideas: less_idea_comments
             }
         default:
             return state
