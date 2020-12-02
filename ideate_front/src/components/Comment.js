@@ -15,7 +15,6 @@ export default function Comment(props) {
     var datetime = comment.comment_creation
     // Split timestamp into [ Y, M, D, h, m, s ]
     var t = datetime.split(/[- : T .]/);
-    console.log(t)
 
     let year = parseInt(t[0])
     let month = parseInt(t[1]-1)
@@ -27,24 +26,10 @@ export default function Comment(props) {
 
     // Apply each element to the Date function
     var utc_date = new Date(Date.UTC(year, month, day, hour, minute, second));
-    // let local_string = utc_date.toString()
-    // console.log(local_string)
-    // let date = new Date(local_string)
-
-    // let diff = utc_date.getTimezoneOffset()
-    // console.log("time zone offset")
-    // console.log(diff)
-
-    // const timeDisplay = utc_date.toLocaleTimeString("en-US", { 
-    //     timeZone: "America/Los_Angeles"  
-    // }); 
-    // const dateDisplay = utc_date.toLocaleDateString("en-US", { 
-    //     timeZone: "America/Los_Angeles"  
-    // }); 
 
     utc_date.setHours(utc_date.getHours() - 8)
-    let dateDisplay = utc_date.toDateString()
-    let timeDisplay = utc_date.toTimeString()
+    let dateDisplay = utc_date.toLocaleDateString()
+    let timeDisplay = utc_date.toLocaleTimeString()
 
     return (
         <div className={classes.container}>
