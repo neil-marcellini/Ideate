@@ -4,6 +4,7 @@ import { getAllTopics } from '../actions/allTopicActions'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Topic from './Topic'
+import {Link} from 'react-router-dom'
 
 
 const useStyles = makeStyles({
@@ -19,6 +20,9 @@ const useStyles = makeStyles({
         gridTemplateColumns: "repeat(auto-fill, minmax(500px, 1fr))",
         gridGap: "1rem",
         justifyItems: "center"
+    },
+    link: {
+        textDecoration: "none"
     }
 })
 
@@ -49,7 +53,9 @@ export default function Topics() {
             }
             <div className={classes.topicsGrid}>
                 {topics.map((topic) => (
-                    <Topic key={topic.topic_id} topic={topic} />
+                    <Link className={classes.link} to={`/topic/${topic.topic_id}`}>
+                        <Topic key={topic.topic_id} topic={topic} />
+                    </Link>    
                 ))}
             </div>
         </>

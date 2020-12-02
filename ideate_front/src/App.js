@@ -12,6 +12,7 @@ import Home from './components/Home'
 import CreateProfile from './components/CreateProfile'
 import NewIdea from './components/NewIdea'
 import Topics from './components/Topics'
+import TopicPage from './components/TopicPage'
 
 
 
@@ -37,7 +38,8 @@ function App() {
       <Redirect from="/signup" to="/createprofile" />
       <Route exact path="/createprofile" component={CreateProfile} />
       <Route path="/idea" component={NewIdea} />
-      <Route path="/topic" component={Topics} />
+      <Route exact path="/topic" component={Topics} />
+      <Route path="topic/:topic_id" component={TopicPage} />
     </>
   )
 
