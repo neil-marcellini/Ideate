@@ -53,9 +53,12 @@ export default function Topics() {
             }
             <div className={classes.topicsGrid}>
                 {topics.map((topic) => (
-                    <Link className={classes.link} to={`/topic/${topic.topic_id}`}>
-                        <Topic key={topic.topic_id} topic={topic} />
-                    </Link>    
+                    <div key={topic.topic_id}>
+                        <Link className={classes.link} to={`/topic/${topic.topic_id}`}>
+                            <Topic topic={topic} />
+                        </Link>  
+                    </div>   
+                      
                 ))}
             </div>
         </>

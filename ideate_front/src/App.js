@@ -39,7 +39,7 @@ function App() {
       <Route exact path="/createprofile" component={CreateProfile} />
       <Route path="/idea" component={NewIdea} />
       <Route exact path="/topic" component={Topics} />
-      <Route path="topic/:topic_id" component={TopicPage} />
+      <Route path="/topic/:topic_id" component={TopicPage} />
     </>
   )
 

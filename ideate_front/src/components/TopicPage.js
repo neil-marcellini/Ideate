@@ -4,14 +4,15 @@ export default function TopicPage(props) {
     const [topicId, setTopicId] = useState(null)
 
     useEffect(() => {
-        const { match: { params } } = props
-        setTopicId(params)
+        console.log(props)
+        setTopicId(props.match.params.topic_id)
     }, [])
 
 
     return (
         <div>
-            <p> {topicId} </p>
+            <h1> Topic page</h1>
+            <p>{topicId}</p>
         </div>
     )
 }

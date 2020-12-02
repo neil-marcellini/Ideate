@@ -40,7 +40,7 @@ export default function Topic(props) {
 
     return (
         <Paper className={classes.container}>
-            <Chip label={topic.topic_name} size="large"/>
+            <Chip label={topic.topic_name}/>
             <Avatar className={classes.photo} src={topicPhoto} variant="rounded"/>
             <div className={classes.description}>
                 <Typography variant="subtitle2"><b>Description:</b></Typography>
