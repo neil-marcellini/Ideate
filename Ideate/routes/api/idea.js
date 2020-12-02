@@ -124,4 +124,73 @@ const afterLatestComments = (response, ideas, iterations, err, results) => {
 }
 
 
+
+
+// /api/idea/topic/:topic_id
+
+router.get('/topic/:topic_id', (req, response) => {
+    const topic_id = req.params.topic_id
+    db.query("CALL sp_topic_ideas(?);", topic_id, (err, results) => afterTopicIdeas(response, topic_id, err, results))
+})
+const afterTopicIdeas = (response, topic_id, err, results) => {
+    if (err) {
+        console.log(Object.keys(err))
+        console.log(err.sqlMessage)
+        console.log("there's an error")
+        return response.status(500).json({
+            msg: "Failure"
+        })
+    } else {
+        var ideas = results[0]
+        console.log("topic ideas")
+        console.log(ideas)
+        db.query("CALL sp_latest_topic_iterations(?);", topic_id, (err, results) => afterLatestTopicIterations(response, topic_id, ideas, err, results))
+    }
+}
+
+const afterLatestTopicIterations = (response, topic_id, ideas, err, results) => {
+    if (err) {
+        console.log(Object.keys(err))
+        console.log(err.sqlMessage)
+        console.log("there's an error")
+        return response.status(500).json({
+            msg: "Failure"
+        })
+    } else {
+        const iterations = results[0]
+        console.log("topic iterations")
+        console.log(iterations)
+        db.query("CALL sp_latest_topic_comments(?);", topic_id, (err, results) => 
+            afterLatestTopicComments(response, ideas, iterations, err, results))
+    }
+}
+
+const afterLatestTopicComments = (response, ideas, iterations, err, results) => {
+    if (err) {
+        console.log(err.sqlMessage)
+        return response.status(500).json({
+            msg: "Failure afterLatestComments"
+        })
+    } else {
+        console.log("topic comments")
+        const comments = results[0]
+        console.log(comments)
+        var full_ideas = []
+        var index
+        for (index = 0; index < comments.length; index++) {
+            let full_idea = {
+                ...ideas[index],
+                ...iterations[index],
+                comments: [comments[index]]
+            }
+            full_ideas.push(full_idea)
+        }
+        return response.json({
+            msg: "Successful topic ideas",
+            ideas: full_ideas
+        })
+    }
+}
+
+
 module.exports = router

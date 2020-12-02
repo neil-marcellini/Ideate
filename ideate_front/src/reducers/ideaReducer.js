@@ -5,7 +5,9 @@ import {
     IDEA_ITERATION_RATED, 
     IDEA_COMMENT_ADDED,
     IDEA_ALL_COMMENTS,
-    IDEA_SEE_LESS
+    IDEA_SEE_LESS,
+    IDEAS_FOR_TOPIC,
+    IDEAS_CLEARED
 } from '../actions/types'
 
 const initalState = {
@@ -98,7 +100,18 @@ export default function(state = initalState, action) {
                 msg: "see less comments on idea",
                 ideas: less_idea_comments
             }
+        case IDEAS_FOR_TOPIC:
+            return {
+                msg: action.payload.msg,
+                ideas: action.payload.ideas
+            }
+        case IDEAS_CLEARED:
+            return {
+                msg: "Ideas cleared",
+                ideas: []
+            }
         default:
             return state
     }
 }
+

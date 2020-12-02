@@ -6,7 +6,9 @@ import {
     IDEA_ITERATION_RATED, 
     IDEA_COMMENT_ADDED,
     IDEA_ALL_COMMENTS,
-    IDEA_SEE_LESS
+    IDEA_SEE_LESS,
+    IDEAS_FOR_TOPIC,
+    IDEAS_CLEARED
 } from './types'
 
 
@@ -64,6 +66,20 @@ export const seeLess = (idea) => dispatch => {
     dispatch({
         type: IDEA_SEE_LESS,
         payload: idea
+    })
+}
+
+export const getTopicIdeas = (topic_id) => dispatch => {
+    axios.get(`/api/idea/topic/${topic_id}`)
+        .then(res => dispatch({
+            type: IDEAS_FOR_TOPIC,
+            payload: res.data
+        }))
+}
+
+export const clearIdeas = () => dispatch => {
+    dispatch({
+        type: IDEAS_CLEARED
     })
 }
 

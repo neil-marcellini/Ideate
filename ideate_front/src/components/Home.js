@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Idea from './Idea'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllIdeas } from '../actions/ideaActions'
+import { getAllIdeas, clearIdeas } from '../actions/ideaActions'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -22,6 +22,9 @@ export default function Home() {
 
     useEffect(() => {
         dispatch(getAllIdeas())
+        return () => {
+            dispatch(clearIdeas())
+        }
     }, [])
 
     useEffect(() => {

@@ -63,7 +63,6 @@ router.get('/user', auth, (req, res) => {
             console.log(err)
             return res.status(401)
         }
-        console.log(result)
         return res.json(result[0])
     })
 })
