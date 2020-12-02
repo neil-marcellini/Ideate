@@ -30,6 +30,8 @@ app.use('/api/profile', require('./routes/api/profile'))
 app.use('/api/idea', require('./routes/api/idea'))
 app.use('/api/potential', require('./routes/api/potential'))
 app.use('/api/comment', require('./routes/api/comment'))
+app.use('/api/topic', require('./routes/api/topic'))
+
 
 app.use(morgan('combined'))
 

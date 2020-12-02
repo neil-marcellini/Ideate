@@ -61,8 +61,10 @@ router.get('/user', auth, (req, res) => {
     db.query("SELECT user_id, user_email FROM User WHERE user_id=?;", req.user.user_id, (err, result) => {
         if (err) {
             console.log(err)
+            return res.status(401)
         }
-        res.json(result[0])
+        console.log(result)
+        return res.json(result[0])
     })
 })
 

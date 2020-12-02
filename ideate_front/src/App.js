@@ -11,6 +11,7 @@ import SignUp from './components/SignUp';
 import Home from './components/Home'
 import CreateProfile from './components/CreateProfile'
 import NewIdea from './components/NewIdea'
+import Topics from './components/Topics'
 
 
 
@@ -36,6 +37,7 @@ function App() {
       <Redirect from="/signup" to="/createprofile" />
       <Route exact path="/createprofile" component={CreateProfile} />
       <Route path="/idea" component={NewIdea} />
+      <Route path="/topic" component={Topics} />
     </>
   )
 
