@@ -1,10 +1,22 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
+import { Typography, Avatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
     container: {
-        paddingLeft: "2rem"
+        padding: "1rem 0",
+        display: "grid",
+        gridTemplateColumns: "min-content auto",
+        gridColumnGap: "2rem",
+        alignItems: "top",
+        justifyItems: "left"
+    }, 
+    profile_photo: {
+        width: "2rem",
+        height: "2rem"
+    }, 
+    nameDate: {
+        whiteSpace: "nowrap"
     }
 })
 
@@ -33,8 +45,13 @@ export default function Comment(props) {
 
     return (
         <div className={classes.container}>
-            <Typography variant="subtitle2">{comment.comment_profile_name} - {dateDisplay + " at " + timeDisplay}</Typography>
-            <p> {comment.comment_text}</p>
+            <div>
+                <Avatar className={classes.profile_photo} variant="rounded" />
+            </div>
+            <div>
+                <p className={classes.nameDate} variant="h6"><b>{comment.comment_profile_name}</b> - {dateDisplay + " at " + timeDisplay}</p>
+                <p> {comment.comment_text}</p>
+            </div>
         </div>
     )
 }

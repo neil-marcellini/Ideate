@@ -182,7 +182,7 @@ export default function Idea(props) {
                 <p>{idea.iteration_description}</p>
                 <br />
                 <hr />
-                <Typography variant="subtitle2">Comments</Typography>
+                <Typography variant="h6">Comments</Typography>
                 {idea.comments.map((comment) => (
                 <Comment key={comment.comment_id} comment={comment} />
                 ))}
