@@ -1,4 +1,11 @@
-import {IDEA_CREATED, IDEA_FAIL, IDEAS_FETCHED, IDEA_ITERATION_RATED, IDEA_COMMENT_ADDED} from '../actions/types'
+import {
+    IDEA_CREATED, 
+    IDEA_FAIL, 
+    IDEAS_FETCHED, 
+    IDEA_ITERATION_RATED, 
+    IDEA_COMMENT_ADDED,
+    IDEA_ALL_COMMENTS
+} from '../actions/types'
 
 const initalState = {
     msg: null,
@@ -66,7 +73,22 @@ export default function(state = initalState, action) {
                 msg: action.payload.msg,
                 ideas: comment_new_ideas
             }
-
+        case IDEA_ALL_COMMENTS:
+            const iteration_comments = action.payload.comments
+            console.log("idea all comments reducer")
+            console.log(action.payload.iteration_id)
+            const iac_iteration_id = parseInt(action.payload.iteration_id)
+            console.log(iac_iteration_id)
+            // find idea with matching iteration_id
+            const comment_iteration_i = ideaWithIteration(iac_iteration_id, state)
+            var more_comments_idea = state.ideas[comment_iteration_i]
+            more_comments_idea.comments = iteration_comments
+            const updated_ideas = getNewIdeas(more_comments_idea, comment_iteration_i, state)
+            console.log(updated_ideas)
+            return {
+                msg: action.payload.msg,
+                ideas: updated_ideas
+            }
         default:
             return state
     }

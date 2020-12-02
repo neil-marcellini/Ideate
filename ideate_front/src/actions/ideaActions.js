@@ -1,5 +1,12 @@
 import axios from 'axios'
-import { IDEA_CREATED, IDEA_FAIL, IDEAS_FETCHED, IDEA_ITERATION_RATED, IDEA_COMMENT_ADDED } from './types'
+import { 
+    IDEA_CREATED, 
+    IDEA_FAIL, 
+    IDEAS_FETCHED,
+    IDEA_ITERATION_RATED, 
+    IDEA_COMMENT_ADDED,
+    IDEA_ALL_COMMENTS
+} from './types'
 
 
 export const createIdea = (formData) => dispatch => {
@@ -43,3 +50,13 @@ export const addComment = (data) =>  dispatch => {
             payload: res.data
         }))
 }
+
+export const seeMore = (iteration_id) => dispatch => {
+    axios.get(`/api/comment/iteration/${iteration_id}`)
+        .then(res => dispatch({
+            type: IDEA_ALL_COMMENTS,
+            payload: res.data
+        }))
+}
+
+

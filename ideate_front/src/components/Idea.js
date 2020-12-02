@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux'
 import Potential from './Potential';
 import AveragePotential from './AveragePotential'
-import { rate, addComment } from '../actions/ideaActions'
+import { rate, addComment, seeMore } from '../actions/ideaActions'
 import Comment from './Comment'
 
 const useStyles = makeStyles({
@@ -156,6 +156,10 @@ export default function Idea(props) {
         dispatch(addComment(data))
     }
 
+    const onSeeMore = () => {
+        dispatch(seeMore(idea.iteration_id))
+    }
+
     return (
         <Paper className={classes.paper}>
             <div>
@@ -182,7 +186,7 @@ export default function Idea(props) {
                 {idea.comments.map((comment) => (
                 <Comment key={comment.comment_id} comment={comment} />
                 ))}
-                <div className={classes.seeMore}>See More</div>
+                <Button className={classes.seeMore} onClick={onSeeMore}>See More</Button>
                 <br />
                 <textarea className={classes.commentBox} type="text" ref={commentBox}
                     placeholder="What are your thoughts?" onChange={(e) => setComment(e.target.value)} />

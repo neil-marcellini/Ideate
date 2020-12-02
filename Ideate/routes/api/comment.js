@@ -26,4 +26,20 @@ router.post('/', (req, res) => {
     })
 })
 
+router.get('/iteration/:id', (req, res) => {
+    console.log("iteration comments backend")
+    const iteration_id = req.params.id
+    console.log(iteration_id)
+    db.query("CALL sp_iteration_comments(?);", iteration_id, (err, results) => {
+        console.log("iteration comments")
+        const comments = results[0]
+        console.log(comments)
+        return res.json({
+            msg: "Iteration comments retreived",
+            iteration_id,
+            comments
+        })
+    })
+})
+
 module.exports = router
