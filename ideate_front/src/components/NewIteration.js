@@ -32,7 +32,7 @@ export default class NewIteration extends Component {
                     <br />
                     <div className="actionButtons">
                         <Button variant="contained" color="primary">Save</Button>
-                        <Button variant="contained">Cancel</Button>
+                        <Button variant="contained" onClick={this.props.onCancel} >Cancel</Button>
                     </div>
                 </div>
                 <div className="rightColumn">

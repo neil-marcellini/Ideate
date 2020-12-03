@@ -194,6 +194,8 @@ export default function Idea(props) {
         setCreatingIteration(false)
     }
 
+    const new_iteration = useRef(null)
+
     return (
         <Paper className={classes.paper}>
             <div>
@@ -212,7 +214,7 @@ export default function Idea(props) {
                                 aria-labelledby="New Iteration"
                                 aria-describedby="Create a new iteration of this idea"
                             >
-                                <NewIteration idea_title={idea.idea_name} />
+                                <NewIteration ref={new_iteration} idea_title={idea.idea_name} onCancel={() => handleModalClose()} />
                             </Modal>
                         </div>
                     </div>
