@@ -39,3 +39,9 @@
 .yLabel {
     align-self: end;
 }
+.actionButtons {
+    width: fit-content;
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 1rem;
+}

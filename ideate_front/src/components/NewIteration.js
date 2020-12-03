@@ -23,14 +23,17 @@ export default class NewIteration extends Component {
         return (
             <Paper tabIndex={-1} className="paper">
                 <div className="leftColumn">
-                    <Typography variant="h3">New Iteration</Typography>
+                    <Typography variant="h4">Iterating: {this.props.idea_title}</Typography>
                     <br />
                     <Typography variant="h5">Description</Typography>
                     <br />
                     <textarea className="description" type="text" placeholder="Iterate the description, improve your idea!" />
                     <br />
                     <br />
-                    <Button variant="contained" color="primary">Save</Button>
+                    <div className="actionButtons">
+                        <Button variant="contained" color="primary">Save</Button>
+                        <Button variant="contained">Cancel</Button>
+                    </div>
                 </div>
                 <div className="rightColumn">
                     <div className="potential">
