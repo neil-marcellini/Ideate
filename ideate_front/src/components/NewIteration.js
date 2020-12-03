@@ -54,8 +54,8 @@ export default class NewIteration extends Component {
                     <br />
                     <br />
                     <div className="actionButtons">
-                        <Button variant="contained" color="primary" onClick={this.onSave}>Save</Button>
-                        <Button variant="contained" onClick={this.props.onCancel} >Cancel</Button>
+                        <Button variant="contained" color="primary">Save</Button>
+                        <Button variant="contained">Cancel</Button>
                     </div>
                 </div>
                 <div className="rightColumn">
