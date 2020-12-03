@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Paper, Slider, Typography, IconButton, Button, ButtonGroup, Chip, Avatar} from '@material-ui/core'
+import { Paper, Slider, Typography, IconButton, Button, ButtonGroup, Chip, Avatar, CircularProgress} from '@material-ui/core'
 import { AddBox, IndeterminateCheckBox, Check, Close, Send } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux'
@@ -92,7 +92,7 @@ const useStyles = makeStyles({
     yLabel: {
         alignSelf: "end"
     },
-    seeMore: {
+    seeAll: {
         textDecoration: "underline",
         color: "blue"
     }
@@ -106,6 +106,7 @@ export default function Idea(props) {
     const [potential_difficulty, setPotentialDifficulty] = useState(idea.potential_difficulty)
     const [potential_brightness, setPotentialBrightness] = useState(idea.potential_brightness)
     const [comment, setComment] = useState("")
+    const [commentsLoading, setCommentsLoading] = useState(false)
     const commentBox = useRef(null)
     const dispatch = useDispatch()
     const showSeeLess = idea.comments.length > 1
@@ -116,6 +117,12 @@ export default function Idea(props) {
         const image = URL.createObjectURL(file)
         setProfilePhoto(image)
     }, [idea.profile_photo.data])
+
+    useEffect(() => {
+        if (showSeeLess) {
+            setCommentsLoading(false)
+        }
+    }, [showSeeLess])
 
     const onRate = () => {
         setIsRating(true)
@@ -163,7 +170,8 @@ export default function Idea(props) {
         dispatch(addComment(data))
     }
 
-    const onSeeMore = () => {
+    const onSeeAll = () => {
+        setCommentsLoading(true)
         dispatch(seeMore(idea.iteration_id))
     }
 
@@ -198,10 +206,15 @@ export default function Idea(props) {
                 <Comment key={comment.comment_id} comment={comment} />
                 ))}
                 {!showSeeLess &&
-                <Button className={classes.seeMore} onClick={onSeeMore}>See More</Button>
+                <div className={classes.seeAllSection}>
+                    <Button className={classes.seeAll} onClick={onSeeAll}>See All</Button>
+                    {commentsLoading &&
+                    <CircularProgress size="1rem" />
+                    }
+                </div>
                 }
                 {showSeeLess &&
-                <Button className={classes.seeMore} onClick={onSeeLess}>See Less</Button>
+                <Button className={classes.seeAll} onClick={onSeeLess}>See Less</Button>
                 }
                 <br />
                 <textarea className={classes.commentBox} type="text" ref={commentBox}
@@ -229,7 +242,7 @@ export default function Idea(props) {
                         onChange={updateY} 
                         aria-labelledby="continuous-slider" valueLabelDisplay="auto"
                         defaultValue={50} />
-                        <Potential x={idea.potential_difficulty} y={idea.potential_brightness} type="create" />
+                        <Potential x={potential_difficulty} y={potential_brightness} type="create" />
                         <Slider className={classes.xSlider} value={potential_difficulty} 
                         onChange={updateX} 
                         aria-labelledby="continuous-slider" valueLabelDisplay="auto"

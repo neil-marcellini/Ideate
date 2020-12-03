@@ -24,6 +24,15 @@ export default function Comment(props) {
     const comment = props.comment
     const classes = useStyles()
 
+    const getCommenterPhoto = (profile_photo) => {
+        const arr = new Uint8Array(profile_photo.data)
+        const file = new File([arr], "commenter_profile_photo")
+        const image = URL.createObjectURL(file)
+        return image
+    }
+
+    const profile_photo = getCommenterPhoto(comment.profile_photo)
+
     var datetime = comment.comment_creation
     // Split timestamp into [ Y, M, D, h, m, s ]
     var t = datetime.split(/[- : T .]/);
@@ -46,7 +55,7 @@ export default function Comment(props) {
     return (
         <div className={classes.container}>
             <div>
-                <Avatar className={classes.profile_photo} variant="rounded" />
+                <Avatar className={classes.profile_photo} variant="rounded" src={profile_photo} />
             </div>
             <div>
                 <p className={classes.nameDate} variant="h6"><b>{comment.comment_profile_name}</b> - {dateDisplay + " at " + timeDisplay}</p>
