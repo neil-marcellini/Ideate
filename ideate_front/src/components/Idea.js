@@ -141,8 +141,6 @@ export default function Idea(props) {
             data.potential_brightness = potential_brightness
             data.potential_difficulty = potential_difficulty
             data.profile_name = localStorage.getItem('profile_name')
-            console.log("dispatching rating")
-            console.log(data)
             dispatch(rate(data))
         }
     }

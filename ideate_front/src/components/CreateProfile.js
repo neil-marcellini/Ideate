@@ -97,8 +97,6 @@ export default function CreateProfile() {
         formData.append("profileImage", profileImage)
         formData.append("profileBio", profileBio)
             
-        // Details of the uploaded file 
-        console.log(profileImage)
         dispatch(createProfile(formData))
     }
 

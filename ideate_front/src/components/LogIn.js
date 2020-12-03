@@ -49,7 +49,6 @@ export default function LogIn() {
         const emailBlank = email === ''
         const passwordBlank = password === ''
         if (emailBlank){
-            console.log("setting email error")
             setEmailError(true)
             setEmailMsg("You must provide an email")
         } else {
@@ -57,16 +56,13 @@ export default function LogIn() {
             setEmailMsg(null)
         }
         if (passwordBlank){
-            console.log("setting password error")
             setPasswordError(true)
             setPasswordMsg("You must provide a password")
         }else {
             setPasswordError(false)
             setPasswordMsg(null)
         }
-        console.log(`emailError=${emailError}, passwordError=${passwordError}`)
         if (!emailBlank && !passwordBlank) {
-            console.log("dispatching")
             dispatch(logIn({email, password}))
         }
     }

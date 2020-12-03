@@ -43,7 +43,6 @@ export default function NewTopic() {
                 setPhotoSizeError(null)
             }
         }
-        console.log(file)
         dispatch(updateTopicImage(file))
     }
 

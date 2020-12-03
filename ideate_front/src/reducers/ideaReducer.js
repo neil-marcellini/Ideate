@@ -48,7 +48,6 @@ export default function(state = initalState, action) {
             }
         case IDEA_ITERATION_RATED:
             // find idea with matching iteration_id
-            console.log(action.payload)
             const iteration_id = action.payload.iteration_id
             var rated_idea_i = ideaWithIteration(iteration_id, state)
             var rated_replace_idea = state.ideas[rated_idea_i]
@@ -62,7 +61,6 @@ export default function(state = initalState, action) {
         case IDEA_COMMENT_ADDED:
             const comment = action.payload.comment
             // find idea with matching iteration_id
-            console.log(comment)
             const comment_idea_i = ideaWithIteration(comment.iteration_id, state)
             var comment_replace_idea = state.ideas[comment_idea_i]
             var new_comment = {
@@ -84,13 +82,11 @@ export default function(state = initalState, action) {
             var more_comments_idea = state.ideas[comment_iteration_i]
             more_comments_idea.comments = iteration_comments
             const updated_ideas = getNewIdeas(more_comments_idea, comment_iteration_i, state)
-            console.log(updated_ideas)
             return {
                 msg: action.payload.msg,
                 ideas: updated_ideas
             }
         case IDEA_SEE_LESS:
-            console.log(action.payload)
             const see_less_i = ideaWithIteration(action.payload.iteration_id, state)
             var see_less_idea = state.ideas[see_less_i]
             var old_comments = see_less_idea.comments

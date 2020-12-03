@@ -29,7 +29,6 @@ export default function Home() {
 
     useEffect(() => {
         if(ideas.length > 0) {
-            console.log("done loading")
             setLoading(false)
         }
     }, [ideas])

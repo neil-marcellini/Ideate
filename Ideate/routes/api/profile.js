@@ -48,18 +48,14 @@ router.post('/', upload.single('profileImage'), async (req, res) => {
                 msg: "Sorry, this profile name is taken."
             })
         } else {
-            console.log(fields)
             const image = getImageBuffer(req.file)
             const values = [fields.profileName, fields.userId, fields.profileBio, image, new Date()]
             db.query("INSERT INTO Profile VALUES (?, ?, ?, ?, ?);", values, (err, result) => {
-                console.log("inserted")
                 if (err) {
-                    console.log(Object.keys(err))
                     console.log(err.sqlMessage)
-                    console.log("there's an error")
+                    console.log("error on new profile")
                     return res.status(500)
                 } else {
-                    console.log("No error")
                     return res.json({
                         profile_name: fields.profileName
                     })

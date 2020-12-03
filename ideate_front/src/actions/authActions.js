@@ -38,7 +38,6 @@ export const loadUser = () => (dispatch, getState) => {
 // sign up user
 
 export const signUp = ({email, password}) => dispatch => {
-    console.log("sign up called")
     const config = {
         headers: {
             'Content-type': 'application/json'
@@ -63,7 +62,6 @@ export const signUp = ({email, password}) => dispatch => {
 
 // login user
 export const logIn = ({email, password}) => dispatch => {
-    console.log("log in called")
     const config = {
         headers: {
             'Content-type': 'application/json'

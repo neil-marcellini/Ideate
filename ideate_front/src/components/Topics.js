@@ -33,13 +33,11 @@ export default function Topics() {
     const classes = useStyles()
 
     useEffect(() => {
-        console.log("dispatching")
         dispatch(getAllTopics())
     }, [])
 
     useEffect(() => {
         if(topics.length > 0) {
-            console.log("done loading")
             setLoading(false)
         }
     }, [topics])

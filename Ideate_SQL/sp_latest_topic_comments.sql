@@ -6,8 +6,9 @@ CREATE PROCEDURE sp_latest_topic_comments(topic_id INT)
 BEGIN
 
 SELECT Comment.comment_id, Comment.profile_name AS comment_profile_name, 
-Comment.comment_text, Comment.comment_creation
+Comment.comment_text, Comment.comment_creation, Profile.profile_photo
 FROM Comment
+INNER JOIN Profile ON Comment.profile_name = Profile.profile_name
 INNER JOIN Iteration ON Comment.iteration_id = Iteration.iteration_id
 INNER JOIN Idea ON Iteration.idea_id = Idea.idea_id
 LEFT JOIN Comment AS t2

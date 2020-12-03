@@ -35,8 +35,6 @@ function getImageBuffer(file) {
 
 router.post('/', upload.single('topicImage'), (req, res) => {
     const fields = req.body
-    console.log(fields)
-    console.log(req.file)
     const topicImage = getImageBuffer(req.file)
     const values = [
         fields.ideaTitle, 
@@ -50,14 +48,12 @@ router.post('/', upload.single('topicImage'), (req, res) => {
     ]
     db.query("CALL sp_create_idea(?, ?, ?, ?, ?, ?, ?, ?);", values, (err, results) => {
         if (err) {
-            console.log(Object.keys(err))
             console.log(err.sqlMessage)
-            console.log("there's an error")
+            console.log("create idea error")
             return res.status(500).json({
                 msg: "Failure"
             })
         } else {
-            console.log("Idea created")
             return res.json({
                 msg: "Success"
             })
@@ -72,9 +68,8 @@ router.get('/', (req, response) => {
 })
 const afterAllIdeas = (response, err, results) => {
     if (err) {
-        console.log(Object.keys(err))
         console.log(err.sqlMessage)
-        console.log("there's an error")
+        console.log("error after all ideas")
         return response.status(500).json({
             msg: "Failure"
         })
@@ -87,8 +82,7 @@ const afterAllIdeas = (response, err, results) => {
 const afterLatestIterations = (response, ideas, err, results) => {
     if (err) {
         console.log(Object.keys(err))
-        console.log(err.sqlMessage)
-        console.log("there's an error")
+        console.log("error afterLatestIterations")
         return response.status(500).json({
             msg: "Failure"
         })
@@ -134,32 +128,26 @@ router.get('/topic/:topic_id', (req, response) => {
 })
 const afterTopicIdeas = (response, topic_id, err, results) => {
     if (err) {
-        console.log(Object.keys(err))
         console.log(err.sqlMessage)
-        console.log("there's an error")
+        console.log("error afterTopicIdeas")
         return response.status(500).json({
             msg: "Failure"
         })
     } else {
         var ideas = results[0]
-        console.log("topic ideas")
-        console.log(ideas)
         db.query("CALL sp_latest_topic_iterations(?);", topic_id, (err, results) => afterLatestTopicIterations(response, topic_id, ideas, err, results))
     }
 }
 
 const afterLatestTopicIterations = (response, topic_id, ideas, err, results) => {
     if (err) {
-        console.log(Object.keys(err))
         console.log(err.sqlMessage)
-        console.log("there's an error")
+        console.log("error afterLatestTopicIterations")
         return response.status(500).json({
             msg: "Failure"
         })
     } else {
         const iterations = results[0]
-        console.log("topic iterations")
-        console.log(iterations)
         db.query("CALL sp_latest_topic_comments(?);", topic_id, (err, results) => 
             afterLatestTopicComments(response, ideas, iterations, err, results))
     }
@@ -172,9 +160,7 @@ const afterLatestTopicComments = (response, ideas, iterations, err, results) => 
             msg: "Failure afterLatestComments"
         })
     } else {
-        console.log("topic comments")
         const comments = results[0]
-        console.log(comments)
         var full_ideas = []
         var index
         for (index = 0; index < comments.length; index++) {
