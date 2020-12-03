@@ -121,12 +121,17 @@ const afterLatestComments = (response, data, err, results) => {
         // needed to flip these around
         data.iterations.reverse()
         results.reverse()
-        for (index = 0; index < results.length; index++) {
+        for (index = 0; index < data.ideas.length; index++) {
+            let hasComments = index < results.length
+            let comments = null
+            if (hasComments) {
+                comments - results[index]
+            }
             let full_idea = {
                 ...data.ideas[index],
                 ...data.iterations[index],
                 ...data.potentials[index],
-                comments: [results[index]]
+                comments
             }
             full_ideas.push(full_idea)
         }

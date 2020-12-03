@@ -113,7 +113,11 @@ export default function Idea(props) {
     const [commentsLoading, setCommentsLoading] = useState(false)
     const commentBox = useRef(null)
     const dispatch = useDispatch()
-    const showSeeLess = idea.comments.length > 1
+    const hasComments = idea.comments
+    var showSeeLess = false
+    if (hasComments) {
+        showSeeLess = idea.comments.length > 1
+    }
     const [creatingIteration, setCreatingIteration] = useState(false);
     const profile_name = localStorage.getItem("profile_name")
 
@@ -206,7 +210,7 @@ export default function Idea(props) {
                         <Typography variant="subtitle1">Iteration</Typography>
                         <div>
                             <IconButton><IndeterminateCheckBox /></IconButton>
-                            <span>0</span>
+                            <span>{idea.iteration_id}</span>
                             <IconButton onClick={handleModalOpen}><AddBox /></IconButton>
                             <Modal
                                 open={creatingIteration}
@@ -229,9 +233,14 @@ export default function Idea(props) {
                 <br />
                 <hr />
                 <Typography variant="h6">Comments</Typography>
+                {hasComments &&
+                <>
                 {idea.comments.map((comment) => (
                 <Comment key={comment.comment_id} comment={comment} />
                 ))}
+                </>
+                }
+                
                 {!showSeeLess &&
                 <div className={classes.seeAllSection}>
                     <Button className={classes.seeAll} onClick={onSeeAll}>See All</Button>
