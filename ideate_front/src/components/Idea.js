@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Paper, Slider, Typography, IconButton, Button, ButtonGroup, Chip, Avatar, CircularProgress} from '@material-ui/core'
+import { Paper, Slider, Typography, IconButton, 
+    Button, ButtonGroup, Chip, Avatar, CircularProgress,
+    Modal
+} from '@material-ui/core'
 import { AddBox, IndeterminateCheckBox, Check, Close, Send } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux'
@@ -7,6 +10,7 @@ import Potential from './Potential';
 import AveragePotential from './AveragePotential'
 import { rate, addComment, seeMore, seeLess } from '../actions/ideaActions'
 import Comment from './Comment'
+import NewIteration from './NewIteration'
 
 const useStyles = makeStyles({
     paper: {
@@ -110,6 +114,9 @@ export default function Idea(props) {
     const commentBox = useRef(null)
     const dispatch = useDispatch()
     const showSeeLess = idea.comments.length > 1
+    const [creatingIteration, setCreatingIteration] = useState(false);
+    const profile_name = localStorage.getItem("profile_name")
+
 
     useEffect(() => {
         const arr = new Uint8Array(idea.profile_photo.data)
@@ -140,7 +147,7 @@ export default function Idea(props) {
             data.iteration_id = idea.iteration_id
             data.potential_brightness = potential_brightness
             data.potential_difficulty = potential_difficulty
-            data.profile_name = localStorage.getItem('profile_name')
+            data.profile_name = profile_name
             dispatch(rate(data))
         }
     }
@@ -162,7 +169,7 @@ export default function Idea(props) {
         commentBox.current.value = ""
         const data = {
             iteration_id: idea.iteration_id,
-            profile_name: localStorage.getItem("profile_name"),
+            profile_name,
             comment
         }
         dispatch(addComment(data))
@@ -177,6 +184,16 @@ export default function Idea(props) {
         dispatch(seeLess(idea))
     }
 
+    const handleModalOpen = () => {
+        if(profile_name === idea.profile_name){
+            setCreatingIteration(true)
+        }
+    }
+
+    const handleModalClose = () => {
+        setCreatingIteration(false)
+    }
+
     return (
         <Paper className={classes.paper}>
             <div>
@@ -188,7 +205,15 @@ export default function Idea(props) {
                         <div>
                             <IconButton><IndeterminateCheckBox /></IconButton>
                             <span>0</span>
-                            <IconButton><AddBox /></IconButton>
+                            <IconButton onClick={handleModalOpen}><AddBox /></IconButton>
+                            <Modal
+                                open={creatingIteration}
+                                onClose={handleModalClose}
+                                aria-labelledby="New Iteration"
+                                aria-describedby="Create a new iteration of this idea"
+                            >
+                                <NewIteration />
+                            </Modal>
                         </div>
                     </div>
                 </div>
