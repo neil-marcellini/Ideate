@@ -214,7 +214,9 @@ export default function Idea(props) {
                                 aria-labelledby="New Iteration"
                                 aria-describedby="Create a new iteration of this idea"
                             >
-                                <NewIteration ref={new_iteration} idea_title={idea.idea_name} onCancel={() => handleModalClose()} />
+                                <NewIteration ref={new_iteration} 
+                                idea_title={idea.idea_name} onCancel={() => handleModalClose()}
+                                idea_id={idea.idea_id} profile_name={profile_name} dispatch={dispatch} />
                             </Modal>
                         </div>
                     </div>

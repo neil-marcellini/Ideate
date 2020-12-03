@@ -8,7 +8,8 @@ import {
     IDEA_ALL_COMMENTS,
     IDEA_SEE_LESS,
     IDEAS_FOR_TOPIC,
-    IDEAS_CLEARED
+    IDEAS_CLEARED,
+    IDEA_ITERATION_ADDED
 } from './types'
 
 
@@ -81,6 +82,15 @@ export const clearIdeas = () => dispatch => {
     dispatch({
         type: IDEAS_CLEARED
     })
+}
+
+
+export const newIteration = (data) => dispatch => {
+    axios.post("/api/iteration/", data)
+    .then(res => dispatch({
+        type: IDEA_ITERATION_ADDED,
+        payload: res.data
+    }))
 }
 
 

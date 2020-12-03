@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import { Paper, Typography, Button, Slider } from '@material-ui/core'
 import './NewIteration.css'
 import Potential from './Potential'
+import { newIteration } from '../actions/ideaActions'
 
 export default class NewIteration extends Component {
     constructor(props) {
         super(props)
         this.state = {
             potential_difficulty: 50,
-            potential_brightness: 50
+            potential_brightness: 50,
+            description: ""
         }
     }
 
@@ -19,6 +21,25 @@ export default class NewIteration extends Component {
         this.setState({potential_brightness: newValue})
     }
 
+    onDescriptionChange = (e) => {
+        this.setState({description: e.target.value})
+    }
+
+    onSave = () => {
+        //dispatch
+        const dispatch = this.props.dispatch
+        const state = this.state
+        const idea_id = this.props.idea_id
+        const profile_name = this.props.profile_name
+        const data = {
+            ...state,
+            idea_id,
+            profile_name
+        }               
+        dispatch(newIteration(data))
+        this.props.onCancel()
+    }
+
     render() {
         return (
             <Paper tabIndex={-1} className="paper">
@@ -27,11 +48,13 @@ export default class NewIteration extends Component {
                     <br />
                     <Typography variant="h5">Description</Typography>
                     <br />
-                    <textarea className="description" type="text" placeholder="Iterate the description, improve your idea!" />
+                    <textarea className="description" type="text" 
+                    placeholder="Iterate the description, improve your idea!"
+                    onChange={this.onDescriptionChange} />
                     <br />
                     <br />
                     <div className="actionButtons">
-                        <Button variant="contained" color="primary">Save</Button>
+                        <Button variant="contained" color="primary" onClick={this.onSave}>Save</Button>
                         <Button variant="contained" onClick={this.props.onCancel} >Cancel</Button>
                     </div>
                 </div>

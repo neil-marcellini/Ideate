@@ -74,12 +74,14 @@ const afterAllIdeas = (response, err, results) => {
             msg: "Failure"
         })
     } else {
-        var ideas = results
-        db.query("SELECT * FROM latest_iterations_view;", (err, results) => afterLatestIterations(response, ideas, err, results))
+        var data = {
+            ideas: results
+        }
+        db.query("SELECT * FROM latest_iterations_view;", (err, results) => afterLatestIterations(response, data, err, results))
     }
 }
 
-const afterLatestIterations = (response, ideas, err, results) => {
+const afterLatestIterations = (response, data, err, results) => {
     if (err) {
         console.log(Object.keys(err))
         console.log("error afterLatestIterations")
@@ -87,13 +89,27 @@ const afterLatestIterations = (response, ideas, err, results) => {
             msg: "Failure"
         })
     } else {
-        const iterations = results
-        db.query("SELECT * FROM latest_comment_view;", (err, results) => 
-            afterLatestComments(response, ideas, iterations, err, results))
+        data.iterations = results
+        db.query("SELECT * FROM average_potential_view;", (err, results) => 
+            afterAveragePotentials(response, data, err, results))
     }
 }
 
-const afterLatestComments = (response, ideas, iterations, err, results) => {
+const afterAveragePotentials = (response, data, err, results) => {
+    if (err) {
+        console.log(Object.keys(err))
+        console.log("error afterLatestIterations")
+        return response.status(500).json({
+            msg: "Failure"
+        })
+    } else {
+        data.potentials = results
+        db.query("SELECT * FROM latest_comment_view;", (err, results) => 
+            afterLatestComments(response, data, err, results))
+    }
+}
+
+const afterLatestComments = (response, data, err, results) => {
     if (err) {
         console.log(err.sqlMessage)
         return response.status(500).json({
@@ -102,10 +118,13 @@ const afterLatestComments = (response, ideas, iterations, err, results) => {
     } else {
         var full_ideas = []
         var index
+        console.log("comments")
+        console.log(results)
         for (index = 0; index < results.length; index++) {
             let full_idea = {
-                ...ideas[index],
-                ...iterations[index],
+                ...data.ideas[index],
+                ...data.iterations[index],
+                ...data.potentials[index],
                 comments: [results[index]]
             }
             full_ideas.push(full_idea)

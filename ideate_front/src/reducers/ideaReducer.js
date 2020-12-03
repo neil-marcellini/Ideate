@@ -7,7 +7,8 @@ import {
     IDEA_ALL_COMMENTS,
     IDEA_SEE_LESS,
     IDEAS_FOR_TOPIC,
-    IDEAS_CLEARED
+    IDEAS_CLEARED,
+    IDEA_ITERATION_ADDED
 } from '../actions/types'
 
 const initalState = {
@@ -106,8 +107,26 @@ export default function(state = initalState, action) {
                 msg: "Ideas cleared",
                 ideas: []
             }
+        case IDEA_ITERATION_ADDED:
+            console.log(action.payload)
+            const iterated_ideas = updateIteration(action.payload, state)
+            return {
+                msg: action.payload.msg,
+                ideas: iterated_ideas
+            }
         default:
             return state
     }
+}
+
+
+const updateIteration = (iteration, state) => {
+    const idea_index = state.ideas.findIndex(idea => idea.idea_id = iteration.idea_id)
+    var update_idea = state.ideas[idea_index]
+    update_idea.potential_difficulty = iteration.potential_difficulty
+    update_idea.potential_brightness = iteration.potential_brightness
+    update_idea.iteration_id = iteration.iteration_id
+    update_idea.iteration_description = iteration.iteration_description
+    return getNewIdeas(update_idea, idea_index, state)
 }
 
