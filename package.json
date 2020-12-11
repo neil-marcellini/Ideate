@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "heorku-postbuild": "cd ideate_front && npm install && npm run build",
+    "heroku-postbuild": "cd ideate_front && npm install && npm run build",
     "server": "nodemon server.js",
     "client": "npm start --prefix ./ideate_front",
     "dev": "concurrently \"npm run server\" \"npm run client\""
