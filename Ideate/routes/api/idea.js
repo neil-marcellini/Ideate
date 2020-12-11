@@ -117,16 +117,8 @@ const afterLatestComments = (response, data, err, results) => {
         })
     } else {
         var full_ideas = []
-        var index = response
-        // needed to flip these around
-        data.iterations.reverse()
-        results.reverse()
-        for (index = 0; index < data.ideas.length; index++) {
-            let hasComments = index < results.length
-            let comments = null
-            if (hasComments) {
-                comments - results[index]
-            }
+        var index
+        for (index = 0; index < ideas.length; index++) {
             let full_idea = {
                 ...data.ideas[index],
                 ...data.iterations[index],

@@ -22,9 +22,9 @@ export default function Home() {
 
     useEffect(() => {
         dispatch(getAllIdeas())
-        return () => {
-            dispatch(clearIdeas())
-        }
+        // return () => {
+        //     dispatch(clearIdeas())
+        // }
     }, [])
 
     useEffect(() => {

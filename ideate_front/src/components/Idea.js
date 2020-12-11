@@ -229,13 +229,10 @@ export default function Idea(props) {
                 <br />
                 <hr />
                 <Typography variant="h6">Comments</Typography>
-                {hasComments &&
-                <>
-                {idea.comments.map((comment) => (
+                
+                {/* {idea.comments.map((comment) => (
                 <Comment key={comment.comment_id} comment={comment} />
-                ))}
-                </>
-                }
+                ))} */}
                 
                 {!showSeeLess &&
                 <div className={classes.seeAllSection}>
