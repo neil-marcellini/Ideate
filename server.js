@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const mysql = require('mysql')
+const path = require('path')
 require('dotenv').config();
 
 function createConnection() {
@@ -23,7 +24,7 @@ const app = express()
 app.use(express.json())
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../ideate_front/build')))
+app.use(express.static(path.join(__dirname, './ideate_front/build')))
 
 
 // routes
