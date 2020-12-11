@@ -38,7 +38,7 @@ app.use(morgan('combined'))
 
 
 let port = process.env.PORT
-if (port == nul || port == ""){
+if (port == null || port == ""){
     port = 5000;
 }
 
