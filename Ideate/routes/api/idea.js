@@ -102,7 +102,7 @@ const afterLatestComments = (response, ideas, iterations, err, results) => {
     } else {
         var full_ideas = []
         var index
-        for (index = 0; index < results.length; index++) {
+        for (index = 0; index < ideas.length; index++) {
             let full_idea = {
                 ...ideas[index],
                 ...iterations[index],

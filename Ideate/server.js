@@ -35,8 +35,11 @@ app.use('/api/topic', require('./routes/api/topic'))
 
 app.use(morgan('combined'))
 
-const port = 5000;
 
+let port = process.env.PORT
+if (port == nul || port == ""){
+    port = 5000;
+}
 
 
 app.get('/user', (req, res) => {

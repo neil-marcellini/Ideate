@@ -227,9 +227,11 @@ export default function Idea(props) {
                 <br />
                 <hr />
                 <Typography variant="h6">Comments</Typography>
-                {idea.comments.map((comment) => (
+                
+                {/* {idea.comments.map((comment) => (
                 <Comment key={comment.comment_id} comment={comment} />
-                ))}
+                ))} */}
+                
                 {!showSeeLess &&
                 <div className={classes.seeAllSection}>
                     <Button className={classes.seeAll} onClick={onSeeAll}>See All</Button>
