@@ -1,7 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
 const mysql = require('mysql')
-const { restart } = require('nodemon');
 require('dotenv').config();
 
 function createConnection() {
@@ -23,7 +22,11 @@ const jwt_secret_key = process.env.JWT_SECRET_KEY
 const app = express()
 app.use(express.json())
 
-// user routes
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../ideate_front/build')))
+
+
+// routes
 app.use('/api/users', require('./routes/api/users'))
 app.use('/api/auth', require('./routes/api/auth'))
 app.use('/api/profile', require('./routes/api/profile'))
