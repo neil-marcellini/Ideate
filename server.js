@@ -5,12 +5,11 @@ const path = require('path')
 require('dotenv').config();
 
 function createConnection() {
-    const db_config = require("./db_config.json")
     const connection = mysql.createConnection({
-        host: db_config.host,
-        user: db_config.user,
-        password: db_config.password,
-        database: db_config.database
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
     })
     return connection
 }
