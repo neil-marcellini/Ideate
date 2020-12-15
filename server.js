@@ -5,7 +5,7 @@ const path = require('path')
 require('dotenv').config();
 
 function createConnection() {
-    const connection = mysql.createConnection(process.env.CLEAR_DB_DATABASEURL)
+    const connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL)
     return connection
 }
 const db = createConnection()

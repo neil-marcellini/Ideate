@@ -1,14 +1,6 @@
 -- Neil Marcellini
 -- 11/13/2020
 
--- Creating the Database
-DROP DATABASE IF EXISTS ideate;
-
-CREATE DATABASE ideate
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
-
-USE ideate;
 
 CREATE TABLE User(
     -- user_id will be a uuid
