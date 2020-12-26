@@ -1,18 +1,8 @@
 const express = require('express')
 const morgan = require('morgan')
-const mysql = require('mysql')
 const path = require('path')
 require('dotenv').config();
 
-function createConnection() {
-    console.log(process.env.CLEARDB_DATABASE_URL)
-    const connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL)
-    connection.connect()
-    return connection
-}
-const db = createConnection()
-
-module.exports = db
 
 const jwt_secret_key = process.env.JWT_SECRET_KEY
 
@@ -48,12 +38,5 @@ if (port == null || port == ""){
     port = 5000;
 }
 
-
-app.get('/user', (req, res) => {
-    db.query("SELECT * FROM User", (err, rows, fields) => {
-        console.log("fetched users successfully")
-        res.json(rows)
-    })
-})
 
 app.listen(port, () => console.log(`server started on port ${port}`))

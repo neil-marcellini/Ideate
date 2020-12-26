@@ -2,7 +2,7 @@
 DROP VIEW IF EXISTS latest_comment_view;
 CREATE VIEW latest_comment_view AS
 SELECT Comment.comment_id, Comment.profile_name AS comment_profile_name, 
-Comment.comment_text, Comment.comment_creation, Profile.profile_photo
+Comment.comment_text, Comment.comment_creation, Profile.profile_photo_file_name
 FROM Comment
 INNER JOIN Profile ON Comment.profile_name = Profile.profile_name
 INNER JOIN Iteration ON Comment.iteration_id = Iteration.iteration_id

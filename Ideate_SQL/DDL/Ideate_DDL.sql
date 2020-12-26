@@ -1,6 +1,13 @@
 -- Neil Marcellini
 -- 11/13/2020
-
+drop table if exists Comment;
+drop table if exists Potential;
+drop table if exists Iteration;
+drop table if exists Idea;
+drop table if exists Topic;
+drop table if exists Follow;
+drop table if exists Profile;
+drop table if exists User; 
 
 CREATE TABLE User(
     -- user_id will be a uuid
@@ -14,7 +21,7 @@ CREATE TABLE Profile(
     profile_name VARCHAR(50) NOT NULL,
     user_id VARCHAR(36) NOT NULL,
     profile_bio VARCHAR(1000) DEFAULT NULL,
-    profile_photo MEDIUMBLOB DEFAULT NULL,
+    profile_photo_file_name VARCHAR(100) DEFAULT NULL,
     profile_creation DATETIME NOT NULL,
     FOREIGN KEY (user_id) REFERENCES User(user_id),
     PRIMARY KEY (profile_name)
@@ -32,7 +39,7 @@ CREATE TABLE Follow(
 CREATE TABLE Topic(
     topic_id INT NOT NULL AUTO_INCREMENT,
     topic_name VARCHAR(50) NOT NULL,
-    topic_photo MEDIUMBLOB DEFAULT NULL,
+    topic_photo_file_name VARCHAR(100) DEFAULT NULL,
     topic_description VARCHAR(500) NOT NULL,
     PRIMARY KEY (topic_id)
 )ENGINE=InnoDB;

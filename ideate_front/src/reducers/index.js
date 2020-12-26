@@ -5,6 +5,7 @@ import profileReducer from './profileReducer'
 import topicReducer from './topicReducer'
 import ideaReducer from './ideaReducer'
 import allTopicsReducer from './allTopicsReducer'
+import iterationReducer from './iterationReducer'
 
 export default combineReducers({
     auth: authReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
     topic: topicReducer,
     idea: ideaReducer,
     allTopics: allTopicsReducer,
+    iteration: iterationReducer,
 })

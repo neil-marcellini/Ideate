@@ -1,0 +1,37 @@
+Ideate Notes 12/18/2020
+
+Today I'm going to make a lot of changes. My objective is to change all photo storage from being saved in
+the database as blobs, to be saved on the file system. 
+
+I'm going to look up "save images to file system node"
+
+I'm folliwng a traversy media video: https://www.youtube.com/watch?v=9Qzmri1WaaE&t=90s
+
+First use express.static to make a folder to put images in. 
+Set storage engine to disk storage in multer. Takes in a destination and a file name which is a function.
+
+use path.extname to get the file extension name.
+
+I can then save the file info into the database, rather than the actual data.
+I should check to see how much storage heroku gives me on the server, otherwise I might have to pay
+anyway. It says that the free heroku dyno has 512mb of RAM. I'm guessing that's where my files would store? If I limit
+them to 2mb or compress them in some way then I should be able to store 256 separate images for free.
+
+Luckily I just heard him say that you can't do this with heroku, you have to use s3. Damn lol.
+
+Setting up aws s3. I'm following this vid: https://www.youtube.com/watch?v=cDj4LPTLR3o
+I made a user and downloaded csv with access keys. Apparently I also need the user arn. Click on user and copy arn.
+I should also probably look into doing it with heroku. I didn't really find much results with that so I'm assuming
+there's no configuration needed.
+
+
+Ok so it looks like I got the aws all set up. Now I'm moving to the code.
+I'm using multer-s3, and the aws-sdk.
+I'm going to add the access key and secret key to heroku as config vars.
+
+Ok so I need to change my tables for profile. I'm going to store profile_photo_filename rather than a blob. I'll change all
+medium blobs to be filenames.
+
+Ok I changed the DDL, so now I need to open up mysql workbench and recreate the database. But you know what, I'm calling it
+for now.
+

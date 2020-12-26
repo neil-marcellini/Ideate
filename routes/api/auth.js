@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const db = require('../../server')
+const db = require('../../db')
 const auth = require('../../middleware/auth')
 const jwt = require('jsonwebtoken')
 const jwt_secret_key = process.env.JWT_SECRET_KEY

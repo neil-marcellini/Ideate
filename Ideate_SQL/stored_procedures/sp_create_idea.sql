@@ -6,7 +6,7 @@ CREATE PROCEDURE sp_create_idea(ideaTitle VARCHAR(50), ideaDescription MEDIUMTEX
     topicName VARCHAR(50), topicImage MEDIUMBLOB, topicDescription VARCHAR(500), profileName VARCHAR(50))
 BEGIN
 
-INSERT INTO Topic (topic_name, topic_photo, topic_description)
+INSERT INTO Topic (topic_name, topic_photo_file_name, topic_description)
 VALUES (topicName, topicImage, topicDescription);
 
 /* get Topic id */

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import axios from 'axios'
 import { Paper, Slider, Typography, IconButton, 
     Button, ButtonGroup, Chip, Avatar, CircularProgress,
     Modal
@@ -105,6 +106,7 @@ const useStyles = makeStyles({
 export default function Idea(props) {
     const idea = props.idea
     const classes = useStyles()
+    const [iteration, setIteration] = useState(null)
     const [profilePhoto, setProfilePhoto] = useState(null)
     const [isRating, setIsRating] = useState(false)
     const [potential_difficulty, setPotentialDifficulty] = useState(idea.potential_difficulty)
@@ -121,13 +123,23 @@ export default function Idea(props) {
     const [creatingIteration, setCreatingIteration] = useState(false);
     const profile_name = localStorage.getItem("profile_name")
 
+    
+//    useEffect(() => {
+//        const arr = new Uint8Array(idea.profile_photo.data)
+//        const file = new File([arr], "profile_photo")
+//        const image = URL.createObjectURL(file)
+//        setProfilePhoto(image)
+//    }, [idea.profile_photo.data])
 
     useEffect(() => {
-        const arr = new Uint8Array(idea.profile_photo.data)
-        const file = new File([arr], "profile_photo")
-        const image = URL.createObjectURL(file)
-        setProfilePhoto(image)
-    }, [idea.profile_photo.data])
+        axios.get(`/api/iteration/${idea.idea_id}/latest`)
+        .then(res => {
+            setIteration(res.data.iteration)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }, [idea])
 
     useEffect(() => {
         if (showSeeLess) {
@@ -197,6 +209,14 @@ export default function Idea(props) {
     const handleModalClose = () => {
         setCreatingIteration(false)
     }
+
+    return (<>
+            <p>{idea.idea_name}</p>
+            {iteration &&
+            <p>{iteration.iteration_description}</p>
+            }
+        </>
+    )
 
     return (
         <Paper className={classes.paper}>

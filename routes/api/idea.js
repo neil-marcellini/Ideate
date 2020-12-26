@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const db = require('../../server')
+const db = require('../../db')
 const bodyParser = require('body-parser')
 const multer = require('multer');
 const fs = require('fs')
@@ -74,10 +74,10 @@ const afterAllIdeas = (response, err, results) => {
             msg: "Failure"
         })
     } else {
-        var data = {
+        return response.json({
+            msg: "Ideas fetched",
             ideas: results
-        }
-        db.query("SELECT * FROM latest_iterations_view;", (err, results) => afterLatestIterations(response, data, err, results))
+        })
     }
 }
 
@@ -116,8 +116,11 @@ const afterLatestComments = (response, data, err, results) => {
             msg: "Failure afterLatestComments"
         })
     } else {
+        console.log(results)
+        var comments = results
         var full_ideas = []
         var index
+        var ideas = data.ideas
         for (index = 0; index < ideas.length; index++) {
             let full_idea = {
                 ...data.ideas[index],
