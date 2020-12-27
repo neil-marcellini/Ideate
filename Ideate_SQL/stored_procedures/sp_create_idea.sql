@@ -3,11 +3,11 @@ DROP PROCEDURE IF EXISTS sp_create_idea;
 delimiter //
 CREATE PROCEDURE sp_create_idea(ideaTitle VARCHAR(50), ideaDescription MEDIUMTEXT,
     potentialDifficulty DECIMAL(4,2), potentialBrightness DECIMAL(4,2),
-    topicName VARCHAR(50), topicImage MEDIUMBLOB, topicDescription VARCHAR(500), profileName VARCHAR(50))
+    topicName VARCHAR(50), topicImageName varchar(100), topicDescription VARCHAR(500), profileName VARCHAR(50))
 BEGIN
 
 INSERT INTO Topic (topic_name, topic_photo_file_name, topic_description)
-VALUES (topicName, topicImage, topicDescription);
+VALUES (topicName, topicImageName, topicDescription);
 
 /* get Topic id */
 SET @last_topic_id = (

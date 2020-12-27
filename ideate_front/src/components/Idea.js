@@ -106,7 +106,6 @@ const useStyles = makeStyles({
 export default function Idea(props) {
     const idea = props.idea
     const classes = useStyles()
-    const [iteration, setIteration] = useState(null)
     const [profilePhoto, setProfilePhoto] = useState(null)
     const [isRating, setIsRating] = useState(false)
     const [potential_difficulty, setPotentialDifficulty] = useState(idea.potential_difficulty)
@@ -131,15 +130,6 @@ export default function Idea(props) {
 //        setProfilePhoto(image)
 //    }, [idea.profile_photo.data])
 
-    useEffect(() => {
-        axios.get(`/api/iteration/${idea.idea_id}/latest`)
-        .then(res => {
-            setIteration(res.data.iteration)
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }, [idea])
 
     useEffect(() => {
         if (showSeeLess) {
@@ -210,13 +200,6 @@ export default function Idea(props) {
         setCreatingIteration(false)
     }
 
-    return (<>
-            <p>{idea.idea_name}</p>
-            {iteration &&
-            <p>{iteration.iteration_description}</p>
-            }
-        </>
-    )
 
     return (
         <Paper className={classes.paper}>
@@ -242,7 +225,7 @@ export default function Idea(props) {
                     </div>
                 </div>
                 <div className={classes.profile}>
-                        <Avatar className={classes.profilePic} variant="rounded" src={profilePhoto} />
+                    {/*   <Avatar className={classes.profilePic} variant="rounded" src={profilePhoto} /> */}
                         <Typography className={classes.profileName} variant="subtitle2">{idea.profile_name}</Typography>
                 </div>
                 <p>{idea.iteration_description}</p>

@@ -74,10 +74,10 @@ const afterAllIdeas = (response, err, results) => {
             msg: "Failure"
         })
     } else {
-        return response.json({
-            msg: "Ideas fetched",
+        var data = {
             ideas: results
-        })
+        }
+        db.query("SELECT * FROM latest_iterations_view;", (err, results) => afterLatestIterations(response, data, err, results))
     }
 }
 
