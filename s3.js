@@ -15,6 +15,7 @@ function setupS3() {
 
 
 async function fetchPhoto(file_name) {
+    console.log(file_name)
     const photo = s3.getObject({
         Bucket: 'ideate-images',
         Key: file_name

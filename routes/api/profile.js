@@ -67,10 +67,9 @@ router.post('/', upload.single('profileImage'), (req, res) => {
                 } else {
                     // If Success
                     fs.unlinkSync(req.file.path); // Empty temp folder
-                    const imageName = req.file.key;
-                    const imageLocation = req.file.location;
+                    const profile_photo_file_name = params.Key
                     // Image uploaded, now add entry in db
-                    addProfile(res, fields, imageLocation)
+                    addProfile(res, fields, profile_photo_file_name)
                 }
             })
 
