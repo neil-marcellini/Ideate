@@ -6,7 +6,7 @@ function setupS3() {
         aws.config.update({
             accessKeyId: process.env.S3_KEY_ID,
             secretAccessKey: process.env.S3_SECRET_KEY,
-            region: process.env.REGION
+            region: process.env.S3_REGION
         });
         s3 = new aws.S3();
     }

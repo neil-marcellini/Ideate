@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { Paper, Slider, Typography, IconButton, 
     Button, ButtonGroup, Chip, Avatar, CircularProgress,
@@ -121,6 +122,7 @@ export default function Idea(props) {
     }
     const [creatingIteration, setCreatingIteration] = useState(false);
     const profile_name = localStorage.getItem("profile_name")
+    const photos = useSelector(state => state.idea.photos)
 
     
 //    useEffect(() => {
@@ -130,6 +132,10 @@ export default function Idea(props) {
 //        setProfilePhoto(image)
 //    }, [idea.profile_photo.data])
 
+    useEffect(() => {
+        const photo_url = photos[idea.profile_photo_file_name]
+        setProfilePhoto(photo_url)
+    }, [idea.profile_photo_file_name])
 
     useEffect(() => {
         if (showSeeLess) {
@@ -225,7 +231,7 @@ export default function Idea(props) {
                     </div>
                 </div>
                 <div className={classes.profile}>
-                    {/*   <Avatar className={classes.profilePic} variant="rounded" src={profilePhoto} /> */}
+                        <Avatar className={classes.profilePic} variant="rounded" src={profilePhoto} /> 
                         <Typography className={classes.profileName} variant="subtitle2">{idea.profile_name}</Typography>
                 </div>
                 <p>{idea.iteration_description}</p>
