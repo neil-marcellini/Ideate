@@ -57,7 +57,7 @@ router.post('/', upload.single('profileImage'), (req, res) => {
                 ACL: 'public-read',
                 Bucket: 'ideate-images',
                 Body: fs.createReadStream(req.file.path),
-                Key: 'profile/' + req.file.originalname + Date.now()
+                Key: 'profile/' + Date.now() + req.file.originalname
             }
 
             s3.upload(params, (err, data) => {
@@ -66,6 +66,7 @@ router.post('/', upload.single('profileImage'), (req, res) => {
                     res.json( { err } );
                 } else {
                     // If Success
+                    fs.unlinkSync(req.file.path); // Empty temp folder
                     const imageName = req.file.key;
                     const imageLocation = req.file.location;
                     // Image uploaded, now add entry in db
