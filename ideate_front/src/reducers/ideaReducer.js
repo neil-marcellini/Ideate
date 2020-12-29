@@ -34,16 +34,6 @@ const getNewIdeas = (replace_idea, i, state) => {
     return new_ideas
 }
 
-const createPhotoURLs = (photos) => {
-    var photo_urls = {}
-    for(const file_name in photos) {
-        const arr = new Uint8Array(photos[file_name])
-        const file = new File([arr], file_name)
-        photo_urls[file_name] = URL.createObjectURL(file)
-    }
-    return photo_urls
-}
-
 export default function(state = initalState, action) {
     switch(action.type) {
         case IDEA_CREATED:
@@ -56,7 +46,7 @@ export default function(state = initalState, action) {
             return {
                 msg: action.payload.msg,
                 ideas: action.payload.ideas,
-                photos: createPhotoURLs(action.payload.photos)
+                photos: action.payload.photos
             }
         case IDEA_ITERATION_RATED:
             // find idea with matching iteration_id

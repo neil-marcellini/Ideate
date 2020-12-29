@@ -14,18 +14,12 @@ function setupS3() {
 }
 
 
-async function fetchPhoto(file_name) {
-    console.log(file_name)
+async function getPhoto(file_name) {
     const photo = s3.getObject({
         Bucket: 'ideate-images',
         Key: file_name
     }).promise()
     return photo
-}
-
-function getPhoto(file_name) {
-    fetchPhoto(file_name)
-        .then((photo) => { return photo})
 }
 
 module.exports = {

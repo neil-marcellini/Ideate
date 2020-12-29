@@ -112,7 +112,7 @@ const afterAveragePotentials = (response, data, err, results) => {
     }
 }
 
-const afterLatestComments = (response, data, err, results) => {
+const afterLatestComments = async (response, data, err, results) => {
     if (err) {
         console.log(err.sqlMessage)
         return response.status(500).json({
@@ -133,15 +133,17 @@ const afterLatestComments = (response, data, err, results) => {
             }
             full_ideas.push(full_idea)
         }
+        const photos = await addPhotos(full_ideas)
+        console.log(photos)
         return response.json({
             msg: "Success",
             ideas: full_ideas,
-            photos: addPhotos(full_ideas)
+            photos
         })
     }
 }
 
-const addPhotos = (full_ideas) => {
+const addPhotos = async (full_ideas) => {
     // make a set to hold all unique file names
     var file_names = new Set() 
     for(let idea of full_ideas) {
@@ -154,7 +156,7 @@ const addPhotos = (full_ideas) => {
     // make a dictionary mapping file names to photos
     var photos = {}
     for (let file_name of file_names) {
-        const photo = getPhoto(file_name)
+        const photo = await getPhoto(file_name)
         photos[file_name] = photo
     }
     return photos
