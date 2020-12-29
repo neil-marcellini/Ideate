@@ -7,6 +7,7 @@ const fs = require('fs')
 router.use(bodyParser.urlencoded({
     extended: true
 }))
+const {s3, getPhoto} = require('../../s3.js')
 
 
 // SET STORAGE
@@ -74,6 +75,7 @@ const afterAllIdeas = (response, err, results) => {
             msg: "Failure"
         })
     } else {
+
         var data = {
             ideas: results
         }
@@ -132,11 +134,30 @@ const afterLatestComments = (response, data, err, results) => {
         }
         return response.json({
             msg: "Success",
-            ideas: full_ideas
+            ideas: full_ideas,
+            photos: addPhotos(full_ideas)
         })
     }
 }
 
+const addPhotos = (full_ideas) => {
+    // make a set to hold all unique file names
+    var file_names = new Set() 
+    for(let idea of full_ideas) {
+        console.log(idea)
+        file_names.add(idea.profile_photo_file_name)
+        for(let comment of idea.comments) {
+            file_names.add(comment.profile_photo_file_name)
+        }
+    }
+    // make a dictionary mapping file names to photos
+    var photos = {}
+    for (let file_name of file_names) {
+        const photo = getPhoto(file_name)
+        photos[file_name] = photo
+    }
+    return photos
+}
 
 
 

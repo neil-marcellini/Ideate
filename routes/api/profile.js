@@ -9,46 +9,20 @@ router.use(bodyParser.urlencoded({
 }))
 var aws = require('aws-sdk')
 var multerS3 = require('multer-s3')
+const {s3, getPhoto} = require('../../s3.js')
 
-
-const s3 = new aws.S3({
-    accessKeyId: process.env.S3_KEY_ID,
-    secretAccessKey: process.env.S3_SECRET_KEY,
-    Bucket: 'ideate-images'
-});/**
-    * Single Upload
-    */
-const profileImgUpload = multer({
-    storage: multerS3({
-        s3: s3,
-        bucket: 'ideate-images',
-        acl: 'publread',
-        key: function (req, file, cb) {
-            cb(null, path.basename( file.originalname, path.extname( file.originalname ) ) + '-' + Date.now() + path.extname( file.originalname ) )
-        }
-    }),
-    limits:{ fileSize: 2000000 }, // In bytes: 2000000 bytes = 2 MB
-    fileFilter: function( req, file, cb ){
-        checkFileType( file, cb );
-    }
-}).single('profileImage');
-
-var storage = multer.diskStorage({
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + '.jpg')
-    }
-})
 
 var upload = multer({
-    storage: storage
+    dest: 'temp/',
+    limits: {fieldSize: 2000000}
 })
 
 /**
-* Check File Type
-* @param file
-* @param cb
-* @return {*}
-*/
+ * Check File Type
+ * @param file
+ * @param cb
+ * @return {*}
+ */
 function checkFileType( file, cb ){
     // Allowed ext
     const filetypes = /jpeg|jpg|png|gif/;
@@ -79,10 +53,17 @@ router.post('/', upload.single('profileImage'), (req, res) => {
             })
         } else {
 
-            profileImgUpload( req, res, ( error ) => {
-                if( error ){
-                    console.log( 'errors', error );
-                    res.json( { error: error } );
+            var params = {
+                ACL: 'public-read',
+                Bucket: 'ideate-images',
+                Body: fs.createReadStream(req.file.path),
+                Key: 'profile/' + req.file.originalname + Date.now()
+            }
+
+            s3.upload(params, (err, data) => {
+                if( err ){
+                    console.log( 'profileImgUpload errors', err );
+                    res.json( { err } );
                 } else {
                     // If Success
                     const imageName = req.file.key;
@@ -90,27 +71,26 @@ router.post('/', upload.single('profileImage'), (req, res) => {
                     // Image uploaded, now add entry in db
                     addProfile(res, fields, imageLocation)
                 }
-            });
-
+            })
 
         }
     });
 });
 
 
-const addProfile = (res, fields, imageLocation) => {
+    const addProfile = (res, fields, imageLocation) => {
 
-    const values = [fields.profileName, fields.userId, fields.profileBio, imageLocation, new Date()]
-    db.query("INSERT INTO Profile VALUES (?, ?, ?, ?, ?);", values, (err, result) => {
-        if (err) {
-            console.log(err.sqlMessage)
-            console.log("error on new profile")
-            return res.status(500)
-        } else {
-            return res.json({
-                profile_name: fields.profileName
-            })
-        }
-    })
-}
-module.exports = router
+        const values = [fields.profileName, fields.userId, fields.profileBio, imageLocation, new Date()]
+        db.query("INSERT INTO Profile VALUES (?, ?, ?, ?, ?);", values, (err, result) => {
+            if (err) {
+                console.log(err.sqlMessage)
+                console.log("error on new profile")
+                return res.status(500)
+            } else {
+                return res.json({
+                    profile_name: fields.profileName
+                })
+            }
+        })
+    }
+    module.exports = router
