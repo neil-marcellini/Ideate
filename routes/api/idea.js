@@ -10,43 +10,45 @@ router.use(bodyParser.urlencoded({
 const {s3, getPhoto} = require('../../s3.js')
 
 
-// SET STORAGE
-var storage = multer.diskStorage({
-    // destination: function (req, file, cb) {
-    //     cb(null, './uploads')
-    // },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + '.jpg')
-    }
-})
-
 var upload = multer({
-    storage: storage
+    dest: 'temp/',
+    limits: {fieldSize: 2000000}
 })
-
-function getImageBuffer(file) {
-    var image = null
-    if (file) {
-        var img = fs.readFileSync(file.path)
-        var encode_image = img.toString('base64')
-        image = new Buffer.from(encode_image, 'base64')
-    }
-    return image
-}
 
 router.post('/', upload.single('topicImage'), (req, res) => {
     const fields = req.body
-    const topicImage = getImageBuffer(req.file)
-    const values = [
-        fields.ideaTitle, 
-        fields.ideaDescription, 
-        fields.potentialDifficulty,
-        fields.potentialBrightness,
-        fields.topicName,
-        topicImage,
-        fields.topicDescription,
-        fields.profileName
-    ]
+    var params = {
+        ACL: 'public-read',
+        Bucket: 'ideate-images',
+        Body: fs.createReadStream(req.file.path),
+        Key: 'topic/' + Date.now() + req.file.originalname
+    }
+
+    s3.upload(params, (err, data) => {
+        if( err ){
+            console.log( 'topicImageUpload errors', err );
+            res.json( { err } );
+        } else {
+            // If Success
+            fs.unlinkSync(req.file.path); // Empty temp folder
+            const topic_photo_file_name = params.Key
+            // Image uploaded, now add entry in db
+            const values = [
+                fields.ideaTitle, 
+                fields.ideaDescription, 
+                fields.potentialDifficulty,
+                fields.potentialBrightness,
+                fields.topicName,
+                topic_photo_file_name,
+                fields.topicDescription,
+                fields.profileName
+            ]
+            addIdea(res, values)
+        }
+    })
+})
+
+const addIdea = (res, values) => {
     db.query("CALL sp_create_idea(?, ?, ?, ?, ?, ?, ?, ?);", values, (err, results) => {
         if (err) {
             console.log(err.sqlMessage)
@@ -60,8 +62,7 @@ router.post('/', upload.single('topicImage'), (req, res) => {
             })
         }
     })
-})
-
+}
 
 
 router.get('/', (req, response) => {
