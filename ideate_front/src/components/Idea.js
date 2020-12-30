@@ -123,12 +123,7 @@ export default function Idea(props) {
     const [creatingIteration, setCreatingIteration] = useState(false);
     const profile_name = localStorage.getItem("profile_name")
     const photos = useSelector(state => state.idea.photos)
-
-    
-
-    useEffect(() => {
-        setProfilePhoto("https://ideate-images.s3.amazonaws.com/" + idea.profile_photo_file_name)
-    }, [idea.profile_photo_file_names])
+    const s3_url_prefix = "https://ideate-images.s3.amazonaws.com/"
 
     useEffect(() => {
         if (showSeeLess) {
@@ -224,7 +219,8 @@ export default function Idea(props) {
                     </div>
                 </div>
                 <div className={classes.profile}>
-                        <Avatar className={classes.profilePic} variant="rounded" src={profilePhoto} /> 
+                        <Avatar className={classes.profilePic} variant="rounded"
+                            src={s3_url_prefix + idea.profile_photo_file_name} /> 
                         <Typography className={classes.profileName} variant="subtitle2">{idea.profile_name}</Typography>
                 </div>
                 <p>{idea.iteration_description}</p>
