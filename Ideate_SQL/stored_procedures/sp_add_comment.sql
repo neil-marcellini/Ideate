@@ -6,8 +6,9 @@ BEGIN
 INSERT INTO Comment
 VALUES (NULL, iteration_id, profile_name, comment_text, NOW());
 /* RETURN comment id that was just added */
-SELECT *
+SELECT Comment.*, Profile.profile_photo_file_name
 FROM Comment
+inner join Profile.profile_name on Comment.profile_name = Profile.profile_name
 ORDER BY comment_id DESC
 LIMIT 1;
 END //

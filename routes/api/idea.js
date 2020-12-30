@@ -93,6 +93,7 @@ const afterLatestIterations = (response, data, err, results) => {
         })
     } else {
         data.iterations = results
+        data.iterations.reverse()
         db.query("SELECT * FROM average_potential_view;", (err, results) => 
             afterAveragePotentials(response, data, err, results))
     }

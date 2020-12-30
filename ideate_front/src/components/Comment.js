@@ -25,7 +25,6 @@ export default function Comment(props) {
     const classes = useStyles()
 
     const s3_url_prefix = "https://ideate-images.s3.amazonaws.com/"
-    const profile_photo = s3_url_prefix + comment.profile_photo_file_name
 
     var datetime = comment.comment_creation
     // Split timestamp into [ Y, M, D, h, m, s ]
@@ -49,7 +48,7 @@ export default function Comment(props) {
     return (
         <div className={classes.container}>
             <div>
-                <Avatar className={classes.profile_photo} variant="rounded" src={profile_photo} />
+                <Avatar className={classes.profile_photo} variant="rounded" src={s3_url_prefix + comment.profile_photo_file_name} />
             </div>
             <div>
                 <p className={classes.nameDate} variant="h6"><b>{comment.comment_profile_name}</b> - {dateDisplay + " at " + timeDisplay}</p>
