@@ -202,7 +202,7 @@ export default function Idea(props) {
                         <Typography variant="subtitle1">Iteration</Typography>
                         <div>
                             <IconButton><IndeterminateCheckBox /></IconButton>
-                            <span>{idea.iteration_id}</span>
+                            <span>{idea.iteration_num}</span>
                             <IconButton onClick={handleModalOpen}><AddBox /></IconButton>
                             <Modal
                                 open={creatingIteration}

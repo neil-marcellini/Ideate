@@ -127,11 +127,20 @@ const afterLatestComments = async (response, data, err, results) => {
         var ideas = data.ideas
         var iteration_comments
         var has_comment
+        var comment_index = 0
         for (index = 0; index < ideas.length; index++) {
             const iteration = data.iterations[index]
-            has_comment = index < comments.length
+            has_comment = comment_index < comments.length
             if (has_comment) {
-                iteration_comments = [comments[index]]
+                potential_comments = comments[comment_index]
+                matches_iteration = potential_comments.iteration_id === iteration.iteration_id
+                if (matches_iteration) {
+                    iteration_comments = [potential_comments]
+                    comment_index += 1
+                }
+                else {
+                    iteration_comments = []
+                }
             }
             else {
                 iteration_comments = []
