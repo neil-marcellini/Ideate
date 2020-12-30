@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Typography, Avatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { deleteComment } from '../actions/ideaActions'
 
 const useStyles = makeStyles({
     container: {
@@ -23,10 +25,11 @@ const useStyles = makeStyles({
 })
 
 export default function Comment(props) {
+    const dispatch = useDispatch()
     const comment = props.comment
     const classes = useStyles()
     const profile_name = localStorage.getItem("profile_name")
-    const [showDelete, setShowDelete] = useState(profile_name === comment.comment_profile_name)
+    const showDelete = profile_name === comment.profile_name
     const s3_url_prefix = "https://ideate-images.s3.amazonaws.com/"
 
     var datetime = comment.comment_creation
@@ -48,6 +51,10 @@ export default function Comment(props) {
     let dateDisplay = utc_date.toLocaleDateString()
     let timeDisplay = utc_date.toLocaleTimeString()
 
+    const onDelete = () => {
+        dispatch(deleteComment(comment))
+    }
+
     return (
         <div className={classes.container} >
             <div>
@@ -55,13 +62,13 @@ export default function Comment(props) {
             </div>
             <div>
                 <p className={classes.nameDate} variant="h6">
-                    <b>{comment.comment_profile_name}</b>
+                    <b>{comment.profile_name}</b>
                     - {dateDisplay + " at " + timeDisplay}
                 </p>
                 <p> {comment.comment_text}</p>
             </div>
             {showDelete &&
-            <IconButton aria-label="delete" color="secondary">
+            <IconButton aria-label="delete" color="secondary" onClick={onDelete} >
                 <DeleteIcon />
             </IconButton> 
             }

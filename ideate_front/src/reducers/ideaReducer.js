@@ -8,7 +8,8 @@ import {
     IDEA_SEE_LESS,
     IDEAS_FOR_TOPIC,
     IDEAS_CLEARED,
-    IDEA_ITERATION_ADDED
+    IDEA_ITERATION_ADDED,
+    IDEA_COMMENT_DELETED
 } from '../actions/types'
 
 const initalState = {
@@ -31,6 +32,17 @@ const getNewIdeas = (replace_idea, i, state) => {
     const new_ideas = [...state.ideas]
     new_ideas.splice(i, 1, replace_idea)
     return new_ideas
+}
+
+const commentWithId = (comment_id, comments) => {
+    var i
+    for (i = 0; i < comments.length; i++) {
+        const comment = comments[i]
+        if (comment.comment_id === comment_id){
+            break
+        }
+    }
+    return i
 }
 
 export default function(state = initalState, action) {
@@ -66,14 +78,26 @@ export default function(state = initalState, action) {
             var new_comment = {
                 ...comment
             }
-            // don't need iteration_id in comments list
-            delete new_comment.iteration_id
             comment_replace_idea.comments.push(new_comment)
             const comment_new_ideas = getNewIdeas(comment_replace_idea, comment_idea_i, state)
             return {
                 msg: action.payload.msg,
                 ideas: comment_new_ideas
             }
+        case IDEA_COMMENT_DELETED:
+            console.log("comment_deleted", action.payload)
+            const delete_comment = action.payload.comment
+            const del_idea_i = ideaWithIteration(delete_comment.iteration_id, state)
+            var idea_to_update = state.ideas[del_idea_i]
+            // remove that comment from the idea's comments list
+            var comment_index = commentWithId(delete_comment.comment_id, idea_to_update.comments)
+            idea_to_update.comments.splice(comment_index, 1)
+            const new_ideas = getNewIdeas(idea_to_update, del_idea_i, state)
+            return {
+                msg: action.payload.msg,
+                ideas: new_ideas
+            }
+            
         case IDEA_ALL_COMMENTS:
             const iteration_comments = action.payload.comments
             const iac_iteration_id = parseInt(action.payload.iteration_id)

@@ -13,9 +13,6 @@ router.post('/', (req, res) => {
             })
         } else {
             const comment = results[0][0]
-            // rename profile_name to comment_profile_name
-            comment.comment_profile_name = comment.profile_name;
-            delete comment.profile_name
             return res.json({
                 msg: "Comment successfully added.",
                 comment
@@ -33,6 +30,27 @@ router.get('/iteration/:id', (req, res) => {
             iteration_id,
             comments
         })
+    })
+})
+
+router.delete('/:comment_id', (req, res) => {
+    const comment_id = req.params.comment_id
+    const comment = req.body
+    console.log("comment on delete backend", comment)
+    const del_comment = "delete from Comment where Comment.comment_id = ?;"
+    db.query(del_comment, comment_id, (err, results) => {
+        if (err) {
+            console.log(err.sqlMessage)
+            return res.status(500).json({
+                msg: "Failure deleting comment"
+            })
+        }
+        else {
+            return res.json({
+                msg: "Comment successfully delted",
+                comment
+            })
+        }
     })
 })
 
