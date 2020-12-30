@@ -124,12 +124,22 @@ const afterLatestComments = async (response, data, err, results) => {
         var full_ideas = []
         var index
         var ideas = data.ideas
+        var iteration_comments
+        var has_comment
         for (index = 0; index < ideas.length; index++) {
+            const iteration = data.iterations[index]
+            has_comment = index < comments.length
+            if (has_comment) {
+                iteration_comments = [comments[index]]
+            }
+            else {
+                iteration_comments = []
+            }
             let full_idea = {
                 ...data.ideas[index],
                 ...data.iterations[index],
                 ...data.potentials[index],
-                comments
+                comments: iteration_comments
             }
             full_ideas.push(full_idea)
         }

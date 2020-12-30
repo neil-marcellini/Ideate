@@ -115,11 +115,8 @@ export default function Idea(props) {
     const [commentsLoading, setCommentsLoading] = useState(false)
     const commentBox = useRef(null)
     const dispatch = useDispatch()
-    const hasComments = idea.comments
-    var showSeeLess = false
-    if (hasComments) {
-        showSeeLess = idea.comments.length > 1
-    }
+    const hasComments = idea.comments.length > 0
+    var showSeeLess = idea.comments.length > 1
     const [creatingIteration, setCreatingIteration] = useState(false);
     const profile_name = localStorage.getItem("profile_name")
     const photos = useSelector(state => state.idea.photos)
@@ -227,12 +224,15 @@ export default function Idea(props) {
                 <br />
                 <hr />
                 <Typography variant="h6">Comments</Typography>
+                {hasComments && 
+                <>
+                    {idea.comments.map((comment) => (
+                        <Comment key={comment.comment_id} comment={comment} />
+                    ))}
+                </>
+                }
                 
-                {/* {idea.comments.map((comment) => (
-                <Comment key={comment.comment_id} comment={comment} />
-                ))} */}
-                
-                {!showSeeLess &&
+                {!showSeeLess && hasComments &&
                 <div className={classes.seeAllSection}>
                     <Button className={classes.seeAll} onClick={onSeeAll}>See All</Button>
                     {commentsLoading &&
@@ -240,6 +240,11 @@ export default function Idea(props) {
                     }
                 </div>
                 }
+
+                {!hasComments &&
+                    <Typography variant="subtitle1"> No one has commented yet. Be the first! </Typography>
+                }
+                
                 {showSeeLess &&
                 <Button className={classes.seeAll} onClick={onSeeLess}>See Less</Button>
                 }

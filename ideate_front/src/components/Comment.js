@@ -24,14 +24,8 @@ export default function Comment(props) {
     const comment = props.comment
     const classes = useStyles()
 
-    const getCommenterPhoto = (profile_photo) => {
-        const arr = new Uint8Array(profile_photo.data)
-        const file = new File([arr], "commenter_profile_photo")
-        const image = URL.createObjectURL(file)
-        return image
-    }
-
-    const profile_photo = getCommenterPhoto(comment.profile_photo)
+    const s3_url_prefix = "https://ideate-images.s3.amazonaws.com/"
+    const profile_photo = s3_url_prefix + comment.profile_photo_file_name
 
     var datetime = comment.comment_creation
     // Split timestamp into [ Y, M, D, h, m, s ]
