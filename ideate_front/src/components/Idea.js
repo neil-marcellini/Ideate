@@ -127,10 +127,6 @@ export default function Idea(props) {
     
 
     useEffect(() => {
-//        const photo = photos[idea.profile_photo_file_name].Body
- //       const arr = new Uint8Array(photo)
-  //      const file = new File([arr], idea.profile_photo_file_name)
-   //     const photo_url = URL.createObjectURL(file)
         setProfilePhoto("https://ideate-images.s3.amazonaws.com/" + idea.profile_photo_file_name)
     }, [idea.profile_photo_file_names])
 

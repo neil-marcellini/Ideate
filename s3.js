@@ -13,16 +13,4 @@ function setupS3() {
     return s3;
 }
 
-
-async function getPhoto(file_name) {
-    const photo = s3.getObject({
-        Bucket: 'ideate-images',
-        Key: file_name
-    }).promise()
-    return photo
-}
-
-module.exports = {
-    s3: setupS3(), 
-    getPhoto
-}
+module.exports = setupS3()

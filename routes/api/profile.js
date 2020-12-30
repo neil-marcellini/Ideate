@@ -8,8 +8,7 @@ router.use(bodyParser.urlencoded({
     extended: true
 }))
 var aws = require('aws-sdk')
-var multerS3 = require('multer-s3')
-const {s3, getPhoto} = require('../../s3.js')
+const s3 = require('../../s3.js')
 
 
 var upload = multer({

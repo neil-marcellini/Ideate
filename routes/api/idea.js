@@ -7,7 +7,7 @@ const fs = require('fs')
 router.use(bodyParser.urlencoded({
     extended: true
 }))
-const {s3, getPhoto} = require('../../s3.js')
+const s3 = require('../../s3.js')
 
 
 var upload = multer({
@@ -133,35 +133,12 @@ const afterLatestComments = async (response, data, err, results) => {
             }
             full_ideas.push(full_idea)
         }
-        const photos = await addPhotos(full_ideas)
-        console.log(photos)
         return response.json({
             msg: "Success",
             ideas: full_ideas,
-            photos
         })
     }
 }
-
-const addPhotos = async (full_ideas) => {
-    // make a set to hold all unique file names
-    var file_names = new Set() 
-    for(let idea of full_ideas) {
-        console.log(idea)
-        file_names.add(idea.profile_photo_file_name)
-        for(let comment of idea.comments) {
-            file_names.add(comment.profile_photo_file_name)
-        }
-    }
-    // make a dictionary mapping file names to photos
-    var photos = {}
-    for (let file_name of file_names) {
-        const photo = await getPhoto(file_name)
-        photos[file_name] = photo
-    }
-    return photos
-}
-
 
 
 // /api/idea/topic/:topic_id

@@ -13,8 +13,7 @@ import {
 
 const initalState = {
     msg: null,
-    ideas: [],
-    photos: null
+    ideas: []
 }
 
 const ideaWithIteration = (iteration_id, state) => {
@@ -45,8 +44,7 @@ export default function(state = initalState, action) {
         case IDEAS_FETCHED:
             return {
                 msg: action.payload.msg,
-                ideas: action.payload.ideas,
-                photos: action.payload.photos
+                ideas: action.payload.ideas
             }
         case IDEA_ITERATION_RATED:
             // find idea with matching iteration_id
@@ -57,7 +55,6 @@ export default function(state = initalState, action) {
             rated_replace_idea.potential_difficulty = action.payload.potential_difficulty
             const rated_new_ideas = getNewIdeas(rated_replace_idea, rated_idea_i, state)
             return {
-                ...state,
                 msg: action.payload.msg,
                 ideas: rated_new_ideas
             }
@@ -74,7 +71,6 @@ export default function(state = initalState, action) {
             comment_replace_idea.comments.push(new_comment)
             const comment_new_ideas = getNewIdeas(comment_replace_idea, comment_idea_i, state)
             return {
-                ...state,
                 msg: action.payload.msg,
                 ideas: comment_new_ideas
             }
@@ -87,7 +83,6 @@ export default function(state = initalState, action) {
             more_comments_idea.comments = iteration_comments
             const updated_ideas = getNewIdeas(more_comments_idea, comment_iteration_i, state)
             return {
-                ...state,
                 msg: action.payload.msg,
                 ideas: updated_ideas
             }
@@ -98,19 +93,16 @@ export default function(state = initalState, action) {
             see_less_idea.comments = [old_comments.pop()]
             const less_idea_comments = getNewIdeas(see_less_idea, see_less_i, state)
             return {
-                ...state,
                 msg: "see less comments on idea",
                 ideas: less_idea_comments
             }
         case IDEAS_FOR_TOPIC:
             return {
-                ...state,
                 msg: action.payload.msg,
                 ideas: action.payload.ideas
             }
         case IDEAS_CLEARED:
             return {
-                ...state,
                 msg: "Ideas cleared",
                 ideas: []
             }
@@ -118,7 +110,6 @@ export default function(state = initalState, action) {
             console.log(action.payload)
             const iterated_ideas = updateIteration(action.payload, state)
             return {
-                ...state,
                 msg: action.payload.msg,
                 ideas: iterated_ideas
             }
