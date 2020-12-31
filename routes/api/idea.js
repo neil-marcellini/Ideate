@@ -122,6 +122,7 @@ const afterLatestComments = async (response, data, err, results) => {
     } else {
         console.log(results)
         var comments = results
+        comments.reverse()
         var full_ideas = []
         var index
         var ideas = data.ideas
