@@ -117,6 +117,7 @@ export default function Idea(props) {
     const dispatch = useDispatch()
     const hasComments = idea.comments.length > 0
     var showSeeLess = idea.comments.length > 1
+    const showSeeAll = idea.total_comments > 1
     const [creatingIteration, setCreatingIteration] = useState(false);
     const profile_name = localStorage.getItem("profile_name")
     const photos = useSelector(state => state.idea.photos)
@@ -223,7 +224,7 @@ export default function Idea(props) {
                 <p>{idea.iteration_description}</p>
                 <br />
                 <hr />
-                <Typography variant="h6">Comments</Typography>
+                <Typography variant="h6">Comments - {idea.total_comments}</Typography>
                 {hasComments && 
                 <>
                     {idea.comments.map((comment) => (
@@ -232,7 +233,7 @@ export default function Idea(props) {
                 </>
                 }
                 
-                {!showSeeLess && hasComments &&
+                {!showSeeLess && hasComments && showSeeAll &&
                 <div className={classes.seeAllSection}>
                     <Button className={classes.seeAll} onClick={onSeeAll}>See All</Button>
                     {commentsLoading &&

@@ -113,6 +113,7 @@ const afterAveragePotentials = (response, data, err, results) => {
     }
 }
 
+
 const afterLatestComments = async (response, data, err, results) => {
     if (err) {
         console.log(err.sqlMessage)
@@ -154,13 +155,45 @@ const afterLatestComments = async (response, data, err, results) => {
             }
             full_ideas.push(full_idea)
         }
+        
+        db.query("select * from latest_iteration_comment_total;", (err, results) =>
+            afterTotalComments(response, full_ideas, err, results))
+    }
+}
+
+const afterTotalComments = (response, full_ideas, err, results) => {
+    if (err) {
+        console.log(err.sqlMessage)
+        return response.status(500).json({
+            msg: "Failure afterTotalComments"
+        })
+    } else {
+        comment_totals = results
+        comment_totals.reverse()
+        console.log("afterTotalComments", comment_totals)
+        var total_index = 0
+        var has_total
+        for (var idea_index = 0; idea_index < full_ideas.length; idea_index++) {
+            var idea = full_ideas[idea_index]
+            has_total = total_index < comment_totals.length
+            idea.total_comments = 0
+            if (has_total) {
+                total_data = comment_totals[total_index]
+                console.log(`total_data.iteration_id = ${total_data.iteration_id}`)
+                console.log(`idea.iteration_id = ${idea.iteration_id}`)
+                if (total_data.iteration_id === idea.iteration_id) {
+                    idea.total_comments = total_data.total
+                    total_index += 1
+                }
+            }
+        }
+
         return response.json({
             msg: "Success",
             ideas: full_ideas,
         })
     }
 }
-
 
 // /api/idea/topic/:topic_id
 
