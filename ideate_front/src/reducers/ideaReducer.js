@@ -75,6 +75,8 @@ export default function(state = initalState, action) {
             // find idea with matching iteration_id
             const comment_idea_i = ideaWithIteration(comment.iteration_id, state)
             var comment_replace_idea = state.ideas[comment_idea_i]
+            // increment number of comments
+            comment_replace_idea.total_comments++ 
             var new_comment = {
                 ...comment
             }
@@ -89,6 +91,7 @@ export default function(state = initalState, action) {
             const delete_comment = action.payload.comment
             const del_idea_i = ideaWithIteration(delete_comment.iteration_id, state)
             var idea_to_update = state.ideas[del_idea_i]
+            idea_to_update.total_comments--
             // remove that comment from the idea's comments list
             var comment_index = commentWithId(delete_comment.comment_id, idea_to_update.comments)
             idea_to_update.comments.splice(comment_index, 1)
