@@ -10,7 +10,8 @@ import {
     IDEAS_FOR_TOPIC,
     IDEAS_CLEARED,
     IDEA_ITERATION_ADDED,
-    IDEA_COMMENT_DELETED
+    IDEA_COMMENT_DELETED,
+    IDEA_LATEST_COMMENT
 } from './types'
 
 
@@ -61,6 +62,14 @@ export const deleteComment = (comment) =>  dispatch => {
     axios.delete(`/api/comment/${comment_id}`, { data: comment })
         .then(res => dispatch({
             type: IDEA_COMMENT_DELETED,
+            payload: res.data
+        }))
+}
+
+export const fetchLatestComment = (iteration_id) =>  dispatch => {
+    axios.get(`/api/comment/iteration/${iteration_id}/latest`)
+        .then(res => dispatch({
+            type: IDEA_LATEST_COMMENT,
             payload: res.data
         }))
 }

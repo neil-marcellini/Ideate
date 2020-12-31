@@ -54,4 +54,25 @@ router.delete('/:comment_id', (req, res) => {
     })
 })
 
+// get the latest comment for this iteration
+router.get('/iteration/:iteration_id/latest', (req, res) => {
+    const iteration_id = req.params.iteration_id
+    db.query("CALL sp_iteration_comments(?);", iteration_id, (err, results) => {
+        if (err) {
+            console.log(err.sqlMessage)
+            return res.status(500).json({
+                msg: "Failure iteration latest comment"
+            })
+        }
+        else {
+            const comment = results[0][0]
+            return res.json({
+                msg: "iteration latest comment fetched",
+                comment
+            })
+        }
+        
+    })
+})
+
 module.exports = router

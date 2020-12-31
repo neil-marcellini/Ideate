@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux'
 import Potential from './Potential';
 import AveragePotential from './AveragePotential'
-import { rate, addComment, seeMore, seeLess } from '../actions/ideaActions'
+import { rate, addComment, seeMore, seeLess, fetchLatestComment } from '../actions/ideaActions'
 import Comment from './Comment'
 import NewIteration from './NewIteration'
 
@@ -128,6 +128,18 @@ export default function Idea(props) {
             setCommentsLoading(false)
         }
     }, [showSeeLess])
+
+    useEffect(() => {
+        let comments_empty = idea.comments.length === 0
+        let more_comments = idea.total_comments > 0
+        let fetch_latest_comment = comments_empty && more_comments
+        console.log("comments_empty = ", comments_empty)
+        console.log("more_comments = ", more_comments)
+        if (fetch_latest_comment) {
+            console.log("fetchingLatestComment")
+            dispatch(fetchLatestComment(idea.iteration_id))
+        }
+    }, [idea.comments, idea.total_comments])
 
     const onRate = () => {
         setIsRating(true)

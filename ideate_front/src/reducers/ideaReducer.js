@@ -9,7 +9,8 @@ import {
     IDEAS_FOR_TOPIC,
     IDEAS_CLEARED,
     IDEA_ITERATION_ADDED,
-    IDEA_COMMENT_DELETED
+    IDEA_COMMENT_DELETED,
+    IDEA_LATEST_COMMENT
 } from '../actions/types'
 
 const initalState = {
@@ -99,6 +100,15 @@ export default function(state = initalState, action) {
             return {
                 msg: action.payload.msg,
                 ideas: new_ideas
+            }
+        case IDEA_LATEST_COMMENT:
+            const new_latest_comment = action.payload.comment
+            const latest_comment_i = ideaWithIteration(new_latest_comment.iteration_id, state)
+            var latest_comment_idea = state.ideas[latest_comment_i]
+            latest_comment_idea.comments.push(new_latest_comment)
+            return {
+                msg: action.payload.msg,
+                ideas: getNewIdeas(latest_comment_idea, latest_comment_i, state) 
             }
             
         case IDEA_ALL_COMMENTS:
