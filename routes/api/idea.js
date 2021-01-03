@@ -66,25 +66,10 @@ const addIdea = (res, values) => {
 
 
 router.get('/', (req, response) => {
-    db.query("SELECT * FROM all_ideas_view;", (err, results) => afterAllIdeas(response, err, results))
+    db.query("SELECT * FROM latest_iterations_view;", (err, results) => afterLatestIterations(response, err, results))
 })
-const afterAllIdeas = (response, err, results) => {
-    if (err) {
-        console.log(err.sqlMessage)
-        console.log("error after all ideas")
-        return response.status(500).json({
-            msg: "Failure"
-        })
-    } else {
 
-        var data = {
-            ideas: results
-        }
-        db.query("SELECT * FROM latest_iterations_view;", (err, results) => afterLatestIterations(response, data, err, results))
-    }
-}
-
-const afterLatestIterations = (response, data, err, results) => {
+const afterLatestIterations = (response, err, results) => {
     if (err) {
         console.log(Object.keys(err))
         console.log("error afterLatestIterations")
@@ -92,8 +77,9 @@ const afterLatestIterations = (response, data, err, results) => {
             msg: "Failure"
         })
     } else {
-        data.iterations = results
-        data.iterations.reverse()
+        var data = {
+            iterations: results
+        }
         db.query("SELECT * FROM average_potential_view;", (err, results) => 
             afterAveragePotentials(response, data, err, results))
     }
@@ -126,11 +112,11 @@ const afterLatestComments = async (response, data, err, results) => {
         comments.reverse()
         var full_ideas = []
         var index
-        var ideas = data.ideas
+        var iterations = data.iterations
         var iteration_comments
         var has_comment
         var comment_index = 0
-        for (index = 0; index < ideas.length; index++) {
+        for (index = 0; index < iterations.length; index++) {
             const iteration = data.iterations[index]
             has_comment = comment_index < comments.length
             if (has_comment) {
@@ -148,7 +134,6 @@ const afterLatestComments = async (response, data, err, results) => {
                 iteration_comments = []
             }
             let full_idea = {
-                ...data.ideas[index],
                 ...data.iterations[index],
                 ...data.potentials[index],
                 comments: iteration_comments

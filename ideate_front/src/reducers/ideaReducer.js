@@ -145,7 +145,7 @@ export default function(state = initalState, action) {
             }
         case IDEA_ITERATION_ADDED:
             console.log(action.payload)
-            const iterated_ideas = updateIteration(action.payload, state)
+            const iterated_ideas = updateIteration(action.payload.iteration, state)
             return {
                 msg: action.payload.msg,
                 ideas: iterated_ideas
@@ -157,7 +157,7 @@ export default function(state = initalState, action) {
 
 
 const updateIteration = (iteration, state) => {
-    const idea_index = state.ideas.findIndex(idea => idea.idea_id = iteration.idea_id)
+    const idea_index = state.ideas.findIndex(idea => idea.idea_id == iteration.idea_id)
     var update_idea = state.ideas[idea_index]
     update_idea.potential_difficulty = iteration.potential_difficulty
     update_idea.potential_brightness = iteration.potential_brightness

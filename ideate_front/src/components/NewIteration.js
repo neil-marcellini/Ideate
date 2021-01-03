@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Paper, Typography, Button, Slider } from '@material-ui/core'
 import './NewIteration.css'
 import Potential from './Potential'
 import { newIteration } from '../actions/ideaActions'
 
-export default class NewIteration extends Component {
+class NewIteration extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -27,7 +28,6 @@ export default class NewIteration extends Component {
 
     onSave = () => {
         //dispatch
-        const dispatch = this.props.dispatch
         const state = this.state
         const idea_id = this.props.idea_id
         const profile_name = this.props.profile_name
@@ -36,8 +36,8 @@ export default class NewIteration extends Component {
             idea_id,
             profile_name
         }               
-        dispatch(newIteration(data))
-        this.props.onCancel()
+        this.props.newIteration(data)
+        this.props.close()
     }
 
     render() {
@@ -54,8 +54,8 @@ export default class NewIteration extends Component {
                     <br />
                     <br />
                     <div className="actionButtons">
-                        <Button variant="contained" color="primary">Save</Button>
-                        <Button variant="contained">Cancel</Button>
+                        <Button variant="contained" color="primary" onClick={this.onSave}>Save</Button>
+                        <Button variant="contained" onClick={this.props.close}>Cancel</Button>
                     </div>
                 </div>
                 <div className="rightColumn">
@@ -80,3 +80,7 @@ export default class NewIteration extends Component {
     }
 }
 
+const mapDispatchToProps = {
+    newIteration
+}
+export default connect(null, mapDispatchToProps) (NewIteration)

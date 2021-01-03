@@ -223,7 +223,9 @@ export default function Idea(props) {
                                 aria-labelledby="New Iteration"
                                 aria-describedby="Create a new iteration of this idea"
                             >
-                                <NewIteration idea_title={idea.idea_name} />
+                                <NewIteration idea_title={idea.idea_name} close={handleModalClose} 
+                                    idea_id={idea.idea_id} profile_name={profile_name}
+                                />
                             </Modal>
                         </div>
                     </div>
@@ -309,3 +311,4 @@ export default function Idea(props) {
         </Paper>
     )
 }
+
