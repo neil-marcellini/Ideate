@@ -39,7 +39,7 @@ const useStyles = makeStyles({
         marginLeft: "3rem",
         width: "fit-content",
         display: "grid",
-        gridTemplateRows: "auto auto",
+        gridTemplateRows: "auto auto auto",
         justifyItems: "center"
     },
     HStack: {
@@ -107,7 +107,6 @@ const useStyles = makeStyles({
 export default function Idea(props) {
     const idea = props.idea
     const classes = useStyles()
-    const [profilePhoto, setProfilePhoto] = useState(null)
     const [isRating, setIsRating] = useState(false)
     const [potential_difficulty, setPotentialDifficulty] = useState(idea.potential_difficulty)
     const [potential_brightness, setPotentialBrightness] = useState(idea.potential_brightness)
@@ -120,8 +119,8 @@ export default function Idea(props) {
     const showSeeAll = idea.total_comments > 1
     const [creatingIteration, setCreatingIteration] = useState(false);
     const profile_name = localStorage.getItem("profile_name")
-    const photos = useSelector(state => state.idea.photos)
     const s3_url_prefix = "https://ideate-images.s3.amazonaws.com/"
+    var add_iter_disabled = profile_name !== idea.profile_name && idea.iteration_num + 1 === idea.total_iterations
 
     useEffect(() => {
         if (showSeeLess) {
@@ -139,7 +138,7 @@ export default function Idea(props) {
             console.log("fetchingLatestComment")
             dispatch(fetchLatestComment(idea.iteration_id))
         }
-    }, [idea.comments, idea.total_comments])
+    }, [idea.comments, idea.total_comments, idea.iteration_id, dispatch])
 
     const onRate = () => {
         setIsRating(true)
@@ -203,6 +202,18 @@ export default function Idea(props) {
     const handleModalClose = () => {
         setCreatingIteration(false)
     }
+    
+    const plusIteration = () => {
+        let has_another_iter = idea.iteration_num + 1 < idea.total_iterations
+        console.log("has_another_iter = ", has_another_iter)
+        if (has_another_iter) {
+            dispatch(nextIteration(idea.idea_id, idea.iteration_num + 1))
+        }
+        else {
+            handleModalOpen()
+        }
+
+    }
 
     const minusIteration = () => {
         let has_lower_iter = idea.iteration_num > 0
@@ -222,7 +233,7 @@ export default function Idea(props) {
                         <div>
                             <IconButton onClick={minusIteration}><IndeterminateCheckBox /></IconButton>
                             <span>{idea.iteration_num}</span>
-                            <IconButton onClick={handleModalOpen}><AddBox /></IconButton>
+                            <IconButton onClick={plusIteration} disabled={add_iter_disabled}><AddBox /></IconButton>
                             <Modal
                                 open={creatingIteration}
                                 onClose={handleModalClose}
