@@ -80,6 +80,20 @@ const afterLatestIterations = (response, err, results) => {
         var data = {
             iterations: results
         }
+        db.query("select * from total_iterations_view;", (err, results) => 
+            afterTotalIterations(response, data, err, results))
+    }
+}
+
+const afterTotalIterations = (response, data, err, results) => {
+    if (err) {
+        console.log(err)
+        console.log("error afterTotalIterations")
+        return response.status(500).json({
+            msg: "Failure"
+        })
+    } else {
+        data.total_iterations = results
         db.query("SELECT * FROM average_potential_view;", (err, results) => 
             afterAveragePotentials(response, data, err, results))
     }
@@ -135,6 +149,7 @@ const afterLatestComments = async (response, data, err, results) => {
             }
             let full_idea = {
                 ...data.iterations[index],
+                ...data.total_iterations[index],
                 ...data.potentials[index],
                 comments: iteration_comments
             }
