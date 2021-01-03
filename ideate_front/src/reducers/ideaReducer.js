@@ -10,7 +10,8 @@ import {
     IDEAS_CLEARED,
     IDEA_ITERATION_ADDED,
     IDEA_COMMENT_DELETED,
-    IDEA_LATEST_COMMENT
+    IDEA_LATEST_COMMENT,
+    IDEA_NEXT_ITERATION
 } from '../actions/types'
 
 const initalState = {
@@ -145,10 +146,16 @@ export default function(state = initalState, action) {
             }
         case IDEA_ITERATION_ADDED:
             console.log(action.payload)
-            const iterated_ideas = updateIteration(action.payload.iteration, state)
+            const iterated_ideas = updateNewIteration(action.payload.iteration, state)
             return {
                 msg: action.payload.msg,
                 ideas: iterated_ideas
+            }
+        case IDEA_NEXT_ITERATION:
+            const next_iteration = action.payload.iteration
+            return {
+                msg:action.payload.msg,
+                ideas: nextIteration(next_iteration, state)
             }
         default:
             return state
@@ -156,13 +163,20 @@ export default function(state = initalState, action) {
 }
 
 
-const updateIteration = (iteration, state) => {
-    const idea_index = state.ideas.findIndex(idea => idea.idea_id == iteration.idea_id)
+const updateNewIteration = (iteration, state) => {
+    const idea_index = state.ideas.findIndex(idea => idea.idea_id === iteration.idea_id)
     var update_idea = state.ideas[idea_index]
     update_idea.potential_difficulty = iteration.potential_difficulty
     update_idea.potential_brightness = iteration.potential_brightness
     update_idea.iteration_id = iteration.iteration_id
     update_idea.iteration_description = iteration.iteration_description
+    return getNewIdeas(update_idea, idea_index, state)
+}
+
+const nextIteration = (iteration, state) => {
+    const idea_index = state.ideas.findIndex(idea => idea.idea_id === iteration.idea_id)
+    var update_idea = state.ideas[idea_index]
+    update_idea = Object.assign(update_idea, iteration)
     return getNewIdeas(update_idea, idea_index, state)
 }
 

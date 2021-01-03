@@ -38,12 +38,63 @@ router.get('/:idea_id/latest', (req, res) => {
             })
         } else {
             const iteration = results[0]
-            console.log(iteration)
             return res.json({
                 iteration
             })
         }
     })
 })
+
+// api/iteration/:idea_id/:iteration_num
+// get all the iteration data for a given idea_id and iteration_num
+router.get('/:idea_id/:iteration_num', (req, res) => {
+    const idea_id = req.params.idea_id
+    const iteration_num = req.params.iteration_num
+    db.query("call sp_next_iteration(?, ?);", [idea_id, iteration_num], (err, results) => {
+        afterNextIteration(res, err, results)
+    })
+})
+
+const afterNextIteration = (res, err, results) => {
+        if (err) {
+            console.log(err.sqlMessage)
+            return res.status(500).json({
+                msg: "Failure nextIteration"
+            })
+        } else {
+            const iteration = results[0][0]
+            let iteration_id = iteration.iteration_id
+            latest_comment_query = `
+                select *
+                from Comment
+                where Comment.iteration_id = ?
+                order by Comment.comment_creation desc
+                limit 1;
+            `
+            db.query(latest_comment_query, [iteration_id], (err, results) => {
+                afterLatestIterComment(res, err, iteration, results)
+            })
+        }
+}
+
+const afterLatestIterComment = (res, err, iteration, results) => {
+        if (err) {
+            console.log(err.sqlMessage)
+            return res.status(500).json({
+                msg: "Failure afterLatestIterComment"
+            })
+        } else {
+            console.log("afterLatestIterComment", results)
+            let has_comments = results.length > 0
+            var comments = []
+            if (has_comments) {
+                comments.push(results[0])
+            }
+            iteration.comments = comments
+            return res.json({
+                iteration
+            })
+        }
+}
 
 module.exports = router

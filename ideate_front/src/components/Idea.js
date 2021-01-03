@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux'
 import Potential from './Potential';
 import AveragePotential from './AveragePotential'
-import { rate, addComment, seeMore, seeLess, fetchLatestComment } from '../actions/ideaActions'
+import { rate, addComment, seeMore, seeLess, fetchLatestComment, nextIteration } from '../actions/ideaActions'
 import Comment from './Comment'
 import NewIteration from './NewIteration'
 
@@ -204,6 +204,12 @@ export default function Idea(props) {
         setCreatingIteration(false)
     }
 
+    const minusIteration = () => {
+        let has_lower_iter = idea.iteration_num > 0
+        if (has_lower_iter) {
+            dispatch(nextIteration(idea.idea_id, idea.iteration_num - 1))
+        }
+    }
 
     return (
         <Paper className={classes.paper}>
@@ -214,7 +220,7 @@ export default function Idea(props) {
                     <div className={classes.iteration}>
                         <Typography variant="subtitle1">Iteration</Typography>
                         <div>
-                            <IconButton><IndeterminateCheckBox /></IconButton>
+                            <IconButton onClick={minusIteration}><IndeterminateCheckBox /></IconButton>
                             <span>{idea.iteration_num}</span>
                             <IconButton onClick={handleModalOpen}><AddBox /></IconButton>
                             <Modal

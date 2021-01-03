@@ -11,7 +11,8 @@ import {
     IDEAS_CLEARED,
     IDEA_ITERATION_ADDED,
     IDEA_COMMENT_DELETED,
-    IDEA_LATEST_COMMENT
+    IDEA_LATEST_COMMENT,
+    IDEA_NEXT_ITERATION
 } from './types'
 
 
@@ -112,4 +113,11 @@ export const newIteration = (data) => dispatch => {
     }))
 }
 
+export const nextIteration = (idea_id, iteration_num) => dispatch => {
+    axios.get(`/api/iteration/${idea_id}/${iteration_num}`)
+    .then(res => dispatch({
+        type: IDEA_NEXT_ITERATION,
+        payload: res.data
+    }))
+}
 
