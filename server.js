@@ -2,7 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const path = require('path')
 require('dotenv').config();
-
+const cors = require('cors')  // allows/disallows cross-site communication
 
 const jwt_secret_key = process.env.JWT_SECRET_KEY
 
@@ -13,6 +13,20 @@ const PORT = process.env.PORT || 5000;
 const buildPath = path.join(__dirname, './ideate_front/build');
 app.use(express.static(buildPath));
 
+const whitelist = ['http://localhost:3000', 'http://localhost:5000', 'https://pacific-mesa-86012.herokuapp.com']
+const corsOptions = {
+  origin: function (origin, callback) {
+    console.log("** Origin of request " + origin)
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      console.log("Origin acceptable")
+      callback(null, true)
+    } else {
+      console.log("Origin rejected")
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+app.use(cors(corsOptions))
 
 // routes
 app.use('/api/users', require('./routes/api/users'))
