@@ -28,4 +28,4 @@ app.use('/api/iteration', require('./routes/api/iteration'))
 app.use(morgan('combined'))
 
 
-app.listen(PORT, () => console.log(`server started on port ${port}`))
+app.listen(PORT, () => console.log(`server started on port ${PORT}`))
