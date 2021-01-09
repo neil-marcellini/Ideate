@@ -8,15 +8,10 @@ const jwt_secret_key = process.env.JWT_SECRET_KEY
 
 const app = express()
 app.use(express.json())
+const PORT = process.env.PORT || 5000;
 
-if (process.env.NODE_ENV === 'production') {
-    // Serve static files from the React app
-    app.use(express.static(path.join(__dirname, './ideate_front/build')))
-    // Handle React routing, return all requests to React app
-    app.get('*', function(req, res) {
-      res.sendFile(path.join(__dirname, './ideate_front/build', 'index.html'));
-    });
-  }
+const buildPath = path.join(__dirname, './ideate_front/build');
+app.use(express.static(buildPath));
 
 
 // routes
@@ -33,10 +28,4 @@ app.use('/api/iteration', require('./routes/api/iteration'))
 app.use(morgan('combined'))
 
 
-let port = process.env.PORT
-if (port == null || port == ""){
-    port = 5000;
-}
-
-
-app.listen(port, () => console.log(`server started on port ${port}`))
+app.listen(PORT, () => console.log(`server started on port ${port}`))
