@@ -4,6 +4,8 @@ const db = require('../../db')
 
 router.post('/', (req, res) => {
     const data = req.body
+    console.log("comment.js data = ", data)
+    console.log("comment.js req.data = ", req.data)
     const values = Object.values(data)
     db.query("CALL sp_add_comment(?, ?, ?);", values, (err, results) => {
         if (err) {
@@ -21,8 +23,8 @@ router.post('/', (req, res) => {
     })
 })
 
-router.get('/iteration/:id', (req, res) => {
-    const iteration_id = req.params.id
+router.post('/iteration/all', (req, res) => {
+    const iteration_id = req.body
     db.query("CALL sp_iteration_comments(?);", iteration_id, (err, results) => {
         const comments = results[0]
         return res.json({
@@ -33,9 +35,9 @@ router.get('/iteration/:id', (req, res) => {
     })
 })
 
-router.delete('/:comment_id', (req, res) => {
-    const comment_id = req.params.comment_id
-    const comment = req.body
+router.delete('/', (req, res) => {
+    const comment_id = req.body.comment_id
+    const comment = req.body.comment
     console.log("comment on delete backend", comment)
     const del_comment = "delete from Comment where Comment.comment_id = ?;"
     db.query(del_comment, comment_id, (err, results) => {
@@ -55,8 +57,8 @@ router.delete('/:comment_id', (req, res) => {
 })
 
 // get the latest comment for this iteration
-router.get('/iteration/:iteration_id/latest', (req, res) => {
-    const iteration_id = req.params.iteration_id
+router.post('/iteration/latest', (req, res) => {
+    const iteration_id = req.body
     db.query("CALL sp_iteration_comments(?);", iteration_id, (err, results) => {
         if (err) {
             console.log(err.sqlMessage)

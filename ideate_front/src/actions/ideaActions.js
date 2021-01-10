@@ -1,4 +1,4 @@
-import axios from 'axios'
+import {postOptions, postFormOptions} from '../fetch_config'
 import { 
     IDEA_CREATED, 
     IDEA_FAIL, 
@@ -17,69 +17,91 @@ import {
 
 
 export const createIdea = (formData) => dispatch => {
-    axios.post('/api/idea', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-    })
-    .then(res => dispatch({
-        type: IDEA_CREATED,
-        payload: res.data
-    }))
-    .catch(err => {
-        dispatch({
-            type: IDEA_FAIL,
-            payload: err.response.data
+    var create_form_options = postFormOptions
+    create_form_options.body = formData
+    fetch('/api/idea', create_form_options)
+        .then(res => {
+            if (!res.ok) {
+                dispatch({
+                    type: IDEA_FAIL,
+                    payload: res.statusText
+                })
+            }
+            else {
+                res = res.json()
+                    .then(data => dispatch({
+                        type: IDEA_CREATED,
+                        payload: data
+                    }))
+            }
         })
-    })
 }
 
 export const getAllIdeas = () => dispatch => {
-    axios.get('/api/idea')
-        .then(res => dispatch({
+    fetch('/api/idea')
+        .then(res => res.json())
+        .then(data => dispatch({
             type: IDEAS_FETCHED,
-            payload: res.data
+            payload: data
         }))
 }
 
 export const rate = (data) => dispatch => {
-    axios.post('/api/potential', data)
-        .then(res => dispatch({
+    const rate_post_options = postOptions
+    rate_post_options.body = JSON.stringify(data)
+    fetch('/api/potential', data)
+        .then(res => res.json())
+        .then(data => dispatch({
             type: IDEA_ITERATION_RATED,
-            payload: res.data
+            payload: data
         }))
 }
 
 export const addComment = (data) =>  dispatch => {
-    axios.post('/api/comment', data)
-        .then(res => dispatch({
+    console.log("addComment data =", data)
+    var comment_post_options = postOptions
+    comment_post_options.body = JSON.stringify(data)
+    console.log("addComment options = ", comment_post_options)
+    fetch('/api/comment', comment_post_options)
+        .then(res => res.json())
+        .then(data => dispatch({
             type: IDEA_COMMENT_ADDED,
-            payload: res.data
+            payload: data
         }))
 }
 
 export const deleteComment = (comment) =>  dispatch => {
     const comment_id = comment.comment_id
-    axios.delete(`/api/comment/${comment_id}`, { data: comment })
-        .then(res => dispatch({
+    var delete_options = postOptions
+    delete_options.method = "DELETE"
+    delete_options.body = JSON.stringify({comment, comment_id})
+    fetch("/api/comment", delete_options)
+        .then(res => res.json())
+        .then(data => dispatch({
             type: IDEA_COMMENT_DELETED,
-            payload: res.data
+            payload: data
         }))
 }
 
 export const fetchLatestComment = (iteration_id) =>  dispatch => {
-    axios.get(`/api/comment/iteration/${iteration_id}/latest`)
-        .then(res => dispatch({
+    var latest_comment_options = postOptions
+    latest_comment_options.body = JSON.stringify(iteration_id)
+    fetch(`/api/comment/iteration/latest`, latest_comment_options)
+        .then(res => res.json())
+        .then(data => dispatch({
             type: IDEA_LATEST_COMMENT,
-            payload: res.data
+            payload: data
         }))
 }
 
 export const seeMore = (iteration_id) => dispatch => {
-    axios.get(`/api/comment/iteration/${iteration_id}`)
-        .then(res => dispatch({
+    var all_comment_options = postOptions
+    all_comment_options.body = JSON.stringify(iteration_id)
+    fetch(`/api/comment/iteration/all`, all_comment_options)
+        .then(res => res.json())
+        .then(data => dispatch({
             type: IDEA_ALL_COMMENTS,
-            payload: res.data
+            payload: data
         }))
 }
 
@@ -91,10 +113,11 @@ export const seeLess = (idea) => dispatch => {
 }
 
 export const getTopicIdeas = (topic_id) => dispatch => {
-    axios.get(`/api/idea/topic/${topic_id}`)
-        .then(res => dispatch({
+    fetch(`/api/idea/topic/${topic_id}`)
+        .then(res => res.json())
+        .then(data => dispatch({
             type: IDEAS_FOR_TOPIC,
-            payload: res.data
+            payload: data
         }))
 }
 
@@ -106,18 +129,22 @@ export const clearIdeas = () => dispatch => {
 
 
 export const newIteration = (data) => dispatch => {
-    axios.post("/api/iteration/", data)
-    .then(res => dispatch({
-        type: IDEA_ITERATION_ADDED,
-        payload: res.data
-    }))
+    const iter_post_options = postOptions
+    iter_post_options.body = JSON.stringify(data)
+    fetch("/api/iteration/", iter_post_options)
+        .then(res => res.json())
+        .then(data => dispatch({
+            type: IDEA_ITERATION_ADDED,
+            payload: data
+        }))
 }
 
 export const nextIteration = (idea_id, iteration_num) => dispatch => {
-    axios.get(`/api/iteration/${idea_id}/${iteration_num}`)
-    .then(res => dispatch({
-        type: IDEA_NEXT_ITERATION,
-        payload: res.data
-    }))
+    fetch(`/api/iteration/${idea_id}/${iteration_num}`)
+        .then(res => res.json())
+        .then(data => dispatch({
+            type: IDEA_NEXT_ITERATION,
+            payload: data
+        }))
 }
 

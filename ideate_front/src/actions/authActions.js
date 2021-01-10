@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { returnErrors, clearErrors } from './errorActions'
+import { postOptions } from '../fetch_config'
 
 import {
     USER_LOADED,
@@ -20,68 +20,78 @@ export const loadUser = () => (dispatch, getState) => {
     })
 
 
-    axios.get('/api/auth/user', tokenConfig(getState))
-    .then(res => dispatch({
-        type: USER_LOADED,
-        payload: res.data
-    }))
-    .catch(err => {
-        console.log("autActions err")
-        console.log(err)
-        dispatch(returnErrors(err.response.data, err.response.status))
-        dispatch({
-            type: AUTH_ERROR
+    fetch('/api/auth/user', tokenConfig(getState))
+        .then(res => {
+            if (!res.ok) {
+                console.log("autActions err")
+                console.log(res.statusText)
+                dispatch(returnErrors(res.statusText, res.status))
+                dispatch({
+                    type: AUTH_ERROR
+                })
+            }
+            else {
+                res = res.json()
+                    .then(data => dispatch({
+                        type: USER_LOADED,
+                        payload: data
+                    }))
+            }
         })
-    })
 }
 
 // sign up user
 
 export const signUp = ({email, password}) => dispatch => {
-    const config = {
-        headers: {
-            'Content-type': 'application/json'
-        }
-    }
 
     const body = JSON.stringify({email, password})
-    axios.post('/api/users', body, config)
-    .then(res => dispatch({
-        type: SIGNUP_SUCCESS,
-        payload: res.data
-    }))
-    .catch(err => {
-        dispatch(
-            returnErrors(err.response.data, err.response.status, 'SIGNUP_FAIL')
-        )
-        dispatch({
-            type: SIGNUP_FAIL
+    var user_post_options = postOptions
+    user_post_options.body = body
+    fetch('/api/users', user_post_options)
+        .then(res => {
+            if (!res.ok) {
+                dispatch(
+                    returnErrors(res.statusText, res.status, 'SIGNUP_FAIL')
+                )
+                dispatch({
+                    type: SIGNUP_FAIL
+                })
+            }
+            else {
+                res = res.json()
+                    .then(data => dispatch({
+                        type: SIGNUP_SUCCESS,
+                        payload: data
+                    }))
+            }
         })
-    })
 }
 
 // login user
 export const logIn = ({email, password}) => dispatch => {
-    const config = {
-        headers: {
-            'Content-type': 'application/json'
-        }
-    }
 
     const body = JSON.stringify({email, password})
-    axios.post('/api/auth', body, config)
-    .then(res => dispatch({
-        type: LOGIN_SUCCESS,
-        payload: res.data
-    }))
-    .catch(err => {
-        dispatch(
-            returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL')
-        )
-        dispatch({
-            type: LOGIN_FAIL
+    var auth_post_options = postOptions
+    auth_post_options.body = body
+    fetch('/api/auth', auth_post_options)
+        .then(res => {
+            if (!res.ok) {
+                dispatch(
+                    returnErrors(res.statusText, res.status, 'LOGIN_FAIL')
+                )
+                dispatch({
+                    type: LOGIN_FAIL
+                })
+            }
+            else {
+                res = res.json()
+                    .then(data => dispatch({
+                        type: LOGIN_SUCCESS,
+                        payload: data
+                    }))
+            }
+            
         })
-    })
 }
 
 export const logOut = (dispatch) => {
