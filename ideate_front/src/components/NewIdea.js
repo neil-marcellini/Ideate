@@ -89,6 +89,7 @@ export default function NewIdea() {
     const filter = createFilterOptions();
     const topic = useSelector(state => state.topic)
     const profileName = useSelector(state => state.profile.profile_name)
+    console.log("NewIdea profileName = ", profileName)
     
 
     

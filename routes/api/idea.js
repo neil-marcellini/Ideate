@@ -80,6 +80,7 @@ const afterLatestIterations = (response, err, results) => {
         var data = {
             iterations: results
         }
+        console.log("afterLatestIterations data = ", data)
         db.query("select * from total_iterations_view;", (err, results) => 
             afterTotalIterations(response, data, err, results))
     }

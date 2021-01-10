@@ -45,7 +45,7 @@ export const loadUser = () => (dispatch, getState) => {
 export const signUp = ({email, password}) => dispatch => {
 
     const body = JSON.stringify({email, password})
-    var user_post_options = postOptions
+    var user_post_options = postOptions()
     user_post_options.body = body
     fetch('/api/users', user_post_options)
         .then(res => {
@@ -71,7 +71,7 @@ export const signUp = ({email, password}) => dispatch => {
 export const logIn = ({email, password}) => dispatch => {
 
     const body = JSON.stringify({email, password})
-    var auth_post_options = postOptions
+    var auth_post_options = postOptions()
     auth_post_options.body = body
     fetch('/api/auth', auth_post_options)
         .then(res => {

@@ -17,7 +17,7 @@ import {
 
 
 export const createIdea = (formData) => dispatch => {
-    var create_form_options = postFormOptions
+    var create_form_options = postFormOptions()
     create_form_options.body = formData
     fetch('/api/idea', create_form_options)
         .then(res => {
@@ -47,7 +47,7 @@ export const getAllIdeas = () => dispatch => {
 }
 
 export const rate = (data) => dispatch => {
-    const rate_post_options = postOptions
+    const rate_post_options = postOptions()
     rate_post_options.body = JSON.stringify(data)
     fetch('/api/potential', data)
         .then(res => res.json())
@@ -59,7 +59,7 @@ export const rate = (data) => dispatch => {
 
 export const addComment = (data) =>  dispatch => {
     console.log("addComment data =", data)
-    var comment_post_options = postOptions
+    var comment_post_options = postOptions()
     comment_post_options.body = JSON.stringify(data)
     console.log("addComment options = ", comment_post_options)
     fetch('/api/comment', comment_post_options)
@@ -72,7 +72,7 @@ export const addComment = (data) =>  dispatch => {
 
 export const deleteComment = (comment) =>  dispatch => {
     const comment_id = comment.comment_id
-    var delete_options = postOptions
+    var delete_options = postOptions()
     delete_options.method = "DELETE"
     delete_options.body = JSON.stringify({comment, comment_id})
     fetch("/api/comment", delete_options)
@@ -84,7 +84,7 @@ export const deleteComment = (comment) =>  dispatch => {
 }
 
 export const fetchLatestComment = (iteration_id) =>  dispatch => {
-    var latest_comment_options = postOptions
+    var latest_comment_options = postOptions()
     latest_comment_options.body = JSON.stringify(iteration_id)
     fetch(`/api/comment/iteration/latest`, latest_comment_options)
         .then(res => res.json())
@@ -95,7 +95,7 @@ export const fetchLatestComment = (iteration_id) =>  dispatch => {
 }
 
 export const seeMore = (iteration_id) => dispatch => {
-    var all_comment_options = postOptions
+    var all_comment_options = postOptions()
     all_comment_options.body = JSON.stringify(iteration_id)
     fetch(`/api/comment/iteration/all`, all_comment_options)
         .then(res => res.json())
@@ -129,7 +129,7 @@ export const clearIdeas = () => dispatch => {
 
 
 export const newIteration = (data) => dispatch => {
-    const iter_post_options = postOptions
+    const iter_post_options = postOptions()
     iter_post_options.body = JSON.stringify(data)
     fetch("/api/iteration/", iter_post_options)
         .then(res => res.json())

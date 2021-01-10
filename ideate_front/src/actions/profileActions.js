@@ -3,8 +3,8 @@ import { PROFILE_CREATED, PROFILE_FAIL } from './types'
 
 
 export const createProfile = (formData) => dispatch => {
-    var create_form_options = postFormOptions
-    create_form_options.body = JSON.stringify(formData)
+    var create_form_options = postFormOptions()
+    create_form_options.body = formData
     fetch('/api/profile', create_form_options)
         .then(res => {
             if(!res.ok) {

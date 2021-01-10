@@ -18,6 +18,8 @@ router.post('/', (req, res) => {
         return res.status(400).json({field: "both", msg: "Please enter all fields"})
     }
 
+    console.log("email = ", email)
+    console.log("password = ", password)
     // check for existing user
     db.query("SELECT * FROM User WHERE user_email=?;", email, (err, result) => {
         if (result.length > 0) {
