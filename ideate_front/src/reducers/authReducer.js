@@ -33,6 +33,7 @@ export default function(state = initialState, action) {
         case LOGIN_SUCCESS:
         case SIGNUP_SUCCESS:
             localStorage.setItem('token', action.payload.token)
+            localStorage.setItem('profile_name', action.payload.profile_name)
             return {
                 ...state,
                 ...action.payload,

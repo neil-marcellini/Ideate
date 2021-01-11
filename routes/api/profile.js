@@ -57,19 +57,20 @@ router.post('/', upload.single('profileImage'), (req, res) => {
 });
 
 
-    const addProfile = (res, fields, imageLocation) => {
+const addProfile = (res, fields, imageLocation) => {
 
-        const values = [fields.profileName, fields.userId, fields.profileBio, imageLocation, new Date()]
-        db.query("INSERT INTO Profile VALUES (?, ?, ?, ?, ?);", values, (err, result) => {
-            if (err) {
-                console.log(err.sqlMessage)
-                console.log("error on new profile")
-                return res.status(500)
-            } else {
-                return res.json({
-                    profile_name: fields.profileName
-                })
-            }
-        })
-    }
-    module.exports = router
+    const values = [fields.profileName, fields.userId, fields.profileBio, imageLocation, new Date()]
+    db.query("INSERT INTO Profile VALUES (?, ?, ?, ?, ?);", values, (err, result) => {
+        if (err) {
+            console.log(err.sqlMessage)
+            console.log("error on new profile")
+            return res.status(500)
+        } else {
+            return res.json({
+                profile_name: fields.profileName
+            })
+        }
+    })
+}
+
+module.exports = router

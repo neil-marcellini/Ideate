@@ -2,7 +2,7 @@ import './App.css';
 import 'fontsource-roboto';
 import Navbar from './components/Navbar';
 import LogIn from './components/LogIn';
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Route, Switch, Redirect} from 'react-router-dom'
 import { useSelector } from "react-redux";
 import store from './store'
@@ -17,50 +17,53 @@ import TopicPage from './components/TopicPage'
 
 
 function App() {
-  useEffect(() => {
-    store.dispatch(loadUser())
-  }, [])
+    const profile_name = localStorage.getItem("profile_name")
+    console.log(profile_name)
+    const showCreateProfile = (profile_name === "undefined" || profile_name === "null")
+    console.log("show = ", showCreateProfile)
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated) 
+    const userLoading = useSelector(state => state.auth.isLoading)
 
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated) 
-  const userLoading = useSelector(state => state.auth.isLoading)
-  const profileName = useSelector(state => state.profile.profile_name)
+    useEffect(() => {
+        store.dispatch(loadUser())
+    }, [])
+    
 
-  const authPages = (
-    <>
-      <Route path="/signup" component={SignUp} />
-      <Route exact path="/" component={LogIn} />
-    </>
-  );
+    const authPages = (
+        <>
+            <Route path="/signup" component={SignUp} />
+            <Route exact path="/" component={LogIn} />
+        </>
+    );
 
-  const protectedPages = (
-    <>
-      <Route exact path="/" component={Home} />
-      <Redirect from="/signup" to="/createprofile" />
-      <Route exact path="/createprofile" component={CreateProfile} />
-      <Route path="/idea" component={NewIdea} />
-      <Route exact path="/topic" component={Topics} />
-      <Route path="/topic/:topic_id" component={TopicPage} />
-    </>
-  )
-
-  return (
-    <div className="App">
-      <Navbar />
-      <Switch>
-        {!userLoading &&
-          <React.Fragment>
-            {isAuthenticated
-              ? protectedPages
-              : authPages
+    const protectedPages = (
+        <>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/createprofile" component={CreateProfile} />
+            <Route path="/idea" component={NewIdea} />
+            <Route exact path="/topic" component={Topics} />
+            <Route path="/topic/:topic_id" component={TopicPage} />
+            {showCreateProfile &&
+                <Redirect to="/createprofile" />
             }
-            {profileName &&
-              <Redirect from="/createprofile" to="/"/>
-            }
-          </React.Fragment>
-        }
-      </Switch>
-    </div>  
-  );
+        </>
+    )
+
+    return (
+        <div className="App">
+            <Navbar />
+            <Switch>
+                {!userLoading &&
+                <React.Fragment>
+                    {isAuthenticated
+                        ? protectedPages
+                        : authPages
+                    }
+                </React.Fragment>
+                }
+            </Switch>
+        </div>  
+    );
 }
 
 export default App;

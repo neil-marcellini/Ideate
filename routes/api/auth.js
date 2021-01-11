@@ -34,15 +34,14 @@ router.post('/', (req, res) => {
                     const token = jwt.sign({user_id}, jwt_secret_key, {
                         expiresIn: "5 days",
                     })
-                    // send back user
-                    res.json({
+                    user_data = {
                         token,
                         user: {
                             user_id,
                             email
                         }
-                    })
-                    
+                    }
+                    getProfileName(res, user_data) 
                 } else {
                     res.status(400).json({field: "password", msg: "Invalid credentials."})
                 }
@@ -51,6 +50,29 @@ router.post('/', (req, res) => {
     })
 
 })
+
+const getProfileName = (res, user_data) => {
+    const user = user_data.user
+    // given a user find their profile name if one exists
+    profile_query = "select profile_name from Profile where user_id = ?;"
+    db.query(profile_query, user.user_id, (err, results) => {
+        if(err) {
+            console.log(err)
+            return res.status(400)
+        }
+        else {
+            var profile_name = null
+            if (results.length > 0) {
+                profile_name = results[0].profile_name
+            }
+            // send back user
+            res.json({
+                ...user_data,
+                profile_name
+            })
+        }
+    })
+}
 
 // @route GET api/auth/user
 // @desc GET user data
