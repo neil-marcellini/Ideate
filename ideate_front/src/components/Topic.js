@@ -28,20 +28,13 @@ const useStyles = makeStyles({
 export default function Topic(props) {
     const classes = useStyles()
     const topic = props.topic
-    const [topicPhoto, setTopicPhoto] = useState(null)
+    const s3_url_prefix = "https://ideate-images.s3.amazonaws.com/"
 
-
-    useEffect(() => {
-        const arr = new Uint8Array(topic.topic_photo.data)
-        const file = new File([arr], "topic_photo")
-        const image = URL.createObjectURL(file)
-        setTopicPhoto(image)
-    }, [topic.topic_photo.data])
 
     return (
         <Paper className={classes.container}>
             <Chip label={topic.topic_name}/>
-            <Avatar className={classes.photo} src={topicPhoto} variant="rounded"/>
+            <Avatar className={classes.photo} src={s3_url_prefix + topic.topic_photo_file_name} variant="rounded"/>
             <div className={classes.description}>
                 <Typography variant="subtitle2"><b>Description:</b></Typography>
                 <p>{topic.topic_description}</p>

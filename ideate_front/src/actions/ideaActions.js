@@ -113,12 +113,19 @@ export const seeLess = (idea) => dispatch => {
 }
 
 export const getTopicIdeas = (topic_id) => dispatch => {
-    fetch(`/api/idea/topic/${topic_id}`)
+    const topic_id_num = parseInt(topic_id)
+    fetch("/api/idea")
         .then(res => res.json())
-        .then(data => dispatch({
-            type: IDEAS_FOR_TOPIC,
-            payload: data
-        }))
+        .then(data => {
+            // filter out by topic_id
+            const topic_ideas = data.ideas.filter((idea) => idea.topic_id === topic_id_num)
+            console.log("topic_ideas = ", topic_ideas)
+            data.ideas = topic_ideas
+            dispatch({
+                type: IDEAS_FETCHED,
+                payload: data
+            })
+        })
 }
 
 export const clearIdeas = () => dispatch => {
