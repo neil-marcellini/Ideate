@@ -109,6 +109,7 @@ const afterAveragePotentials = (response, data, err, results) => {
         })
     } else {
         data.potentials = results
+        data.potentials.reverse()
         db.query("SELECT * FROM latest_comment_view;", (err, results) => 
             afterLatestComments(response, data, err, results))
     }
