@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Paper, TextareaAutosize, TextField, Typography, Button, Slider} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector} from "react-redux";
 import { createIdea } from "../actions/ideaActions"
+import { getAllTopics } from '../actions/allTopicActions'
 import Potential from './Potential'
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import NewTopic from './NewTopic';
@@ -90,8 +91,17 @@ export default function NewIdea() {
     const topic = useSelector(state => state.topic)
     const profileName = useSelector(state => state.profile.profile_name)
     console.log("NewIdea profileName = ", profileName)
+    const topicsData = useSelector(state => state.allTopics.topics)
+    const [topics, setTopics] = useState([])
     
+    useEffect(() => {
+        dispatch(getAllTopics())
+    }, [])
 
+    useEffect(() => {
+        const topics = topicsData.map(topic => topic.topic_name)
+        setTopics(topics)
+    }, [topicsData])
     
     const save = () => {
         // Create an object of formData 
@@ -142,7 +152,6 @@ export default function NewIdea() {
         }
     }
 
-    const topics = []
 
     if (ideaCreated) {
         return <Redirect to="/" />
@@ -215,7 +224,6 @@ export default function NewIdea() {
                     selectOnFocus
                     clearOnBlur
                     handleHomeEndKeys
-                    renderOption={(option) => option.title}
                     style={{ width: 300 }}
                     freeSolo
                     renderInput={(params) => (
