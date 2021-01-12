@@ -96,7 +96,7 @@ export const fetchLatestComment = (iteration_id) =>  dispatch => {
 
 export const seeMore = (iteration_id) => dispatch => {
     var all_comment_options = postOptions()
-    all_comment_options.body = JSON.stringify(iteration_id)
+    all_comment_options.body = JSON.stringify({iteration_id})
     fetch(`/api/comment/iteration/all`, all_comment_options)
         .then(res => res.json())
         .then(data => dispatch({

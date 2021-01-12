@@ -170,7 +170,6 @@ const afterTotalComments = (response, full_ideas, err, results) => {
         })
     } else {
         comment_totals = results
-        comment_totals.reverse()
         console.log("afterTotalComments", comment_totals)
         var total_index = 0
         var has_total

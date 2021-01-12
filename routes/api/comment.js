@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
 })
 
 router.post('/iteration/all', (req, res) => {
-    const iteration_id = req.body
+    const iteration_id = req.body.iteration_id
     db.query("CALL sp_iteration_comments(?);", iteration_id, (err, results) => {
         const comments = results[0]
         return res.json({
