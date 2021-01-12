@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 import { Paper, TextareaAutosize, TextField, Typography, Button, Slider} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector} from "react-redux";
-import { createIdea } from "../actions/ideaActions"
+import { createIdea, getAllIdeas } from "../actions/ideaActions"
 import { getAllTopics } from '../actions/allTopicActions'
 import Potential from './Potential'
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
@@ -93,7 +93,14 @@ export default function NewIdea() {
     console.log("NewIdea profileName = ", profileName)
     const topicsData = useSelector(state => state.allTopics.topics)
     const [topics, setTopics] = useState([])
-    
+    const [value, setValue] = React.useState(null);
+    const [open, toggleOpen] = React.useState(false);
+    const [ideaTitleError, setIdeaTitleError] = useState(false)
+    const [ideaDescriptionError, setIdeaDescriptionError] = useState(false)
+    const [topicNameError, setTopicNameError] = useState(false)
+    const [topicImageError, setTopicImageError] = useState(false)
+    const [topicDescriptionError, setTopicDescriptionError] = useState(false)
+
     useEffect(() => {
         dispatch(getAllTopics())
     }, [])
@@ -102,8 +109,32 @@ export default function NewIdea() {
         const topics = topicsData.map(topic => topic.topic_name)
         setTopics(topics)
     }, [topicsData])
-    
+
+    const required_filled = () => {
+        let ideaTitle_filled = ideaTitle !== null && ideaTitle !== "" 
+        setIdeaTitleError(!ideaTitle_filled)
+        let ideaDescription_filled = ideaDescription !== null && ideaDescription !== "" 
+        setIdeaDescriptionError(!ideaDescription_filled)
+        let topicName_filled = topicName !== null && topicName !== ""
+        setTopicNameError(!topicName_filled)
+        var topicImage_filled = true
+        var topicDescription_filled = true
+        if (open) {
+            topicImage_filled = topic.topicImage !== null && topic.topicImage !== "" 
+            topicDescription_filled = topic.topicDescription !== null && topic.topicDescription !== "" 
+        }
+        setTopicImageError(!topicImage_filled)
+        setTopicDescriptionError(!topicDescription_filled)
+        let required_filled = ideaTitle_filled && ideaDescription_filled &&
+            topicName_filled && topicImage_filled && topicDescription_filled
+        return required_filled
+    }
+
     const save = () => {
+        const required_empty = !required_filled()
+        if (required_empty) {
+            return
+        }
         // Create an object of formData 
         const formData = new FormData();
         formData.append("ideaTitle", ideaTitle)
@@ -118,6 +149,7 @@ export default function NewIdea() {
         setIdeaCreated(true)
     }
 
+
     const updateTitle = (e) => {
         setIdeaTitle(e.target.value)
     }
@@ -128,10 +160,8 @@ export default function NewIdea() {
     const updateY = (e, newValue) => {
         setPotentialBrightness(newValue)
     }
-    
 
-    const [value, setValue] = React.useState(null);
-    const [open, toggleOpen] = React.useState(false);
+
 
 
     const autocompleteChange = (event, newValue) => {
@@ -139,9 +169,9 @@ export default function NewIdea() {
         if (typeof newValue === 'string') {
             // timeout to avoid instant validation of the dialog's form.
             setTimeout(() => {
-            setValue(newValue)
-            toggleOpen(true);
-            setTopicName(newValue)
+                setValue(newValue)
+                toggleOpen(true);
+                setTopicName(newValue)
             });
         } else if (newValue && newValue.inputValue) {
             setValue(newValue)
@@ -154,6 +184,7 @@ export default function NewIdea() {
 
 
     if (ideaCreated) {
+        dispatch(getAllIdeas())
         return <Redirect to="/" />
     }
 
@@ -169,20 +200,20 @@ export default function NewIdea() {
                     <div>
                         <Typography variant="h5">Title</Typography>
                         <br />
-                        <TextField variant="outlined" onChange={updateTitle} />
+                        <TextField variant="outlined" onChange={updateTitle} error={ideaTitleError}/>
                     </div>
                     <div className={classes.potential}>
                         <Typography className={classes.yLabel} variant="subtitle2">Brightness</Typography>
                         <Typography variant="h5">Potential</Typography>
                         <Slider className={classes.ySlider} orientation="vertical" value={potential_brightness} 
-                        onChange={updateY} 
-                        aria-labelledby="continuous-slider" valueLabelDisplay="auto"
-                        defaultValue={50} />
+                            onChange={updateY} 
+                            aria-labelledby="continuous-slider" valueLabelDisplay="auto"
+                            defaultValue={50} />
                         <Potential x={potential_difficulty} y={potential_brightness} type="create" />
                         <Slider className={classes.xSlider} value={potential_difficulty} 
-                        onChange={updateX} 
-                        aria-labelledby="continuous-slider" valueLabelDisplay="auto"
-                        defaultValue={50} />
+                            onChange={updateX} 
+                            aria-labelledby="continuous-slider" valueLabelDisplay="auto"
+                            defaultValue={50} />
                         <Typography className={classes.xLabel} variant="subtitle2">Difficulty</Typography>
                     </div>
                 </div>
@@ -190,7 +221,8 @@ export default function NewIdea() {
                 <br />
                 <TextareaAutosize style={{width: "100%"}} 
                     aria-label="Bio" rowsMin={10} onChange={(e) => {
-                    setIdeaDescription(e.target.value)}} />
+                        setIdeaDescription(e.target.value)}} 
+                    error={ideaDescriptionError}/>
                 <br />
                 <Typography variant="h5">Topic</Typography>
                 <br />
@@ -198,28 +230,28 @@ export default function NewIdea() {
                     value={value}
                     onChange={autocompleteChange}
                     filterOptions={(options, params) => {
-                    const filtered = filter(options, params);
+                        const filtered = filter(options, params);
 
-                    if (params.inputValue !== '') {
-                        filtered.push({
-                        inputValue: params.inputValue,
-                        title: `Add "${params.inputValue}"`,
-                        });
-                    }
+                        if (params.inputValue !== '') {
+                            filtered.push({
+                                inputValue: params.inputValue,
+                                title: `Add "${params.inputValue}"`,
+                            });
+                        }
 
-                    return filtered;
+                        return filtered;
                     }}
                     id="free-solo-dialog-demo"
                     options={topics}
                     getOptionLabel={(option) => {
-                    // e.g value selected with enter, right from the input
-                    if (typeof option === 'string') {
-                        return option;
-                    }
-                    if (option.inputValue) {
-                        return option.inputValue;
-                    }
-                    return option.title;
+                        // e.g value selected with enter, right from the input
+                        if (typeof option === 'string') {
+                            return option;
+                        }
+                        if (option.inputValue) {
+                            return option.inputValue;
+                        }
+                        return option.title;
                     }}
                     selectOnFocus
                     clearOnBlur
@@ -227,12 +259,12 @@ export default function NewIdea() {
                     style={{ width: 300 }}
                     freeSolo
                     renderInput={(params) => (
-                    <TextField {...params} label="Select, search, or create." variant="outlined" />
+                        <TextField {...params} required label="Select, search, or create." variant="outlined" error={topicNameError}/>
                     )}
                 />
                 <br />
                 {open &&
-                    <NewTopic />
+                <NewTopic topicImageError topicDescriptionError />
                 }
                 <Button variant="contained" color="primary" onClick={save} >Save</Button>
             </Paper>

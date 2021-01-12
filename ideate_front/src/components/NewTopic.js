@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 
 
 
-export default function NewTopic() {
+export default function NewTopic(props) {
     const inputElement = useRef(null)
     const [avatarSrc, setAvatarSrc] = useState(null)
     const [photoSizeError, setPhotoSizeError] = useState(null)
@@ -56,14 +56,16 @@ export default function NewTopic() {
             <Typography variant="h5">Photo</Typography>
             <br />
             <input className={classes.imageUpload} ref={inputElement} type="file" name="topic" accept="image/*" onChange={onFileChange} />
-            <Avatar className={classes.photoDisplay} variant="rounded" src={avatarSrc} onClick={() => inputElement.current.click()}>
+            <Avatar className={classes.photoDisplay} variant="rounded" src={avatarSrc} onClick={() => inputElement.current.click()}
+                error={props.topicImageError}>
                 <AddAPhoto />
             </Avatar>
             <br />
             <Typography variant="h5">Description</Typography>
             <br />
             <TextareaAutosize style={{width: "100%"}} 
-                    aria-label="Description" rowsMin={10} onChange={updateDescription} />
+                    aria-label="Description" rowsMin={10} onChange={updateDescription} 
+                    error={props.topicDescriptionError}/>
             <br />
         </>
     )
