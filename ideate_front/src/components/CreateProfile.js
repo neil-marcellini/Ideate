@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { Redirect } from 'react-router-dom'
 import { Paper, TextareaAutosize, TextField, Typography, Avatar, Button} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector} from "react-redux";
@@ -59,6 +60,7 @@ export default function CreateProfile() {
     const profile = useSelector(state => state.profile)
     const [nameErrorMsg, setNameErrorMsg] = useState(null)
     const [nameError, setNameError] = useState(false)
+    const [created, setCreated] = useState(false)
     
 
     useEffect(() => {
@@ -98,12 +100,17 @@ export default function CreateProfile() {
         formData.append("profileBio", profileBio)
             
         dispatch(createProfile(formData))
+        setCreated(true)
     }
 
     const updateName = (e) => {
         setProfileName(e.target.value)
         setNameError(false)
         setNameErrorMsg(null)
+    }
+    
+    if (created) {
+        return <Redirect to="/" />
     }
 
     return (
