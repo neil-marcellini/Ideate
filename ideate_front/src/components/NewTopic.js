@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import { TextareaAutosize, Typography, Avatar} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { AddAPhoto } from '@material-ui/icons';
@@ -15,17 +15,26 @@ const useStyles = makeStyles({
         height: "15rem"
     },
 
+    descriptionError: {
+      borderColor: "#F44336"
+    },
+    descriptionNoError: {
+      borderColor: "black"
+    }
+
 })
 
 
 
 export default function NewTopic(props) {
+    const classes = useStyles()
     const inputElement = useRef(null)
     const [avatarSrc, setAvatarSrc] = useState(null)
     const [photoSizeError, setPhotoSizeError] = useState(null)
+    const [topicDescriptionError, setTopicDescriptionError] = props.topicDescriptionError
+    const [topicDescriptionClass, setTopicDescriptionClass] = useState(classes.descriptionNoError)
     const MAX_FILE_SIZE = 16000000
 
-    const classes = useStyles()
     const dispatch = useDispatch()
     
 
@@ -47,25 +56,33 @@ export default function NewTopic(props) {
     }
 
     const updateDescription = (e) => {
+        setTopicDescriptionError(false)
         const description = e.target.value
         dispatch(updateTopicDescription(description))
     }
+
+    useEffect(() => {
+        if (topicDescriptionError) {
+            setTopicDescriptionClass(classes.descriptionError)
+        }
+        else {
+            setTopicDescriptionClass(classes.descriptionNoError)
+        }
+    }, [topicDescriptionError])
 
     return (
         <>
             <Typography variant="h5">Photo</Typography>
             <br />
             <input className={classes.imageUpload} ref={inputElement} type="file" name="topic" accept="image/*" onChange={onFileChange} />
-            <Avatar className={classes.photoDisplay} variant="rounded" src={avatarSrc} onClick={() => inputElement.current.click()}
-                error={props.topicImageError}>
+            <Avatar className={classes.photoDisplay} variant="rounded" src={avatarSrc} onClick={() => inputElement.current.click()}>
                 <AddAPhoto />
             </Avatar>
             <br />
             <Typography variant="h5">Description</Typography>
             <br />
-            <TextareaAutosize style={{width: "100%"}} 
-                    aria-label="Description" rowsMin={10} onChange={updateDescription} 
-                    error={props.topicDescriptionError}/>
+            <TextareaAutosize className={topicDescriptionClass} style={{width: "100%"}} 
+                    aria-label="Description" rowsMin={10} onChange={updateDescription} />
             <br />
         </>
     )

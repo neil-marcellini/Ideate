@@ -74,6 +74,12 @@ const useStyles = makeStyles({
     },
     yLabel: {
         alignSelf: "end"
+    },
+    descriptionError: {
+      borderColor: "#F44336"
+    },
+    descriptionNoError: {
+      borderColor: "black"
     }
 })
 
@@ -97,6 +103,7 @@ export default function NewIdea() {
     const [open, toggleOpen] = React.useState(false);
     const [ideaTitleError, setIdeaTitleError] = useState(false)
     const [ideaDescriptionError, setIdeaDescriptionError] = useState(false)
+    const [ideaDescriptionClass, setIdeaDescriptionClass] = useState(classes.descriptionNoError)
     const [topicNameError, setTopicNameError] = useState(false)
     const [topicImageError, setTopicImageError] = useState(false)
     const [topicDescriptionError, setTopicDescriptionError] = useState(false)
@@ -109,6 +116,15 @@ export default function NewIdea() {
         const topics = topicsData.map(topic => topic.topic_name)
         setTopics(topics)
     }, [topicsData])
+    
+    useEffect(() => {
+        if (ideaDescriptionError) {
+            setIdeaDescriptionClass(classes.descriptionError)
+        }
+        else {
+            setIdeaDescriptionClass(classes.descriptionNoError)
+        }
+    }, [ideaDescriptionError])
 
     const required_filled = () => {
         let ideaTitle_filled = ideaTitle !== null && ideaTitle !== "" 
@@ -151,7 +167,13 @@ export default function NewIdea() {
 
 
     const updateTitle = (e) => {
+        setIdeaTitleError(false)
         setIdeaTitle(e.target.value)
+    }
+    
+    const updateIdeaDescription = (e) => {
+        setIdeaDescriptionError(false)
+        setIdeaDescription(e.target.value)
     }
 
     const updateX = (e, newValue) => {
@@ -219,10 +241,8 @@ export default function NewIdea() {
                 </div>
                 <Typography variant="h5">Idea Description</Typography>
                 <br />
-                <TextareaAutosize style={{width: "100%"}} 
-                    aria-label="Bio" rowsMin={10} onChange={(e) => {
-                        setIdeaDescription(e.target.value)}} 
-                    error={ideaDescriptionError}/>
+                <TextareaAutosize className={ideaDescriptionClass} style={{width: "100%"}} 
+                    aria-label="Bio" rowsMin={10} onChange={updateIdeaDescription} />
                 <br />
                 <Typography variant="h5">Topic</Typography>
                 <br />
@@ -259,12 +279,13 @@ export default function NewIdea() {
                     style={{ width: 300 }}
                     freeSolo
                     renderInput={(params) => (
-                        <TextField {...params} required label="Select, search, or create." variant="outlined" error={topicNameError}/>
+                        <TextField {...params} required label="Select, search, or create." variant="outlined"
+                            error={topicNameError} onClick={() => setTopicNameError(false)} />
                     )}
                 />
                 <br />
                 {open &&
-                <NewTopic topicImageError topicDescriptionError />
+                <NewTopic topicDescriptionError={[topicDescriptionError, setTopicDescriptionError]} />
                 }
                 <Button variant="contained" color="primary" onClick={save} >Save</Button>
             </Paper>
