@@ -192,11 +192,10 @@ export default function NewIdea() {
             // timeout to avoid instant validation of the dialog's form.
             setTimeout(() => {
                 setValue(newValue)
-                toggleOpen(true);
                 setTopicName(newValue)
             });
         } else if (newValue && newValue.inputValue) {
-            setValue(newValue)
+            setValue(newValue.inputValue)
             toggleOpen(true);
             setTopicName(newValue.inputValue)
         } else {
@@ -269,7 +268,7 @@ export default function NewIdea() {
                             return option;
                         }
                         if (option.inputValue) {
-                            return option.inputValue;
+                            return `Add "${option.inputValue}"`
                         }
                         return option.title;
                     }}
@@ -279,7 +278,7 @@ export default function NewIdea() {
                     style={{ width: 300 }}
                     freeSolo
                     renderInput={(params) => (
-                        <TextField {...params} required label="Select, search, or create." variant="outlined"
+                        <TextField {...params} label="Select, search, or create." variant="outlined"
                             error={topicNameError} onClick={() => setTopicNameError(false)} />
                     )}
                 />
