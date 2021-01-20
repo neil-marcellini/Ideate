@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Paper, TextareaAutosize, TextField, Typography, Button, Slider} from '@material-ui/core'
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector} from "react-redux";
 import { createIdea, getAllIdeas } from "../actions/ideaActions"
@@ -110,12 +109,11 @@ export default function NewIdea() {
     const [ideaDescriptionError, setIdeaDescriptionError] = useState(false)
     const [ideaDescriptionClass, setIdeaDescriptionClass] = useState(classes.descriptionNoError)
     const [topicNameError, setTopicNameError] = useState(false)
-    const [topicImageError, setTopicImageError] = useState(false)
     const [topicDescriptionError, setTopicDescriptionError] = useState(false)
 
     useEffect(() => {
         dispatch(getAllTopics())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         const topics = topicsData.map(topic => topic.topic_name)
@@ -129,7 +127,7 @@ export default function NewIdea() {
         else {
             setIdeaDescriptionClass(classes.descriptionNoError)
         }
-    }, [ideaDescriptionError])
+    }, [ideaDescriptionError, classes.descriptionError, classes.descriptionNoError])
 
     const required_filled = () => {
         let ideaTitle_filled = ideaTitle !== null && ideaTitle !== "" 
@@ -138,16 +136,13 @@ export default function NewIdea() {
         setIdeaDescriptionError(!ideaDescription_filled)
         let topicName_filled = topicName !== null && topicName !== ""
         setTopicNameError(!topicName_filled)
-        var topicImage_filled = true
         var topicDescription_filled = true
         if (open) {
-            topicImage_filled = topic.topicImage !== null && topic.topicImage !== "" 
             topicDescription_filled = topic.topicDescription !== null && topic.topicDescription !== "" 
         }
-        setTopicImageError(!topicImage_filled)
         setTopicDescriptionError(!topicDescription_filled)
         let required_filled = ideaTitle_filled && ideaDescription_filled &&
-            topicName_filled && topicImage_filled && topicDescription_filled
+            topicName_filled && topicDescription_filled
         return required_filled
     }
 

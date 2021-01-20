@@ -5,9 +5,10 @@ CREATE PROCEDURE sp_create_idea(ideaTitle VARCHAR(50), ideaDescription MEDIUMTEX
     potentialDifficulty DECIMAL(4,2), potentialBrightness DECIMAL(4,2),
     topicName VARCHAR(50), topicImageName varchar(100), topicDescription VARCHAR(500), profileName VARCHAR(50))
 BEGIN
-
-INSERT INTO Topic (topic_name, topic_photo_file_name, topic_description)
-VALUES (topicName, topicImageName, topicDescription);
+if topicDescription is not null then
+    INSERT INTO Topic (topic_name, topic_photo_file_name, topic_description)
+    VALUES (topicName, topicImageName, topicDescription);
+end if;
 
 /* get Topic id */
 SET @last_topic_id = (

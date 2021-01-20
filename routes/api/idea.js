@@ -17,35 +17,34 @@ var upload = multer({
 
 router.post('/', upload.single('topicImage'), (req, res) => {
     const fields = req.body
-    var params = {
-        ACL: 'public-read',
-        Bucket: 'ideate-images',
-        Body: fs.createReadStream(req.file.path),
-        Key: 'topic/' + Date.now() + req.file.originalname
-    }
-
-    s3.upload(params, (err, data) => {
-        if( err ){
-            console.log( 'topicImageUpload errors', err );
-            res.json( { err } );
-        } else {
-            // If Success
-            fs.unlinkSync(req.file.path); // Empty temp folder
-            const topic_photo_file_name = params.Key
-            // Image uploaded, now add entry in db
-            const values = [
-                fields.ideaTitle, 
-                fields.ideaDescription, 
-                fields.potentialDifficulty,
-                fields.potentialBrightness,
-                fields.topicName,
-                topic_photo_file_name,
-                fields.topicDescription,
-                fields.profileName
-            ]
-            addIdea(res, values)
+    const values = Object.values(fields)
+    console.log("values = ", values)
+    topic_exists = fields.topicDescription === null || fields.topicDescription === "null"
+    if (!topic_exists) {
+        var params = {
+            ACL: 'public-read',
+            Bucket: 'ideate-images',
+            Body: fs.createReadStream(req.file.path),
+            Key: 'topic/' + Date.now() + req.file.originalname
         }
-    })
+
+        s3.upload(params, (err, data) => {
+            if( err ){
+                console.log( 'topicImageUpload errors', err );
+                res.json( { err } );
+            } else {
+                // If Success
+                fs.unlinkSync(req.file.path); // Empty temp folder
+                const topic_photo_file_name = params.Key
+                // Image uploaded, now add entry in db
+                addIdea(res, values)
+            }
+        })
+    }
+    else {
+        console.log("adding idea with existing topic")
+        addIdea(res, values)
+    }
 })
 
 const addIdea = (res, values) => {
