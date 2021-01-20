@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Paper, TextareaAutosize, TextField, Typography, Button, Slider} from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector} from "react-redux";
 import { createIdea, getAllIdeas } from "../actions/ideaActions"
@@ -19,8 +20,13 @@ const useStyles = makeStyles({
         alignItems: "center"
     },
     paper: {
-        width: "40%",
+        minWidth: "min-content",
+        maxWidth: "80%",
         padding: "1em",
+    },
+    title: {
+        minWidth: "8rem",
+        maxWidth: "25rem",
     },
     idea: {
         display: "grid",
@@ -30,7 +36,7 @@ const useStyles = makeStyles({
     grid: {
         display: "grid",
         gridTemplateColumns: "auto auto",
-        gridColumnGap: "3rem",
+        gridColumnGap: "1rem",
         gridRowGap: "1rem",
         gridColumnAlign: "center",
         alignItems: "top"
@@ -53,7 +59,6 @@ const useStyles = makeStyles({
     },
     potential: {
         padding: "1rem",
-        marginRight: "2.7rem",
         width: "fit-content",
         display: "grid",
         gridTemplateColumns: "repeat(2, auto)",
@@ -221,7 +226,7 @@ export default function NewIdea() {
                     <div>
                         <Typography variant="h5">Title</Typography>
                         <br />
-                        <TextField variant="outlined" onChange={updateTitle} error={ideaTitleError}/>
+                        <TextField className={classes.title} variant="outlined" onChange={updateTitle} error={ideaTitleError}/>
                     </div>
                     <div className={classes.potential}>
                         <Typography className={classes.yLabel} variant="subtitle2">Brightness</Typography>
