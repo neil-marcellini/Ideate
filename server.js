@@ -10,7 +10,7 @@ const app = express()
 app.use(express.json())
 app.use(morgan('combined'))
 
-const whitelist = ['http://localhost:3000', 'http://localhost:5000', 'https://pacific-mesa-86012.herokuapp.com']
+const whitelist = ['http://localhost:3000', 'http://localhost:5000', 'https://ideate-demo-app.herokuapp.com']
 const corsOptions = {
   origin: function (origin, callback) {
     console.log("** Origin of request " + origin)
