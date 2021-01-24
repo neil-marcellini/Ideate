@@ -17,8 +17,17 @@ var upload = multer({
 
 router.post('/', upload.single('topicImage'), (req, res) => {
     const fields = req.body
-    const values = Object.values(fields)
-    console.log("values = ", values)
+    var topic_photo_file_name = null
+    var values = [
+        fields.ideaTitle,
+        fields.ideaDescription,
+        fields.potentialDifficulty,
+        fields.potentialBrightness,
+        fields.topicName,
+        topic_photo_file_name,
+        fields.topicDescription,
+        fields.profileName
+    ]
     topic_exists = fields.topicDescription === null || fields.topicDescription === "null"
     if (!topic_exists) {
         var params = {
@@ -36,6 +45,17 @@ router.post('/', upload.single('topicImage'), (req, res) => {
                 // If Success
                 fs.unlinkSync(req.file.path); // Empty temp folder
                 const topic_photo_file_name = params.Key
+                // Image uploaded, now add entry in db
+                values = [
+                    fields.ideaTitle,
+                    fields.ideaDescription,
+                    fields.potentialDifficulty,
+                    fields.potentialBrightness,
+                    fields.topicName,
+                    topic_photo_file_name,
+                    fields.topicDescription,
+                    fields.profileName
+                ]
                 // Image uploaded, now add entry in db
                 addIdea(res, values)
             }

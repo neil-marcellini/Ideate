@@ -41,6 +41,11 @@ const useStyles = makeStyles({
         gridTemplateRows: "auto auto auto",
         justifyItems: "center"
     },
+    iterationControl: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center"
+    },
     HStack: {
         display: "flex",
         flexDirection: "row"
@@ -229,8 +234,8 @@ export default function Idea(props) {
                     <Typography variant="h3">{idea.idea_name}</Typography>
                     <div className={classes.iteration}>
                         <Typography variant="subtitle1">Iteration</Typography>
-                        <div>
-                            <IconButton onClick={minusIteration}><IndeterminateCheckBox /></IconButton>
+                        <div className={classes.iterationControl}>
+                            <IconButton onClick={minusIteration} disabled={idea.iteration_num < 1}><IndeterminateCheckBox /></IconButton>
                             <span>{idea.iteration_num}</span>
                             <IconButton onClick={plusIteration} disabled={add_iter_disabled}><AddBox /></IconButton>
                             <Modal

@@ -44,6 +44,7 @@ export default function(state = initialState, action) {
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS:
         case SIGNUP_FAIL:
+            localStorage.removeItem('profile_name')
             localStorage.removeItem('token');
             return {
                 ...state,
